@@ -3,9 +3,10 @@
 # ── Encoding ──────────────────────────────────────────────────────────────────
 AddDefaultCharset UTF-8
 
-# ── HTTPS redirect ────────────────────────────────────────────────────────────
+# ── Rewrite engine (required for all RewriteRule directives below) ─────────────
 RewriteEngine On
 
+# ── HTTPS redirect ────────────────────────────────────────────────────────────
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
@@ -13,23 +14,37 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
-# ── Pre-compressed Brotli / gzip serving ──────────────────────────────────────
-<IfModule mod_headers.c>
-  # Brotli
-  RewriteCond %{HTTP:Accept-Encoding} br
-  RewriteCond %{REQUEST_FILENAME}.br -f
-  RewriteRule ^ %{REQUEST_URI}.br [L]
+# ── Pre-compressed asset serving ──────────────────────────────────────────────
+# Priority: zstd > brotli > gzip.
+# Each rule checks that (a) the client advertises support and
+# (b) the pre-compressed file actually exists on disk.
+# On-the-fly fallback via mod_deflate / mod_brotli follows below.
 
+# zstd
+RewriteCond %{HTTP:Accept-Encoding} \bzstd\b
+RewriteCond %{REQUEST_FILENAME}.zst -f
+RewriteRule ^ %{REQUEST_URI}.zst [L]
+
+# brotli
+RewriteCond %{HTTP:Accept-Encoding} \bbr\b
+RewriteCond %{REQUEST_FILENAME}.br -f
+RewriteRule ^ %{REQUEST_URI}.br [L]
+
+# gzip
+RewriteCond %{HTTP:Accept-Encoding} \bgzip\b
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^ %{REQUEST_URI}.gz [L]
+
+# ── Content-Encoding headers for pre-compressed files ────────────────────────
+<IfModule mod_headers.c>
+  <FilesMatch "\.zst$">
+    Header set Content-Encoding zstd
+    Header append Vary Accept-Encoding
+  </FilesMatch>
   <FilesMatch "\.br$">
     Header set Content-Encoding br
     Header append Vary Accept-Encoding
   </FilesMatch>
-
-  # Gzip
-  RewriteCond %{HTTP:Accept-Encoding} gzip
-  RewriteCond %{REQUEST_FILENAME}.gz -f
-  RewriteRule ^ %{REQUEST_URI}.gz [L]
-
   <FilesMatch "\.gz$">
     Header set Content-Encoding gzip
     Header append Vary Accept-Encoding
@@ -37,15 +52,39 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # ── MIME types for pre-compressed files ───────────────────────────────────────
-<FilesMatch "\.css\.(br|gz)$">
-  ForceType text/css
-</FilesMatch>
-<FilesMatch "\.js\.(br|gz)$">
-  ForceType application/javascript
-</FilesMatch>
-<FilesMatch "\.html\.(br|gz)$">
+# Apache must return the original MIME type, not the compression type.
+<FilesMatch "\.html\.(zst|br|gz)$">
   ForceType text/html
 </FilesMatch>
+<FilesMatch "\.css\.(zst|br|gz)$">
+  ForceType text/css
+</FilesMatch>
+<FilesMatch "\.js\.(zst|br|gz)$">
+  ForceType application/javascript
+</FilesMatch>
+<FilesMatch "\.xml\.(zst|br|gz)$">
+  ForceType application/xml
+</FilesMatch>
+<FilesMatch "\.txt\.(zst|br|gz)$">
+  ForceType text/plain
+</FilesMatch>
+<FilesMatch "\.svg\.(zst|br|gz)$">
+  ForceType image/svg+xml
+</FilesMatch>
+
+# ── On-the-fly compression fallback ───────────────────────────────────────────
+# Only applies when no pre-compressed file was matched above.
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS \
+    text/html text/css application/javascript \
+    application/xml text/xml text/plain image/svg+xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE \
+    text/html text/css application/javascript \
+    application/xml text/xml text/plain image/svg+xml
+</IfModule>
 
 # ── Caching ───────────────────────────────────────────────────────────────────
 <IfModule mod_expires.c>

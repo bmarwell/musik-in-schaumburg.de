@@ -122,7 +122,10 @@ bun run preview
 5. Generate JPEG fallback at 800 px for browsers without WebP support
 6. Render `dist/index.html` from `src/main/html/index.html` (Mustache)
 7. Render `dist/orchester/<slug>/index.html` for each orchestra
-8. Copy CSS, JS, LICENSE to `dist/`
+8. Generate `dist/sitemap.xml` (all pages with `lastmod`, `changefreq`, `priority`)
+9. Copy CSS, JS, LICENSE, `robots.txt`, and `.htaccess` to `dist/`
+10. Pre-compress every text asset (`.html`, `.css`, `.js`, `.xml`, `.txt`, `.svg`) into
+    `.br` (Brotli q11), `.gz` (gzip level 9), and `.zst` (zstd level 19) variants
 
 Image paths inside the generated HTML are always **relative** (no hardcoded domain).
 
@@ -181,7 +184,21 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 ## Deployment
 
-The `dist/` directory is the deployable artifact. Serve it as a static site
-(Apache, Nginx, GitHub Pages, Netlify, etc.).
+The `dist/` directory is the deployable artifact. Deploy it to an Apache server.
+The included `.htaccess` handles HTTPS redirects, www → non-www canonicalisation,
+pre-compressed asset serving (zstd > brotli > gzip with on-the-fly fallback),
+caching headers, and security headers.
 
-Optionally add `.htaccess` for pre-compressed Brotli/gzip serving (see jug-h.de reference).
+## Pre-compression
+
+Every text-based asset in `dist/` gets three pre-compressed siblings generated at build time:
+
+| Extension | Algorithm | Setting |
+|-----------|-----------|---------|
+| `.br`     | Brotli    | quality 11 (max) via Node.js `zlib.brotliCompress` |
+| `.gz`     | gzip      | level 9 (max) via Node.js `zlib.gzip` |
+| `.zst`    | zstd      | level 19 via `@mongodb-js/zstd` |
+
+The `.htaccess` serves pre-compressed files when the client advertises support in
+`Accept-Encoding`, in priority order zstd > brotli > gzip. If no pre-compressed file
+exists, Apache falls back to on-the-fly compression via `mod_brotli` / `mod_deflate`.

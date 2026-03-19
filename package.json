@@ -10,6 +10,7 @@
     "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
   },
   "dependencies": {
+    "@mongodb-js/zstd": "^7.0.0",
     "fs-extra": "^11.3.4",
     "glob": "^13.0.6",
     "js-yaml": "^4.1.1",
@@ -21,5 +22,8 @@
   },
   "engines": {
     "bun": ">=1.0"
-  }
+  },
+  "trustedDependencies": [
+    "@mongodb-js/zstd"
+  ]
 }
