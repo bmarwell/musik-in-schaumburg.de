@@ -227,6 +227,68 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 ---
 
+## Coding Guidelines
+
+These rules apply to **all code changes and code reviews** in this repository.
+
+### Const-first and immutable style
+
+Use `const` as the **default for every declaration**. Only use `let` when reassignment is genuinely necessary. If you reach for `let`, first ask whether the code can be restructured so a `const` suffices.
+
+Prefer deriving new values over mutating existing ones:
+- Use spread (`{ ...obj, key: value }`) to produce updated objects rather than assigning into them.
+- Prefer the non-mutating ES2023 array methods over their mutating equivalents:
+  `toSorted()` · `toReversed()` · `toSpliced()` · `with(index, value)`
+- Extract pure functions that **return** computed values instead of receiving an object and writing into it.
+
+`Object.freeze()` (the JS equivalent of TypeScript's `as const`) is useful for top-level constant maps and config tuples (e.g. `TYPE_LABELS`). Avoid it for intermediate objects produced during processing — the overhead and verbosity are not worth it there.
+
+---
+
+### Avoid `else`
+
+Avoid `else` at almost all costs.
+Prefer guard clauses, early returns, and `continue` statements to flatten control flow.
+If avoiding `else` makes a block too large, extract the logic into a well-named function.
+
+```js
+// Bad
+if (condition) {
+  doSomething();
+} else {
+  doOther();
+}
+
+// Good
+if (condition) {
+  doSomething();
+  return;
+}
+doOther();
+```
+
+### Comments as function names
+
+Before writing a comment, ask yourself: _could this comment be the name of a function?_
+If yes, extract the block into a function with that name and remove the comment.
+
+```js
+// Bad
+// Build conductor list
+const conductorItems = conductors.map(...);
+
+// Good
+function buildJsonLdConductors(conductors) { ... }
+const conductorItems = buildJsonLdConductors(conductors);
+```
+
+### Maximum indentation: 4 levels
+
+Code must not exceed **4 levels of indentation**.
+Extract deeply nested blocks into separate, named functions.
+
+---
+
 ## Deployment
 
 The `dist/` directory is the deployable artifact. Deploy it to an Apache server.

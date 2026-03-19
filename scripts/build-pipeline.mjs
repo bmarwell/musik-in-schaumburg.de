@@ -44,12 +44,9 @@ const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
 
-// Responsive image breakpoints for WebP variants
 const IMAGE_WIDTHS = [400, 800, 1200];
-// Logo size (single square crop)
 const LOGO_SIZE = 128;
 
-// Human-readable labels for orchestra types (German)
 const TYPE_LABELS = {
   'brass-band': 'Brass Band',
   'symphony': 'Sinfonisches Blasorchester',
@@ -69,10 +66,6 @@ function log(msg) {
   console.log(`[build] ${msg}`);
 }
 
-/**
- * Download a remote URL to a local file path.
- * Returns true on success, false on failure.
- */
 async function downloadFile(url, dest) {
   return new Promise((resolve) => {
     fse.ensureDirSync(path.dirname(dest));
@@ -81,7 +74,6 @@ async function downloadFile(url, dest) {
 
     const request = protocol.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        // Follow one redirect
         file.close();
         fs.unlinkSync(dest);
         downloadFile(response.headers.location, dest).then(resolve);
@@ -115,19 +107,38 @@ async function downloadFile(url, dest) {
   });
 }
 
-/**
- * Generate responsive WebP variants of an image.
- * Returns an object with srcsetWebp, srcset, and fallback paths (relative to dist/).
- */
+function resolveLocalAssetPath(localFilename, ensembleDir, rootDir) {
+  const inEnsembleDir = path.join(ensembleDir, localFilename);
+  if (fs.existsSync(inEnsembleDir)) return inEnsembleDir;
+  const inRootDir = path.join(rootDir, localFilename);
+  if (fs.existsSync(inRootDir)) return inRootDir;
+  return null;
+}
+
+function cleanupDownloadedTempFile(filePath, downloaded) {
+  if (!downloaded || !filePath || !fs.existsSync(filePath)) return;
+  try { fs.unlinkSync(filePath); } catch (_) {}
+}
+
+async function downloadRemoteAsset(url, destDir, prefix) {
+  const isRemote = url.startsWith('http://') || url.startsWith('https://');
+  if (!isRemote) return { localPath: null, downloaded: false };
+  const ext = path.extname(new URL(url).pathname) || '.jpg';
+  const localPath = path.join(destDir, `${prefix}-original${ext}`);
+  const ok = await downloadFile(url, localPath);
+  if (!ok) return { localPath: null, downloaded: false };
+  return { localPath, downloaded: true };
+}
+
+// ── Image Generation ─────────────────────────────────────────────────────────
+
 async function generateImageVariants(srcPath, outputDir, baseName) {
   fse.ensureDirSync(outputDir);
-
   const variants = [];
 
   for (const w of IMAGE_WIDTHS) {
     const webpName = `${baseName}-${w}w.webp`;
     const webpPath = path.join(outputDir, webpName);
-
     try {
       await sharp(srcPath)
         .resize(w, null, { withoutEnlargement: true })
@@ -139,7 +150,6 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
     }
   }
 
-  // Fallback JPEG/PNG (largest non-WebP variant)
   const fallbackName = `${baseName}-800w.jpg`;
   const fallbackPath = path.join(outputDir, fallbackName);
   try {
@@ -160,10 +170,6 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
   return { srcsetWebp, srcset, fallback, hasSrcset: true };
 }
 
-/**
- * Process a logo: resize to square and convert to WebP.
- * Returns the relative path to the processed logo (relative to the orchestra page dir).
- */
 async function generateLogoVariant(srcPath, outputDir, baseName) {
   fse.ensureDirSync(outputDir);
   const logoName = `${baseName}-logo.webp`;
@@ -180,13 +186,151 @@ async function generateLogoVariant(srcPath, outputDir, baseName) {
   }
 }
 
+// ── Asset Processing ──────────────────────────────────────────────────────────
+
+async function applyImageVariants(localImgPath, orchImgDir, downloaded) {
+  const variants = await generateImageVariants(localImgPath, orchImgDir, 'photo');
+  cleanupDownloadedTempFile(localImgPath, downloaded);
+
+  if (!variants) {
+    const jpegFallback = path.join(orchImgDir, 'photo-800w.jpg');
+    if (fs.existsSync(jpegFallback)) return { fallback: 'images/photo-800w.jpg', hasSrcset: false };
+    return null;
+  }
+
+  if (String(localImgPath).startsWith(orchImgDir)) return variants;
+
+  const fallbackName = `photo-original${path.extname(localImgPath)}`;
+  fse.copySync(localImgPath, path.join(orchImgDir, fallbackName));
+  return { ...variants, fallback: `images/${fallbackName}` };
+}
+
+async function resolveImagePath(imageSpec, slug, ensembleDir, orchImgDir) {
+  if (imageSpec.local) {
+    const localPath = resolveLocalAssetPath(imageSpec.local, ensembleDir, ROOT);
+    if (localPath) return { localPath, downloaded: false };
+    console.warn(`[build] WARN: Local image not found for ${slug}: ${imageSpec.local}`);
+  }
+
+  if (!imageSpec.url) return { localPath: null, downloaded: false };
+
+  log(`  Downloading image for ${slug}...`);
+  const result = await downloadRemoteAsset(imageSpec.url, orchImgDir, 'original');
+  if (!result.localPath) console.warn(`[build] WARN: Image not available for ${slug}, skipping image.`);
+  return result;
+}
+
+async function processImage(imageSpec, slug, ensembleDir, orchImgDir) {
+  if (!imageSpec || (!imageSpec.local && !imageSpec.url)) return null;
+
+  const { localPath, downloaded } = await resolveImagePath(imageSpec, slug, ensembleDir, orchImgDir);
+  if (!localPath) return null;
+
+  try {
+    const imageData = await applyImageVariants(localPath, orchImgDir, downloaded);
+    return imageData ? { ...imageSpec, ...imageData } : null;
+  } catch (e) {
+    console.warn(`[build] WARN: Could not process image for ${slug}: ${e.message}`);
+    cleanupDownloadedTempFile(localPath, downloaded);
+    return null;
+  }
+}
+
+async function resolveLogoPath(logoSpec, slug, ensembleDir, orchImgDir) {
+  if (logoSpec.local) {
+    const localPath = resolveLocalAssetPath(logoSpec.local, ensembleDir, ROOT);
+    if (localPath) return { localPath, downloaded: false };
+    console.warn(`[build] WARN: Local logo not found for ${slug}: ${logoSpec.local}`);
+  }
+
+  if (!logoSpec.url) return { localPath: null, downloaded: false };
+
+  log(`  Downloading logo for ${slug}...`);
+  const result = await downloadRemoteAsset(logoSpec.url, orchImgDir, 'logo');
+  if (!result.localPath) console.warn(`[build] WARN: Logo not available for ${slug}, skipping logo.`);
+  return result;
+}
+
+async function processLogo(logoSpec, slug, ensembleDir, orchImgDir) {
+  if (!logoSpec || (!logoSpec.local && !logoSpec.url)) return null;
+
+  const { localPath, downloaded } = await resolveLogoPath(logoSpec, slug, ensembleDir, orchImgDir);
+  if (!localPath) return null;
+
+  try {
+    const logoLocal = await generateLogoVariant(localPath, orchImgDir, 'logo');
+    if (!logoLocal) {
+      console.warn(`[build] WARN: Logo variant generation returned null for ${slug}.`);
+      cleanupDownloadedTempFile(localPath, downloaded);
+      return null;
+    }
+    if (!String(localPath).startsWith(orchImgDir)) {
+      const fallbackName = `logo-original${path.extname(localPath)}`;
+      fse.copySync(localPath, path.join(orchImgDir, fallbackName));
+    }
+    cleanupDownloadedTempFile(localPath, downloaded);
+    return { ...logoSpec, local: logoLocal };
+  } catch (e) {
+    console.warn(`[build] WARN: Could not process logo for ${slug}: ${e.message}`);
+    cleanupDownloadedTempFile(localPath, downloaded);
+    return null;
+  }
+}
+
 // ── JSON-LD Builders ─────────────────────────────────────────────────────────
 
-/**
- * Build JSON-LD for the landing page:
- * - WebSite schema
- * - ItemList of all orchestras (MusicGroup)
- */
+function buildSameAsLinks(social) {
+  if (!social) return [];
+  return Object.values(social).filter(Boolean);
+}
+
+function buildJsonLdConductors(conductors) {
+  return (conductors || []).map(c => ({
+    '@type': 'Person',
+    'name': c.name,
+    ...(c.role ? { 'jobTitle': c.role } : {}),
+  }));
+}
+
+function buildStructuredLocation(addr) {
+  return {
+    '@type': 'Place',
+    ...(addr.name ? { 'name': addr.name } : {}),
+    'address': {
+      '@type': 'PostalAddress',
+      ...(addr.street ? { 'streetAddress': addr.street } : {}),
+      ...(addr.postcode ? { 'postalCode': addr.postcode } : {}),
+      ...(addr.city ? { 'addressLocality': addr.city } : {}),
+      'addressCountry': 'DE',
+      'addressRegion': 'Niedersachsen',
+    },
+    ...(addr.maps ? { 'hasMap': addr.maps } : {}),
+  };
+}
+
+function buildFallbackLocation(location) {
+  return {
+    '@type': 'Place',
+    'name': location,
+    'address': {
+      '@type': 'PostalAddress',
+      'addressLocality': location,
+      'addressCountry': 'DE',
+      'addressRegion': 'Niedersachsen',
+    },
+  };
+}
+
+function buildLocationObject(orchestra) {
+  if (orchestra.address) return buildStructuredLocation(orchestra.address);
+  if (orchestra.location) return buildFallbackLocation(orchestra.location);
+  return undefined;
+}
+
+function removeUndefinedValues(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 function buildIndexJsonLd(orchestras) {
   const website = {
     '@context': 'https://schema.org',
@@ -226,53 +370,10 @@ function buildIndexJsonLd(orchestras) {
   return JSON.stringify([website, itemList], null, 2);
 }
 
-/**
- * Build JSON-LD for an individual orchestra page (MusicGroup).
- */
 function buildOrchestraJsonLd(orchestra) {
-  const sameAs = [];
-  if (orchestra.social) {
-    for (const url of Object.values(orchestra.social)) {
-      if (url) sameAs.push(url);
-    }
-  }
-
-  // Build conductor list
-  const conductorItems = (orchestra.conductors || []).map(c => ({
-    '@type': 'Person',
-    'name': c.name,
-    ...(c.role ? { 'jobTitle': c.role } : {}),
-  }));
-
-  // Build address from structured `address` field or fall back to `location` string
-  let locationObj;
-  if (orchestra.address) {
-    const addr = orchestra.address;
-    locationObj = {
-      '@type': 'Place',
-      ...(addr.name ? { 'name': addr.name } : {}),
-      'address': {
-        '@type': 'PostalAddress',
-        ...(addr.street ? { 'streetAddress': addr.street } : {}),
-        ...(addr.postcode ? { 'postalCode': addr.postcode } : {}),
-        ...(addr.city ? { 'addressLocality': addr.city } : {}),
-        'addressCountry': 'DE',
-        'addressRegion': 'Niedersachsen',
-      },
-      ...(addr.maps ? { 'hasMap': addr.maps } : {}),
-    };
-  } else if (orchestra.location) {
-    locationObj = {
-      '@type': 'Place',
-      'name': orchestra.location,
-      'address': {
-        '@type': 'PostalAddress',
-        'addressLocality': orchestra.location,
-        'addressCountry': 'DE',
-        'addressRegion': 'Niedersachsen',
-      },
-    };
-  }
+  const sameAs = buildSameAsLinks(orchestra.social);
+  const conductorItems = buildJsonLdConductors(orchestra.conductors);
+  const locationObj = buildLocationObject(orchestra);
 
   const schema = {
     '@context': 'https://schema.org',
@@ -293,254 +394,139 @@ function buildOrchestraJsonLd(orchestra) {
     ...(orchestra.tags && orchestra.tags.length > 0 ? { 'keywords': orchestra.tags.join(', ') } : {}),
   };
 
-  // Remove undefined values
-  const clean = JSON.parse(JSON.stringify(schema));
-  return JSON.stringify(clean, null, 2);
+  return JSON.stringify(removeUndefinedValues(schema), null, 2);
 }
 
-/**
- * Truncate a string to maxLen characters, appending '…' if cut.
- */
+// ── View Normalizers ──────────────────────────────────────────────────────────
+
 function truncate(str, maxLen = 155) {
   if (!str) return '';
   const s = str.trim();
   return s.length <= maxLen ? s : s.slice(0, maxLen - 1).trimEnd() + '…';
 }
 
-// ── Main Build ───────────────────────────────────────────────────────────────
+function normalizeConductors(conductors) {
+  return (conductors || []).map((c, i, arr) => ({
+    name: c.name,
+    role: c.role || null,
+    hasRole: Boolean(c.role),
+    isLast: i === arr.length - 1,
+  }));
+}
 
-async function build() {
-  // 1. Clean dist/
-  log('Cleaning dist/...');
-  fse.removeSync(DIST);
-  fse.ensureDirSync(DIST);
+function normalizeAddress(address) {
+  if (!address) return null;
+  return { ...address, hasMaps: Boolean(address.maps), hasStreet: Boolean(address.street) };
+}
 
-  // 2. Read orchestra YAML files
-  log('Reading orchestra data...');
-  let allowedKeywords = [];
-  if (fs.existsSync(KEYWORDS_FILE)) {
-    try {
-      const kw = yaml.load(fs.readFileSync(KEYWORDS_FILE, 'utf8'));
-      if (Array.isArray(kw)) allowedKeywords = kw.map(k => String(k).trim()).filter(Boolean);
-    } catch (e) {
-      console.warn('[build] WARN: Could not read keywords.yml:', e.message);
-    }
+function normalizeRehearsal(rehearsal) {
+  if (!rehearsal) return null;
+  return { ...rehearsal, hasTime: Boolean(rehearsal.time), hasLocation: Boolean(rehearsal.location) };
+}
+
+function normalizeContact(contact) {
+  if (!contact) return null;
+  return { ...contact, hasEmail: Boolean(contact.email), hasPhone: Boolean(contact.phone) };
+}
+
+function buildIndexImagePaths(o) {
+  if (!o.image) return null;
+  return {
+    ...o.image,
+    srcsetWebp: o.image.srcsetWebp
+      ? o.image.srcsetWebp.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
+      : null,
+    srcset: o.image.srcset
+      ? o.image.srcset.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
+      : null,
+    fallback: o.image.fallback ? `ensemble/${o.slug}/${o.image.fallback}` : null,
+  };
+}
+
+// ── YAML Data Helpers ─────────────────────────────────────────────────────────
+
+function readAllowedKeywords() {
+  if (!fs.existsSync(KEYWORDS_FILE)) return [];
+  try {
+    const kw = yaml.load(fs.readFileSync(KEYWORDS_FILE, 'utf8'));
+    if (Array.isArray(kw)) return kw.map(k => String(k).trim()).filter(Boolean);
+    return [];
+  } catch (e) {
+    console.warn('[build] WARN: Could not read keywords.yml:', e.message);
+    return [];
   }
+}
+
+function warnUnknownTags(slug, tags, allowedKeywords) {
+  if (allowedKeywords.length === 0) return;
+  const unknown = tags.filter(t => !allowedKeywords.includes(t));
+  if (unknown.length > 0) console.warn(`[build] WARN: Unknown tags for ${slug}: ${unknown.join(', ')}`);
+}
+
+function parseTags(rawValue) {
+  if (typeof rawValue === 'string') return rawValue.split(',').map(s => s.trim()).filter(Boolean);
+  if (Array.isArray(rawValue)) return rawValue;
+  return [];
+}
+
+function buildNormalizedTags(slug, rawTagsOrKeywords, allowedKeywords) {
+  const tags = Array.from(new Set(
+    parseTags(rawTagsOrKeywords).map(t => String(t).trim()).filter(Boolean)
+  ));
+  warnUnknownTags(slug, tags, allowedKeywords);
+  return tags;
+}
+
+function loadEnsembleYaml(dirName, allowedKeywords) {
+  const yamlPath = path.join(ORCHESTRAS_DIR, dirName, 'index.yaml');
+  if (!fs.existsSync(yamlPath)) {
+    console.warn(`[build] WARN: No index.yaml in ensembles/${dirName}, skipping.`);
+    return null;
+  }
+  const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
+  const slug = raw.slug || dirName;
+  const tags = buildNormalizedTags(slug, raw.tags || raw.keywords, allowedKeywords);
+  return { ...raw, slug, _dir: dirName, typeLabel: TYPE_LABELS[raw.type] || raw.type || 'Musikgruppe', tags };
+}
+
+function loadEnsembles(allowedKeywords) {
   const orchDirs = fs.readdirSync(ORCHESTRAS_DIR).filter(d =>
     fs.statSync(path.join(ORCHESTRAS_DIR, d)).isDirectory()
   );
 
-  const orchestras = [];
+  const orchestras = orchDirs
+    .map(dirName => loadEnsembleYaml(dirName, allowedKeywords))
+    .filter(Boolean)
+    .toSorted((a, b) => a.title.localeCompare(b.title, 'de'));
 
-  for (const dirName of orchDirs) {
-    const yamlPath = path.join(ORCHESTRAS_DIR, dirName, 'index.yaml');
-    if (!fs.existsSync(yamlPath)) {
-      console.warn(`[build] WARN: No index.yaml in ensembles/${dirName}, skipping.`);
-      continue;
-    }
-    const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
-    raw.slug = raw.slug || dirName;
-    raw._dir = dirName;
-    raw.typeLabel = TYPE_LABELS[raw.type] || raw.type || 'Musikgruppe';
-    // Normalize tags/keywords: accept `tags` or `keywords` as array or comma-separated string
-    let tags = raw.tags || raw.keywords || [];
-    if (typeof tags === 'string') {
-      tags = tags.split(',').map(s => s.trim()).filter(Boolean);
-    }
-    if (!Array.isArray(tags)) tags = [];
-    raw.tags = Array.from(new Set(tags.map(t => String(t).trim()).filter(Boolean)));
-    if (allowedKeywords.length > 0) {
-      const unknown = raw.tags.filter(t => !allowedKeywords.includes(t));
-      if (unknown.length > 0) {
-        console.warn(`[build] WARN: Unknown tags for ${raw.slug}: ${unknown.join(', ')}`);
-      }
-    }
-    orchestras.push(raw);
-    log(`  Found: ${raw.title} (${raw.slug})`);
-  }
+  for (const orch of orchestras) log(`  Found: ${orch.title} (${orch.slug})`);
+  return orchestras;
+}
 
-  // Sort alphabetically by title
-  orchestras.sort((a, b) => a.title.localeCompare(b.title, 'de'));
+// ── Build Steps ───────────────────────────────────────────────────────────────
 
-  // 3–4. Download images & generate variants for each orchestra
+async function processEnsembleAssets(orchestras) {
+  const results = [];
   for (const orch of orchestras) {
     const orchDistDir = path.join(DIST, 'ensemble', orch.slug);
     const orchImgDir = path.join(orchDistDir, 'images');
+    const ensembleDir = path.join(ORCHESTRAS_DIR, orch._dir);
     fse.ensureDirSync(orchImgDir);
 
-    // --- Main image ---
-    // Prefer local images: `image.local` (path relative to orchestras/<slug>/ or repo root).
-    // Fall back to `image.url` for remote images.
-    if (orch.image && (orch.image.local || orch.image.url)) {
-      let imgReady = false;
-      let localImgPath;
-      let downloaded = false;
-
-      if (orch.image.local) {
-        // Try orch folder first
-        const cand1 = path.join(ORCHESTRAS_DIR, orch._dir, orch.image.local);
-        const cand2 = path.join(ROOT, orch.image.local);
-        if (fs.existsSync(cand1)) {
-          localImgPath = cand1;
-        } else if (fs.existsSync(cand2)) {
-          localImgPath = cand2;
-        } else {
-          console.warn(`[build] WARN: Local image not found for ${orch.slug}: ${orch.image.local}`);
-        }
-      }
-
-      if (!localImgPath && orch.image.url) {
-        const imgUrl = orch.image.url;
-        const isRemote = imgUrl.startsWith('http://') || imgUrl.startsWith('https://');
-        if (isRemote) {
-          const ext = path.extname(new URL(imgUrl).pathname) || '.jpg';
-          localImgPath = path.join(orchImgDir, `original${ext}`);
-          log(`  Downloading image for ${orch.slug}...`);
-          const ok = await downloadFile(imgUrl, localImgPath);
-          if (!ok) {
-            console.warn(`[build] WARN: Image not available for ${orch.slug}, skipping image.`);
-            localImgPath = null;
-          } else {
-            downloaded = true;
-          }
-        }
-      }
-
-      if (localImgPath) {
-        try {
-          const variants = await generateImageVariants(localImgPath, orchImgDir, 'photo');
-          if (variants) {
-            // If the source file was external (not in orchImgDir), copy it into the orchestra images dir
-            if (!String(localImgPath).startsWith(orchImgDir)) {
-              const fallbackName = `photo-original${path.extname(localImgPath)}`;
-              fse.copySync(localImgPath, path.join(orchImgDir, fallbackName));
-              orch.image = { ...orch.image, ...variants, fallback: `images/${fallbackName}` };
-            } else {
-              orch.image = { ...orch.image, ...variants };
-            }
-
-            // Clean up downloaded temporary files
-            if (downloaded && fs.existsSync(localImgPath)) {
-              try { fs.unlinkSync(localImgPath); } catch (e) {}
-            }
-
-            imgReady = true;
-          } else {
-            // generateImageVariants returned null (no WebP variants), but may have written a JPEG fallback
-            const jpegFallback = path.join(orchImgDir, 'photo-800w.jpg');
-            if (fs.existsSync(jpegFallback)) {
-              orch.image = { ...orch.image, fallback: 'images/photo-800w.jpg', hasSrcset: false };
-              imgReady = true;
-            }
-            if (downloaded && fs.existsSync(localImgPath)) {
-              try { fs.unlinkSync(localImgPath); } catch (e) {}
-            }
-          }
-        } catch (e) {
-          console.warn(`[build] WARN: Could not process image for ${orch.slug}: ${e.message}`);
-          if (downloaded && fs.existsSync(localImgPath)) try { fs.unlinkSync(localImgPath); } catch (e) {}
-        }
-      }
-
-      if (!imgReady) {
-        orch.image = null;
-      }
-    } else {
-      orch.image = null;
-    }
-
-    // --- Logo ---
-    // Prefer local logos: `logo.local` (path relative to orchestras/<slug>/ or repo root).
-    // Fall back to `logo.url` for remote logos.
-    if (orch.logo && (orch.logo.local || orch.logo.url)) {
-      let logoReady = false;
-      let localLogoPath;
-      let downloadedLogo = false;
-
-      if (orch.logo.local) {
-        const cand1 = path.join(ORCHESTRAS_DIR, orch._dir, orch.logo.local);
-        const cand2 = path.join(ROOT, orch.logo.local);
-        if (fs.existsSync(cand1)) {
-          localLogoPath = cand1;
-        } else if (fs.existsSync(cand2)) {
-          localLogoPath = cand2;
-        } else {
-          console.warn(`[build] WARN: Local logo not found for ${orch.slug}: ${orch.logo.local}`);
-        }
-      }
-
-      if (!localLogoPath && orch.logo.url) {
-        const logoUrl = orch.logo.url;
-        const isRemote = logoUrl.startsWith('http://') || logoUrl.startsWith('https://');
-        if (isRemote) {
-          const ext = path.extname(new URL(logoUrl).pathname) || '.png';
-          localLogoPath = path.join(orchImgDir, `logo-original${ext}`);
-          log(`  Downloading logo for ${orch.slug}...`);
-          const ok = await downloadFile(logoUrl, localLogoPath);
-          if (!ok) {
-            console.warn(`[build] WARN: Logo not available for ${orch.slug}, skipping logo.`);
-            localLogoPath = null;
-          } else {
-            downloadedLogo = true;
-          }
-        }
-      }
-
-      if (localLogoPath) {
-        try {
-          const logoLocal = await generateLogoVariant(localLogoPath, orchImgDir, 'logo');
-          if (logoLocal) {
-            if (!String(localLogoPath).startsWith(orchImgDir)) {
-              // copy original into folder as fallback
-              const fallbackName = `logo-original${path.extname(localLogoPath)}`;
-              fse.copySync(localLogoPath, path.join(orchImgDir, fallbackName));
-            }
-            orch.logo = { ...orch.logo, local: logoLocal };
-            logoReady = true;
-          } else {
-            console.warn(`[build] WARN: Logo variant generation returned null for ${orch.slug}.`);
-          }
-
-          if (downloadedLogo && fs.existsSync(localLogoPath)) {
-            try { fs.unlinkSync(localLogoPath); } catch (e) {}
-          }
-        } catch (e) {
-          console.warn(`[build] WARN: Could not process logo for ${orch.slug}: ${e.message}`);
-          if (downloadedLogo && fs.existsSync(localLogoPath)) try { fs.unlinkSync(localLogoPath); } catch (e) {}
-        }
-      }
-
-      if (!logoReady) orch.logo = null;
-    } else {
-      orch.logo = null;
-    }
-
-    // --- Social helper flag for Mustache ---
-    orch.hasSocial = orch.social && Object.values(orch.social).some(Boolean);
+    const image = await processImage(orch.image, orch.slug, ensembleDir, orchImgDir);
+    const logo = await processLogo(orch.logo, orch.slug, ensembleDir, orchImgDir);
+    const hasSocial = Boolean(orch.social && Object.values(orch.social).some(Boolean));
+    results.push({ ...orch, image, logo, hasSocial });
   }
+  return results;
+}
 
-  // 5. Render index.html
-  log('Rendering index.html...');
+function renderIndexPage(orchestras, allowedKeywords, partials) {
   const indexTemplate = fs.readFileSync(path.join(SRC_HTML, 'index.html'), 'utf8');
-  const partials = {
-    matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
-  };
 
-  // Build card image paths relative to index (dist root)
   const orchestrasForIndex = orchestras.map(o => ({
     ...o,
-    image: o.image
-      ? {
-          ...o.image,
-          srcsetWebp: o.image.srcsetWebp
-            ? o.image.srcsetWebp.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
-            : null,
-          srcset: o.image.srcset
-            ? o.image.srcset.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
-            : null,
-          fallback: o.image.fallback ? `ensemble/${o.slug}/${o.image.fallback}` : null,
-        }
-      : null,
+    image: buildIndexImagePaths(o),
     logo: o.logo
       ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
       : null,
@@ -558,75 +544,49 @@ async function build() {
 
   const indexHtml = Mustache.render(indexTemplate, indexView, partials);
   fs.writeFileSync(path.join(DIST, 'index.html'), indexHtml, 'utf8');
+}
 
-  // 6. Render each orchestra page
-  log('Rendering orchestra pages...');
-  const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'ensemble.html'), 'utf8');
+function buildEnsembleView(orch) {
+  const conductors = normalizeConductors(orch.conductors);
+  const address = normalizeAddress(orch.address);
+  const rehearsal = normalizeRehearsal(orch.rehearsal);
+  const contact = normalizeContact(orch.contact);
 
-  for (const orch of orchestras) {
-    const canonicalUrl = `${SITE_URL}/ensemble/${orch.slug}/`;
-    const ogImageUrl = orch.image && orch.image.fallback
+  return {
+    ...orch,
+    year: CURRENT_YEAR,
+    canonicalUrl: `${SITE_URL}/ensemble/${orch.slug}/`,
+    ogImageUrl: orch.image && orch.image.fallback
       ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
-      : null;
+      : null,
+    descriptionShort: truncate(orch.description, 155),
+    jsonld: buildOrchestraJsonLd(orch),
+    conductors,
+    hasConductors: conductors.length > 0,
+    address,
+    hasAddress: Boolean(address),
+    rehearsal,
+    hasRehearsal: Boolean(rehearsal),
+    contact,
+    hasContact: Boolean(contact),
+    isInactive: orch.active === false,
+    founded: orch.founded || null,
+    member_count: orch.member_count || null,
+  };
+}
 
-    // Normalise conductors for Mustache
-    const conductors = (orch.conductors || []).map((c, i, arr) => ({
-      name: c.name,
-      role: c.role || null,
-      hasRole: Boolean(c.role),
-      isLast: i === arr.length - 1,
-    }));
-
-    // Normalise address for Mustache
-    const address = orch.address ? {
-      ...orch.address,
-      hasMaps: Boolean(orch.address.maps),
-      hasStreet: Boolean(orch.address.street),
-    } : null;
-
-    // Normalise rehearsal for Mustache
-    const rehearsal = orch.rehearsal ? {
-      ...orch.rehearsal,
-      hasTime: Boolean(orch.rehearsal.time),
-      hasLocation: Boolean(orch.rehearsal.location),
-    } : null;
-
-    // Normalise contact for Mustache
-    const contact = orch.contact ? {
-      ...orch.contact,
-      hasEmail: Boolean(orch.contact.email),
-      hasPhone: Boolean(orch.contact.phone),
-    } : null;
-
-    const view = {
-      ...orch,
-      year: CURRENT_YEAR,
-      canonicalUrl,
-      ogImageUrl,
-      descriptionShort: truncate(orch.description, 155),
-      jsonld: buildOrchestraJsonLd(orch),
-      conductors,
-      hasConductors: conductors.length > 0,
-      address,
-      hasAddress: Boolean(address),
-      rehearsal,
-      hasRehearsal: Boolean(rehearsal),
-      contact,
-      hasContact: Boolean(contact),
-      isInactive: orch.active === false,
-      founded: orch.founded || null,
-      member_count: orch.member_count || null,
-    };
-
+function renderEnsemblePages(orchestras, orchTemplate, partials) {
+  for (const orch of orchestras) {
+    const view = buildEnsembleView(orch);
     const orchHtml = Mustache.render(orchTemplate, view, partials);
     const outPath = path.join(DIST, 'ensemble', orch.slug, 'index.html');
     fse.ensureDirSync(path.dirname(outPath));
     fs.writeFileSync(outPath, orchHtml, 'utf8');
     log(`  Written: ensemble/${orch.slug}/index.html`);
   }
+}
 
-  // 7. Generate sitemap.xml
-  log('Generating sitemap.xml...');
+function generateSitemap(orchestras) {
   const today = new Date().toISOString().slice(0, 10);
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
@@ -648,9 +608,9 @@ async function build() {
   ].join('\n');
 
   fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml, 'utf8');
+}
 
-  // 8. Copy static assets
-  log('Copying static assets...');
+function copyStaticAssets() {
   fse.ensureDirSync(path.join(DIST, 'css'));
   fse.ensureDirSync(path.join(DIST, 'js'));
   fse.copySync(SRC_CSS, path.join(DIST, 'css'));
@@ -658,6 +618,36 @@ async function build() {
   fse.copySync(path.join(ROOT, 'LICENSE'), path.join(DIST, 'LICENSE'));
   fse.copySync(path.join(ROOT, 'src', 'main', 'robots.txt'), path.join(DIST, 'robots.txt'));
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
+}
+
+// ── Main Build ────────────────────────────────────────────────────────────────
+
+async function build() {
+  log('Cleaning dist/...');
+  fse.removeSync(DIST);
+  fse.ensureDirSync(DIST);
+
+  log('Reading orchestra data...');
+  const allowedKeywords = readAllowedKeywords();
+  const loadedEnsembles = loadEnsembles(allowedKeywords);
+
+  const orchestras = await processEnsembleAssets(loadedEnsembles);
+
+  log('Rendering index.html...');
+  const partials = {
+    matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
+  };
+  renderIndexPage(orchestras, allowedKeywords, partials);
+
+  log('Rendering orchestra pages...');
+  const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'ensemble.html'), 'utf8');
+  renderEnsemblePages(orchestras, orchTemplate, partials);
+
+  log('Generating sitemap.xml...');
+  generateSitemap(orchestras);
+
+  log('Copying static assets...');
+  copyStaticAssets();
 
   log('Build complete ✓');
   log(`Output: ${DIST}`);
@@ -670,28 +660,26 @@ build()
     process.exit(1);
   });
 
-/**
- * Pre-compress all text-based assets in dist/ with Brotli, gzip, and zstd.
- * Skips binary files (images, fonts). Called after all assets are in place.
- */
-async function compressAssets() {
-  const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg'];
+// ── Compression ───────────────────────────────────────────────────────────────
 
-  function walkDir(dir) {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    const files = [];
-    for (const e of entries) {
-      const full = path.join(dir, e.name);
-      if (e.isDirectory()) {
-        files.push(...walkDir(full));
-      } else if (COMPRESSIBLE_EXTS.includes(path.extname(e.name))) {
-        files.push(full);
-      }
+const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg'];
+
+function walkCompressibleFiles(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+  for (const e of entries) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) {
+      files.push(...walkCompressibleFiles(full));
+      continue;
     }
-    return files;
+    if (COMPRESSIBLE_EXTS.includes(path.extname(e.name))) files.push(full);
   }
+  return files;
+}
 
-  const files = walkDir(DIST);
+async function compressAssets() {
+  const files = walkCompressibleFiles(DIST);
   log(`Pre-compressing ${files.length} text assets...`);
 
   await Promise.all(files.map(async (file) => {
