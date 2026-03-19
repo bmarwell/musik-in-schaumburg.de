@@ -1,0 +1,106 @@
+= Musik in Schaumburg
+:toc: left
+:icons: font
+:source-highlighter: highlight.js
+
+Landing Page für Orchester im Landkreis Schaumburg, Niedersachsen, Deutschland.
+
+== Überblick
+
+Diese Seite bietet eine Übersicht aller Orchester, Blasorchester, Chöre und Musikgruppen im Landkreis Schaumburg.
+
+*Betreuer:* Benjamin Marwell — link:https://bmarwell.de[bmarwell.de]
+
+== Schnellstart
+
+Abhängigkeiten installieren und die Seite bauen:
+
+[source,bash]
+----
+bun install
+bun run build
+----
+
+Vorschau der gebauten Seite im Browser starten:
+
+[source,bash]
+----
+bun run preview
+----
+
+Die gebaute Seite liegt im `dist/`-Verzeichnis.
+
+== Struktur
+
+[source]
+----
+musik-in-schaumburg.de/
+├── orchestras/                 # Orchesterdaten
+│   └── <slug>/
+│       └── index.yaml          # Orchesterkonfiguration
+├── src/main/html/              # Quelldateien
+│   ├── index.html              # Startseite (Template)
+│   ├── orchestra.html          # Orchesterseite (Template)
+│   ├── css/main.css            # Stylesheet
+│   └── js/lightbox.js          # Lightbox-Skript
+├── scripts/
+│   └── build-pipeline.mjs     # Build-Pipeline
+├── dist/                       # Gebaute Seite (nicht ins Git)
+└── package.json
+----
+
+== Orchester hinzufügen
+
+Um ein neues Orchester hinzuzufügen, legt man einen neuen Ordner unter `orchestras/<slug>/` an mit einer `index.yaml`-Datei:
+
+[source,yaml]
+----
+title: "Name des Orchesters"
+type: brass-band            # brass-band | choir | symphony | school-band | ...
+slug: mein-orchester        # URL-Pfad, z.B. /orchester/mein-orchester/
+
+logo:
+  url: https://example.com/logo.png   # oder lokaler Pfad: assets/logo.png
+
+image:
+  url: https://example.com/bild.jpg   # Hauptbild (wird in mehrere WebP-Größen konvertiert)
+
+description: "Kurzbeschreibung des Orchesters."
+
+location: "Stadthagen"      # optional: Probenort / Standort
+website: "https://example.com"        # optional
+social:
+  facebook: "https://www.facebook.com/..."   # optional
+  instagram: "https://www.instagram.com/..."  # optional
+  youtube: "https://www.youtube.com/..."      # optional
+----
+
+=== Orchestertypen
+
+[cols="1,2"]
+|===
+| Typ | Bedeutung
+
+| `brass-band`    | Brass Band
+| `symphony`      | Sinfonieorchester / Sinfonisches Blasorchester
+| `choir`         | Chor
+| `school-band`   | Schulkapelle / Schülerorchester
+| `chamber`       | Kammerorchester / -ensemble
+| `wind-ensemble` | Bläserensemble
+| `other`         | Sonstiges
+|===
+
+== Build-Pipeline
+
+Die Build-Pipeline (`scripts/build-pipeline.mjs`) führt folgende Schritte durch:
+
+1. `dist/`-Verzeichnis leeren
+2. YAML-Dateien der Orchester einlesen
+3. Bilder und Logos herunterladen (falls URLs angegeben)
+4. Responsive WebP-Varianten erstellen (400 px, 800 px, 1200 px)
+5. HTML-Seiten aus Templates generieren (Startseite + je eine Seite pro Orchester)
+6. CSS und JavaScript kopieren
+
+== Lizenz
+
+Licensed under the EUPL v. 1.2 — see link:LICENSE[LICENSE].

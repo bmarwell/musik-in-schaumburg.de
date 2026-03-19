@@ -1,0 +1,25 @@
+{
+  "name": "musik-in-schaumburg.de",
+  "version": "1.0.0",
+  "description": "Landing Page für Orchester im Landkreis Schaumburg, Niedersachsen",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/build-pipeline.mjs",
+    "preview": "bunx http-server dist -p 8080 -o",
+    "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.0",
+    "glob": "^11.0.2",
+    "js-yaml": "^4.1.0",
+    "mustache": "^4.2.0",
+    "sharp": "^0.34.1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "bun": ">=1.0"
+  }
+}

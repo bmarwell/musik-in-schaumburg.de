@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{description}}">
+  <meta name="author" content="Benjamin Marwell">
+  <meta property="og:title" content="{{title}} – Musik in Schaumburg">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:type" content="website">
+  {{#image}}
+  <meta property="og:image" content="{{{image.fallback}}}">
+  {{/image}}
+  <title>{{title}} – Musik in Schaumburg</title>
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <script type="application/ld+json">
+  {{{jsonld}}}
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <h1>🎵 Musik in Schaumburg</h1>
+      <p class="tagline">Orchester, Blasorchester und Chöre im Landkreis Schaumburg</p>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="Hauptnavigation">
+    <div class="container">
+      <a href="../../index.html">Startseite</a>
+    </div>
+  </nav>
+
+  <main>
+    {{#image}}
+    <div class="orchestra-hero" aria-hidden="true">
+      {{#image.srcsetWebp}}
+      <picture>
+        <source type="image/webp" srcset="{{{image.srcsetWebp}}}">
+        <img src="{{{image.fallback}}}"
+             srcset="{{{image.srcset}}}"
+             sizes="(max-width: 960px) 100vw, 960px"
+             alt="{{title}}"
+             width="960" height="420"
+             data-lightbox
+             data-lightbox-src="{{{image.fallback}}}"
+             data-lightbox-alt="{{title}}">
+      </picture>
+      {{/image.srcsetWebp}}
+      {{^image.srcsetWebp}}
+      <picture>
+        <img src="{{{image.fallback}}}"
+             alt="{{title}}"
+             width="960" height="420"
+             data-lightbox
+             data-lightbox-src="{{{image.fallback}}}"
+             data-lightbox-alt="{{title}}">
+      </picture>
+      {{/image.srcsetWebp}}
+    </div>
+    {{/image}}
+
+    <div class="container" itemscope itemtype="https://schema.org/MusicGroup">
+
+      <a class="back-link" href="../../index.html">
+        <span aria-hidden="true">←</span> Alle Orchester
+      </a>
+
+      <div class="orchestra-header">
+        {{#logo}}
+        {{#logo.local}}
+        <img class="orchestra-logo"
+             src="{{{logo.local}}}"
+             alt="Logo {{title}}"
+             width="90" height="90"
+             loading="lazy">
+        {{/logo.local}}
+        {{/logo}}
+
+        <div class="orchestra-title-group">
+          <span class="orchestra-type-badge">{{typeLabel}}</span>
+          <h1 itemprop="name">{{title}}</h1>
+        </div>
+      </div>
+
+      <p class="orchestra-description" itemprop="description">{{description}}</p>
+
+      <div class="orchestra-info">
+        {{#location}}
+        <div class="info-row">
+          <span class="info-label">📍 Ort</span>
+          <span itemprop="location">{{location}}</span>
+        </div>
+        {{/location}}
+        {{#website}}
+        <div class="info-row">
+          <span class="info-label">🌐 Website</span>
+          <a href="{{{website}}}" itemprop="url" target="_blank" rel="noopener noreferrer">{{{website}}}</a>
+        </div>
+        {{/website}}
+      </div>
+
+      {{#hasSocial}}
+      <div class="social-links" aria-label="Social Media">
+        {{#social.facebook}}
+        <a class="social-link" href="{{{social.facebook}}}" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">📘</span> Facebook
+        </a>
+        {{/social.facebook}}
+        {{#social.instagram}}
+        <a class="social-link" href="{{{social.instagram}}}" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">📸</span> Instagram
+        </a>
+        {{/social.instagram}}
+        {{#social.youtube}}
+        <a class="social-link" href="{{{social.youtube}}}" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">▶️</span> YouTube
+        </a>
+        {{/social.youtube}}
+        {{#social.twitter}}
+        <a class="social-link" href="{{{social.twitter}}}" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">🐦</span> Twitter / X
+        </a>
+        {{/social.twitter}}
+      </div>
+      {{/hasSocial}}
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© {{year}} Musik in Schaumburg</span>
+      <span class="maintainer-notice">
+        Betreut von <a href="https://bmarwell.de" target="_blank" rel="noopener noreferrer">Benjamin Marwell</a>
+        &nbsp;·&nbsp;
+        <a href="../../LICENSE" target="_blank" rel="noopener noreferrer">EUPL v. 1.2</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/bmarwell/musik-in-schaumburg.de" target="_blank" rel="noopener noreferrer">Quellcode</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="../../js/lightbox.js"></script>
+</body>
+</html>

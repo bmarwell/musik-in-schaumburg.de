@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Übersicht der Orchester, Blasorchester und Chöre im Landkreis Schaumburg, Niedersachsen.">
+  <meta name="author" content="Benjamin Marwell">
+  <meta property="og:title" content="Musik in Schaumburg">
+  <meta property="og:description" content="Orchester, Blasorchester und Chöre im Landkreis Schaumburg.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://musik-in-schaumburg.de/">
+  <title>Musik in Schaumburg</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <script type="application/ld+json">
+  {{{jsonld}}}
+  </script>
+</head>
+<body>
+
+  <header class="site-header" itemscope itemtype="https://schema.org/WebSite">
+    <div class="container">
+      <h1 itemprop="name">🎵 Musik in Schaumburg</h1>
+      <p class="tagline">Orchester, Blasorchester und Chöre im Landkreis Schaumburg, Niedersachsen</p>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="Hauptnavigation">
+    <div class="container">
+      <a href="index.html" class="active">Startseite</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <h2 class="section-heading">Alle Orchester</h2>
+
+      <div class="cards" role="list">
+        {{#orchestras}}
+        <article class="card" role="listitem"
+                 itemscope itemtype="https://schema.org/MusicGroup">
+          {{#image}}
+          <div class="card-image-wrap">
+            {{#image.srcsetWebp}}
+            <picture>
+              <source type="image/webp" srcset="{{{image.srcsetWebp}}}">
+              <img src="{{{image.fallback}}}"
+                   alt="{{title}}"
+                   width="400" height="225"
+                   loading="lazy"
+                   itemprop="image">
+            </picture>
+            {{/image.srcsetWebp}}
+            {{^image.srcsetWebp}}
+            <picture>
+              <img src="{{{image.fallback}}}"
+                   alt="{{title}}"
+                   width="400" height="225"
+                   loading="lazy"
+                   itemprop="image">
+            </picture>
+            {{/image.srcsetWebp}}
+          </div>
+          {{/image}}
+
+          <div class="card-body">
+            {{#logo}}
+            {{#logo.local}}
+            <img class="card-logo"
+                 src="{{{logo.local}}}"
+                 alt="Logo {{title}}"
+                 width="64" height="64"
+                 loading="lazy">
+            {{/logo.local}}
+            {{/logo}}
+
+            <span class="card-type">{{typeLabel}}</span>
+            <h3 class="card-title" itemprop="name">
+              <a href="orchester/{{slug}}/index.html">{{title}}</a>
+            </h3>
+
+            <p class="card-description" itemprop="description">{{description}}</p>
+
+            <div class="card-meta">
+              {{#location}}
+              <span class="card-meta-item">
+                <span aria-hidden="true">📍</span>
+                <span itemprop="location">{{location}}</span>
+              </span>
+              {{/location}}
+              {{#website}}
+              <span class="card-meta-item">
+                <span aria-hidden="true">🌐</span>
+                <a href="{{{website}}}" itemprop="url" target="_blank" rel="noopener noreferrer">Website</a>
+              </span>
+              {{/website}}
+            </div>
+
+            <a class="card-link" href="orchester/{{slug}}/index.html">
+              Mehr erfahren <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+        {{/orchestras}}
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© {{year}} Musik in Schaumburg</span>
+      <span class="maintainer-notice">
+        Betreut von <a href="https://bmarwell.de" target="_blank" rel="noopener noreferrer">Benjamin Marwell</a>
+        &nbsp;·&nbsp;
+        <a href="LICENSE" target="_blank" rel="noopener noreferrer">EUPL v. 1.2</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/bmarwell/musik-in-schaumburg.de" target="_blank" rel="noopener noreferrer">Quellcode</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="js/lightbox.js"></script>
+</body>
+</html>
