@@ -205,94 +205,75 @@ async function applyImageVariants(localImgPath, orchImgDir, downloaded) {
   return { ...variants, fallback: `images/${fallbackName}` };
 }
 
-async function resolveLocalImagePath(orch, orchImgDir) {
-  const ensembleDir = path.join(ORCHESTRAS_DIR, orch._dir);
-
-  if (orch.image.local) {
-    const localPath = resolveLocalAssetPath(orch.image.local, ensembleDir, ROOT);
+async function resolveImagePath(imageSpec, slug, ensembleDir, orchImgDir) {
+  if (imageSpec.local) {
+    const localPath = resolveLocalAssetPath(imageSpec.local, ensembleDir, ROOT);
     if (localPath) return { localPath, downloaded: false };
-    console.warn(`[build] WARN: Local image not found for ${orch.slug}: ${orch.image.local}`);
+    console.warn(`[build] WARN: Local image not found for ${slug}: ${imageSpec.local}`);
   }
 
-  if (!orch.image.url) return { localPath: null, downloaded: false };
+  if (!imageSpec.url) return { localPath: null, downloaded: false };
 
-  log(`  Downloading image for ${orch.slug}...`);
-  const result = await downloadRemoteAsset(orch.image.url, orchImgDir, 'original');
-  if (!result.localPath) console.warn(`[build] WARN: Image not available for ${orch.slug}, skipping image.`);
+  log(`  Downloading image for ${slug}...`);
+  const result = await downloadRemoteAsset(imageSpec.url, orchImgDir, 'original');
+  if (!result.localPath) console.warn(`[build] WARN: Image not available for ${slug}, skipping image.`);
   return result;
 }
 
-async function processEnsembleImage(orch, orchImgDir) {
-  if (!orch.image || (!orch.image.local && !orch.image.url)) {
-    orch.image = null;
-    return;
-  }
+async function processImage(imageSpec, slug, ensembleDir, orchImgDir) {
+  if (!imageSpec || (!imageSpec.local && !imageSpec.url)) return null;
 
-  const { localPath, downloaded } = await resolveLocalImagePath(orch, orchImgDir);
-
-  if (!localPath) {
-    orch.image = null;
-    return;
-  }
+  const { localPath, downloaded } = await resolveImagePath(imageSpec, slug, ensembleDir, orchImgDir);
+  if (!localPath) return null;
 
   try {
     const imageData = await applyImageVariants(localPath, orchImgDir, downloaded);
-    orch.image = imageData ? { ...orch.image, ...imageData } : null;
+    return imageData ? { ...imageSpec, ...imageData } : null;
   } catch (e) {
-    console.warn(`[build] WARN: Could not process image for ${orch.slug}: ${e.message}`);
+    console.warn(`[build] WARN: Could not process image for ${slug}: ${e.message}`);
     cleanupDownloadedTempFile(localPath, downloaded);
-    orch.image = null;
+    return null;
   }
 }
 
-async function resolveLocalLogoPath(orch, orchImgDir) {
-  const ensembleDir = path.join(ORCHESTRAS_DIR, orch._dir);
-
-  if (orch.logo.local) {
-    const localPath = resolveLocalAssetPath(orch.logo.local, ensembleDir, ROOT);
+async function resolveLogoPath(logoSpec, slug, ensembleDir, orchImgDir) {
+  if (logoSpec.local) {
+    const localPath = resolveLocalAssetPath(logoSpec.local, ensembleDir, ROOT);
     if (localPath) return { localPath, downloaded: false };
-    console.warn(`[build] WARN: Local logo not found for ${orch.slug}: ${orch.logo.local}`);
+    console.warn(`[build] WARN: Local logo not found for ${slug}: ${logoSpec.local}`);
   }
 
-  if (!orch.logo.url) return { localPath: null, downloaded: false };
+  if (!logoSpec.url) return { localPath: null, downloaded: false };
 
-  log(`  Downloading logo for ${orch.slug}...`);
-  const result = await downloadRemoteAsset(orch.logo.url, orchImgDir, 'logo');
-  if (!result.localPath) console.warn(`[build] WARN: Logo not available for ${orch.slug}, skipping logo.`);
+  log(`  Downloading logo for ${slug}...`);
+  const result = await downloadRemoteAsset(logoSpec.url, orchImgDir, 'logo');
+  if (!result.localPath) console.warn(`[build] WARN: Logo not available for ${slug}, skipping logo.`);
   return result;
 }
 
-async function processEnsembleLogo(orch, orchImgDir) {
-  if (!orch.logo || (!orch.logo.local && !orch.logo.url)) {
-    orch.logo = null;
-    return;
-  }
+async function processLogo(logoSpec, slug, ensembleDir, orchImgDir) {
+  if (!logoSpec || (!logoSpec.local && !logoSpec.url)) return null;
 
-  const { localPath, downloaded } = await resolveLocalLogoPath(orch, orchImgDir);
-
-  if (!localPath) {
-    orch.logo = null;
-    return;
-  }
+  const { localPath, downloaded } = await resolveLogoPath(logoSpec, slug, ensembleDir, orchImgDir);
+  if (!localPath) return null;
 
   try {
     const logoLocal = await generateLogoVariant(localPath, orchImgDir, 'logo');
     if (!logoLocal) {
-      console.warn(`[build] WARN: Logo variant generation returned null for ${orch.slug}.`);
+      console.warn(`[build] WARN: Logo variant generation returned null for ${slug}.`);
       cleanupDownloadedTempFile(localPath, downloaded);
-      orch.logo = null;
-      return;
+      return null;
     }
     if (!String(localPath).startsWith(orchImgDir)) {
       const fallbackName = `logo-original${path.extname(localPath)}`;
       fse.copySync(localPath, path.join(orchImgDir, fallbackName));
     }
     cleanupDownloadedTempFile(localPath, downloaded);
-    orch.logo = { ...orch.logo, local: logoLocal };
+    return { ...logoSpec, local: logoLocal };
   } catch (e) {
-    console.warn(`[build] WARN: Could not process logo for ${orch.slug}: ${e.message}`);
+    console.warn(`[build] WARN: Could not process logo for ${slug}: ${e.message}`);
     cleanupDownloadedTempFile(localPath, downloaded);
-    orch.logo = null;
+    return null;
   }
 }
 
@@ -482,12 +463,18 @@ function warnUnknownTags(slug, tags, allowedKeywords) {
   if (unknown.length > 0) console.warn(`[build] WARN: Unknown tags for ${slug}: ${unknown.join(', ')}`);
 }
 
-function normalizeTags(raw, allowedKeywords) {
-  let tags = raw.tags || raw.keywords || [];
-  if (typeof tags === 'string') tags = tags.split(',').map(s => s.trim()).filter(Boolean);
-  if (!Array.isArray(tags)) tags = [];
-  raw.tags = Array.from(new Set(tags.map(t => String(t).trim()).filter(Boolean)));
-  warnUnknownTags(raw.slug, raw.tags, allowedKeywords);
+function parseTags(rawValue) {
+  if (typeof rawValue === 'string') return rawValue.split(',').map(s => s.trim()).filter(Boolean);
+  if (Array.isArray(rawValue)) return rawValue;
+  return [];
+}
+
+function buildNormalizedTags(slug, rawTagsOrKeywords, allowedKeywords) {
+  const tags = Array.from(new Set(
+    parseTags(rawTagsOrKeywords).map(t => String(t).trim()).filter(Boolean)
+  ));
+  warnUnknownTags(slug, tags, allowedKeywords);
+  return tags;
 }
 
 function loadEnsembleYaml(dirName, allowedKeywords) {
@@ -497,11 +484,9 @@ function loadEnsembleYaml(dirName, allowedKeywords) {
     return null;
   }
   const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
-  raw.slug = raw.slug || dirName;
-  raw._dir = dirName;
-  raw.typeLabel = TYPE_LABELS[raw.type] || raw.type || 'Musikgruppe';
-  normalizeTags(raw, allowedKeywords);
-  return raw;
+  const slug = raw.slug || dirName;
+  const tags = buildNormalizedTags(slug, raw.tags || raw.keywords, allowedKeywords);
+  return { ...raw, slug, _dir: dirName, typeLabel: TYPE_LABELS[raw.type] || raw.type || 'Musikgruppe', tags };
 }
 
 function loadEnsembles(allowedKeywords) {
@@ -511,9 +496,8 @@ function loadEnsembles(allowedKeywords) {
 
   const orchestras = orchDirs
     .map(dirName => loadEnsembleYaml(dirName, allowedKeywords))
-    .filter(Boolean);
-
-  orchestras.sort((a, b) => a.title.localeCompare(b.title, 'de'));
+    .filter(Boolean)
+    .toSorted((a, b) => a.title.localeCompare(b.title, 'de'));
 
   for (const orch of orchestras) log(`  Found: ${orch.title} (${orch.slug})`);
   return orchestras;
@@ -522,15 +506,19 @@ function loadEnsembles(allowedKeywords) {
 // ── Build Steps ───────────────────────────────────────────────────────────────
 
 async function processEnsembleAssets(orchestras) {
+  const results = [];
   for (const orch of orchestras) {
     const orchDistDir = path.join(DIST, 'ensemble', orch.slug);
     const orchImgDir = path.join(orchDistDir, 'images');
+    const ensembleDir = path.join(ORCHESTRAS_DIR, orch._dir);
     fse.ensureDirSync(orchImgDir);
 
-    await processEnsembleImage(orch, orchImgDir);
-    await processEnsembleLogo(orch, orchImgDir);
-    orch.hasSocial = orch.social && Object.values(orch.social).some(Boolean);
+    const image = await processImage(orch.image, orch.slug, ensembleDir, orchImgDir);
+    const logo = await processLogo(orch.logo, orch.slug, ensembleDir, orchImgDir);
+    const hasSocial = Boolean(orch.social && Object.values(orch.social).some(Boolean));
+    results.push({ ...orch, image, logo, hasSocial });
   }
+  return results;
 }
 
 function renderIndexPage(orchestras, allowedKeywords, partials) {
@@ -641,9 +629,9 @@ async function build() {
 
   log('Reading orchestra data...');
   const allowedKeywords = readAllowedKeywords();
-  const orchestras = loadEnsembles(allowedKeywords);
+  const loadedEnsembles = loadEnsembles(allowedKeywords);
 
-  await processEnsembleAssets(orchestras);
+  const orchestras = await processEnsembleAssets(loadedEnsembles);
 
   log('Rendering index.html...');
   const partials = {
