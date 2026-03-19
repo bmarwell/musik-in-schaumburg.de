@@ -57,6 +57,9 @@ const TYPE_LABELS = {
   'school-band': 'Schulkapelle',
   'chamber': 'Kammerorchester',
   'wind-ensemble': 'Bläserensemble',
+  'posaunenchor': 'Posaunenchor',
+  'big-band': 'Big Band',
+  'strings-ensemble': 'Streichensemble',
   'other': 'Sonstiges',
 };
 
@@ -296,7 +299,8 @@ async function build() {
     }
     const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
     raw.slug = raw.slug || dirName;
-    raw.typeLabel = TYPE_LABELS[raw.type] || raw.type || 'Orchester';
+    raw._dir = dirName;
+    raw.typeLabel = TYPE_LABELS[raw.type] || raw.type || 'Musikgruppe';
     // Normalize tags/keywords: accept `tags` or `keywords` as array or comma-separated string
     let tags = raw.tags || raw.keywords || [];
     if (typeof tags === 'string') {
@@ -324,45 +328,75 @@ async function build() {
     fse.ensureDirSync(orchImgDir);
 
     // --- Main image ---
-    if (orch.image && orch.image.url) {
-      const imgUrl = orch.image.url;
-      const isRemote = imgUrl.startsWith('http://') || imgUrl.startsWith('https://');
+    // Prefer local images: `image.local` (path relative to orchestras/<slug>/ or repo root).
+    // Fall back to `image.url` for remote images.
+    if (orch.image && (orch.image.local || orch.image.url)) {
       let imgReady = false;
       let localImgPath;
+      let downloaded = false;
 
-      if (isRemote) {
-        const ext = path.extname(new URL(imgUrl).pathname) || '.jpg';
-        localImgPath = path.join(orchImgDir, `original${ext}`);
-        log(`  Downloading image for ${orch.slug}...`);
-        imgReady = await downloadFile(imgUrl, localImgPath);
-        if (!imgReady) {
-          log(`  WARN: Image not available for ${orch.slug}, skipping image.`);
-        }
-      } else {
-        // Local path relative to repo root
-        const srcImgPath = path.join(ROOT, imgUrl);
-        if (fs.existsSync(srcImgPath)) {
-          const ext = path.extname(srcImgPath) || '.jpg';
-          localImgPath = path.join(orchImgDir, `original${ext}`);
-          fse.copySync(srcImgPath, localImgPath);
-          imgReady = true;
+      if (orch.image.local) {
+        // Try orch folder first
+        const cand1 = path.join(ORCHESTRAS_DIR, orch._dir, orch.image.local);
+        const cand2 = path.join(ROOT, orch.image.local);
+        if (fs.existsSync(cand1)) {
+          localImgPath = cand1;
+        } else if (fs.existsSync(cand2)) {
+          localImgPath = cand2;
         } else {
-          log(`  WARN: Local image not found for ${orch.slug}: ${srcImgPath}`);
+          console.warn(`[build] WARN: Local image not found for ${orch.slug}: ${orch.image.local}`);
         }
       }
 
-      if (imgReady) {
-        const ext = path.extname(localImgPath);
-        const variants = await generateImageVariants(localImgPath, orchImgDir, 'photo');
-        if (variants) {
-          orch.image = { ...orch.image, ...variants };
-        } else {
-          // Fallback: just copy the original
-          const fallbackName = `photo-original${ext}`;
-          fse.copySync(localImgPath, path.join(orchImgDir, fallbackName));
-          orch.image.fallback = `images/${fallbackName}`;
+      if (!localImgPath && orch.image.url) {
+        const imgUrl = orch.image.url;
+        const isRemote = imgUrl.startsWith('http://') || imgUrl.startsWith('https://');
+        if (isRemote) {
+          const ext = path.extname(new URL(imgUrl).pathname) || '.jpg';
+          localImgPath = path.join(orchImgDir, `original${ext}`);
+          log(`  Downloading image for ${orch.slug}...`);
+          const ok = await downloadFile(imgUrl, localImgPath);
+          if (!ok) {
+            console.warn(`[build] WARN: Image not available for ${orch.slug}, skipping image.`);
+            localImgPath = null;
+          } else {
+            downloaded = true;
+          }
         }
-        // Clean up original
+      }
+
+      if (localImgPath) {
+        try {
+          const variants = await generateImageVariants(localImgPath, orchImgDir, 'photo');
+          if (variants) {
+            // If the source file was external (not in orchImgDir), copy it into the orchestra images dir
+            if (!String(localImgPath).startsWith(orchImgDir)) {
+              const fallbackName = `photo-original${path.extname(localImgPath)}`;
+              fse.copySync(localImgPath, path.join(orchImgDir, fallbackName));
+              orch.image = { ...orch.image, ...variants, fallback: `images/${fallbackName}` };
+            } else {
+              orch.image = { ...orch.image, ...variants };
+            }
+
+            // Clean up downloaded temporary files
+            if (downloaded && fs.existsSync(localImgPath)) {
+              try { fs.unlinkSync(localImgPath); } catch (e) {}
+            }
+
+            imgReady = true;
+          }
+        } catch (e) {
+          console.warn(`[build] WARN: Could not process image for ${orch.slug}: ${e.message}`);
+          if (downloaded && fs.existsSync(localImgPath)) try { fs.unlinkSync(localImgPath); } catch (e) {}
+        }
+      }
+
+      if (!imgReady) {
+        orch.image = null;
+      }
+    } else {
+      orch.image = null;
+    }
         fs.unlinkSync(localImgPath);
       } else {
         orch.image = null;
@@ -372,40 +406,66 @@ async function build() {
     }
 
     // --- Logo ---
-    if (orch.logo && orch.logo.url) {
-      const logoUrl = orch.logo.url;
-      const isRemote = logoUrl.startsWith('http://') || logoUrl.startsWith('https://');
+    // Prefer local logos: `logo.local` (path relative to orchestras/<slug>/ or repo root).
+    // Fall back to `logo.url` for remote logos.
+    if (orch.logo && (orch.logo.local || orch.logo.url)) {
       let logoReady = false;
       let localLogoPath;
+      let downloadedLogo = false;
 
-      if (isRemote) {
-        const ext = path.extname(new URL(logoUrl).pathname) || '.png';
-        localLogoPath = path.join(orchImgDir, `logo-original${ext}`);
-        log(`  Downloading logo for ${orch.slug}...`);
-        logoReady = await downloadFile(logoUrl, localLogoPath);
-        if (!logoReady) {
-          log(`  WARN: Logo not available for ${orch.slug}, skipping logo.`);
-        }
-      } else {
-        // Local path relative to repo root
-        const srcLogoPath = path.join(ROOT, logoUrl);
-        if (fs.existsSync(srcLogoPath)) {
-          const ext = path.extname(srcLogoPath) || '.png';
-          localLogoPath = path.join(orchImgDir, `logo-original${ext}`);
-          fse.copySync(srcLogoPath, localLogoPath);
-          logoReady = true;
+      if (orch.logo.local) {
+        const cand1 = path.join(ORCHESTRAS_DIR, orch._dir, orch.logo.local);
+        const cand2 = path.join(ROOT, orch.logo.local);
+        if (fs.existsSync(cand1)) {
+          localLogoPath = cand1;
+        } else if (fs.existsSync(cand2)) {
+          localLogoPath = cand2;
         } else {
-          log(`  WARN: Local logo not found for ${orch.slug}: ${srcLogoPath}`);
+          console.warn(`[build] WARN: Local logo not found for ${orch.slug}: ${orch.logo.local}`);
         }
       }
 
-      if (logoReady) {
-        const logoLocal = await generateLogoVariant(localLogoPath, orchImgDir, 'logo');
-        orch.logo = { ...orch.logo, local: logoLocal };
-        fs.unlinkSync(localLogoPath);
-      } else {
-        orch.logo = null;
+      if (!localLogoPath && orch.logo.url) {
+        const logoUrl = orch.logo.url;
+        const isRemote = logoUrl.startsWith('http://') || logoUrl.startsWith('https://');
+        if (isRemote) {
+          const ext = path.extname(new URL(logoUrl).pathname) || '.png';
+          localLogoPath = path.join(orchImgDir, `logo-original${ext}`);
+          log(`  Downloading logo for ${orch.slug}...`);
+          const ok = await downloadFile(logoUrl, localLogoPath);
+          if (!ok) {
+            console.warn(`[build] WARN: Logo not available for ${orch.slug}, skipping logo.`);
+            localLogoPath = null;
+          } else {
+            downloadedLogo = true;
+          }
+        }
       }
+
+      if (localLogoPath) {
+        try {
+          const logoLocal = await generateLogoVariant(localLogoPath, orchImgDir, 'logo');
+          if (!String(localLogoPath).startsWith(orchImgDir)) {
+            // copy original into folder
+            const fallbackName = `logo-original${path.extname(localLogoPath)}`;
+            fse.copySync(localLogoPath, path.join(orchImgDir, fallbackName));
+            orch.logo = { ...orch.logo, local: logoLocal };
+          } else {
+            orch.logo = { ...orch.logo, local: logoLocal };
+          }
+
+          if (downloadedLogo && fs.existsSync(localLogoPath)) {
+            try { fs.unlinkSync(localLogoPath); } catch (e) {}
+          }
+
+          logoReady = true;
+        } catch (e) {
+          console.warn(`[build] WARN: Could not process logo for ${orch.slug}: ${e.message}`);
+          if (downloadedLogo && fs.existsSync(localLogoPath)) try { fs.unlinkSync(localLogoPath); } catch (e) {}
+        }
+      }
+
+      if (!logoReady) orch.logo = null;
     } else {
       orch.logo = null;
     }
