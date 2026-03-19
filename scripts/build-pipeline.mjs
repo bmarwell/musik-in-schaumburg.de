@@ -245,6 +245,9 @@ function buildOrchestraJsonLd(orchestra) {
     'description': orchestra.description ? orchestra.description.trim() : undefined,
     'url': orchestra.website || `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'inLanguage': 'de',
+    ...(orchestra.image && orchestra.image.fallback ? {
+      'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
+    } : {}),
     ...(orchestra.location ? {
       'location': {
         '@type': 'Place',
@@ -264,6 +267,15 @@ function buildOrchestraJsonLd(orchestra) {
   // Remove undefined values
   const clean = JSON.parse(JSON.stringify(schema));
   return JSON.stringify(clean, null, 2);
+}
+
+/**
+ * Truncate a string to maxLen characters, appending '…' if cut.
+ */
+function truncate(str, maxLen = 155) {
+  if (!str) return '';
+  const s = str.trim();
+  return s.length <= maxLen ? s : s.slice(0, maxLen - 1).trimEnd() + '…';
 }
 
 // ── Main Build ───────────────────────────────────────────────────────────────
@@ -521,9 +533,16 @@ async function build() {
   const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'orchestra.html'), 'utf8');
 
   for (const orch of orchestras) {
+    const canonicalUrl = `${SITE_URL}/ensemble/${orch.slug}/`;
+    const ogImageUrl = orch.image && orch.image.fallback
+      ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
+      : null;
     const view = {
       ...orch,
       year: CURRENT_YEAR,
+      canonicalUrl,
+      ogImageUrl,
+      descriptionShort: truncate(orch.description, 155),
       jsonld: buildOrchestraJsonLd(orch),
     };
 
