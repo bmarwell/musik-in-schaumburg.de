@@ -3,7 +3,7 @@ type: symphony
 slug: blasorchester-krainhagen
 
 image:
-  url: "https://blasorchester-krainhagen.de/wp-content/uploads/cropped-53360358064_0f74e7fd45_o.jpg"
+  local: "photo.jpg"
 
 description: >
   Aus einem Spielmannszug vor mehr als 70 Jahren hervorgegangen, ist das BOK Blasorchester Krainhagen
