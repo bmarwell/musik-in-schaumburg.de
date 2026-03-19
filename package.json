@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "bun scripts/build-pipeline.mjs",
-    "preview": "bunx --bun http-server dist -p 8080 -o",
+    "preview": "bunx http-server dist -p 8080 -o",
     "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
   },
   "dependencies": {
