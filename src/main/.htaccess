@@ -20,6 +20,10 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 # (b) the pre-compressed file actually exists on disk.
 # On-the-fly fallback via mod_deflate / mod_brotli follows below.
 
+# Skip processing if requesting compressed files directly (prevent redirect loops)
+RewriteCond %{REQUEST_URI} \.(zst|br|gz)$ [NC]
+RewriteRule ^ - [L]
+
 # zstd
 RewriteCond %{HTTP:Accept-Encoding} \bzstd\b
 RewriteCond %{REQUEST_FILENAME}.zst -f
@@ -49,6 +53,12 @@ RewriteRule ^ %{REQUEST_URI}.gz [L]
     Header set Content-Encoding gzip
     Header append Vary Accept-Encoding
   </FilesMatch>
+</IfModule>
+
+# Prevent on-the-fly compression modules from re-compressing pre-compressed files
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Request_URI "\.(?:zst|br|gz)$" no-gzip=1
+  SetEnvIfNoCase Request_URI "\.(?:zst|br|gz)$" no-brotli=1
 </IfModule>
 
 # ── MIME types for pre-compressed files ───────────────────────────────────────
