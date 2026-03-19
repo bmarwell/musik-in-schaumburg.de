@@ -325,6 +325,20 @@ main {
   margin-bottom: 0.4rem;
 }
 
+.ensemble-inactive-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #888;
+  color: #fff;
+  padding: 0.18rem 0.6rem;
+  border-radius: 2rem;
+  margin-bottom: 0.4rem;
+  margin-left: 0.4rem;
+}
+
 .orchestra-description {
   font-size: 1.05rem;
   line-height: 1.7;

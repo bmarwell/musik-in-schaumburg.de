@@ -16,7 +16,27 @@ description: >
   besondere Bekanntheit genießen die Weihnachtsserenaden im Schlosshof Bückeburg sowie die
   Benefizkonzerte für die Tschernobylhilfe, bei denen bislang über 500.000 Euro gesammelt wurden.
 
-location: "Jägerkaserne Bückeburg"
+founded: 1949
+active: true
+member_count: 32
+
+conductors:
+  - name: "José Pascual García Llopis"
+    role: "Dirigent"
+
+address:
+  name: "Jägerkaserne Bückeburg"
+  street: "Wilhelmstraße 44"
+  postcode: "31675"
+  city: "Bückeburg"
+  maps: "https://maps.app.goo.gl/fYqB7cXrKhTnWkDo8"
+
+rehearsal:
+  day: "Donnerstag"
+  time: "19:30"
+  location: "Jägerkaserne Bückeburg"
+
+location: "Bückeburg"
 website: "https://www.bueckeburger-jaeger.de/"
 
 social:

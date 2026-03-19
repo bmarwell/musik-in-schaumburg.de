@@ -66,6 +66,14 @@ title: "Name des Ensembles"         # Required. Full name.
 type: brass-band                    # Required. See type list below.
 slug: mein-ensemble                 # Required. URL-safe identifier (used as path).
 
+founded: 1975                       # Optional. Founding year (integer).
+active: true                        # Optional. Set to false for inactive/dissolved ensembles.
+member_count: 40                    # Optional. Approximate number of active members.
+
+conductors:                         # Optional. List of conductors/directors.
+  - name: "Max Mustermann"
+    role: "Dirigent"                # Optional role label (Dirigent, Jugenddirigent, etc.)
+
 logo:
   local: "logo.png"                 # PREFERRED. Filename relative to ensembles/<slug>/.
   # url: "https://..."             # Fallback only if no local file available. Warn if missing.
@@ -77,8 +85,24 @@ image:
 description: >                     # Required. German text. Plain prose, no HTML.
   Kurzbeschreibung …
 
-location: "Stadthagen"             # Optional. City or region for rehearsals / base.
+address:                           # Optional. Structured location/address.
+  name: "Probenraum XY"            # Venue name (optional).
+  street: "Musterstraße 1"         # Street address (optional).
+  postcode: "31655"
+  city: "Stadthagen"
+  maps: "https://maps.app.goo.gl/…" # Google Maps short link (optional).
+
+location: "Stadthagen"             # Optional. Simple city fallback if no address block.
 website: "https://..."             # Optional. Official website URL.
+
+rehearsal:                         # Optional. Regular rehearsal info.
+  day: "Donnerstag"                # Weekday in German.
+  time: "19:30"                    # Start time (HH:MM, optional).
+  location: "Probenraum XY"        # Location name (optional).
+
+contact:                           # Optional. Public contact info only.
+  email: "info@example.de"
+  phone: "+49 5722 …"              # Only if publicly listed.
 
 social:                            # Optional. All sub-keys optional.
   facebook: "https://..."

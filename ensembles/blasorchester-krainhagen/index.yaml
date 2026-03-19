@@ -13,6 +13,25 @@ description: >
   ungewöhnliche Spielstätten – von gotischen Stiftskirchen über historische Rathaussäle bis zu
   Freilichtbühnen – und schloss zuletzt auch gemeinsame Konzertabende mit dem Schaumburger Jugendchor ein.
 
+founded: 1954
+active: true
+member_count: 40
+
+conductors:
+  - name: "Sven Schnee"
+    role: "Dirigent"
+
+address:
+  name: "Krainhagen"
+  postcode: "31832"
+  city: "Springe (OT Krainhagen)"
+  maps: "https://maps.app.goo.gl/7T5kMkrUqNh2PJ9z9"
+
+rehearsal:
+  day: "Dienstag"
+  time: "20:00"
+  location: "Krainhagen"
+
 location: "Krainhagen"
 website: "https://blasorchester-krainhagen.de/"
 

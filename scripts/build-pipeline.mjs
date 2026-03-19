@@ -237,6 +237,43 @@ function buildOrchestraJsonLd(orchestra) {
     }
   }
 
+  // Build conductor list
+  const conductorItems = (orchestra.conductors || []).map(c => ({
+    '@type': 'Person',
+    'name': c.name,
+    ...(c.role ? { 'jobTitle': c.role } : {}),
+  }));
+
+  // Build address from structured `address` field or fall back to `location` string
+  let locationObj;
+  if (orchestra.address) {
+    const addr = orchestra.address;
+    locationObj = {
+      '@type': 'Place',
+      ...(addr.name ? { 'name': addr.name } : {}),
+      'address': {
+        '@type': 'PostalAddress',
+        ...(addr.street ? { 'streetAddress': addr.street } : {}),
+        ...(addr.postcode ? { 'postalCode': addr.postcode } : {}),
+        ...(addr.city ? { 'addressLocality': addr.city } : {}),
+        'addressCountry': 'DE',
+        'addressRegion': 'Niedersachsen',
+      },
+      ...(addr.maps ? { 'hasMap': addr.maps } : {}),
+    };
+  } else if (orchestra.location) {
+    locationObj = {
+      '@type': 'Place',
+      'name': orchestra.location,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': orchestra.location,
+        'addressCountry': 'DE',
+        'addressRegion': 'Niedersachsen',
+      },
+    };
+  }
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'MusicGroup',
@@ -245,21 +282,13 @@ function buildOrchestraJsonLd(orchestra) {
     'description': orchestra.description ? orchestra.description.trim() : undefined,
     'url': orchestra.website || `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'inLanguage': 'de',
+    ...(orchestra.founded ? { 'foundingDate': String(orchestra.founded) } : {}),
+    ...(orchestra.member_count ? { 'numberOfEmployees': { '@type': 'QuantitativeValue', 'value': orchestra.member_count } } : {}),
     ...(orchestra.image && orchestra.image.fallback ? {
       'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
     } : {}),
-    ...(orchestra.location ? {
-      'location': {
-        '@type': 'Place',
-        'name': orchestra.location,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressLocality': orchestra.location,
-          'addressCountry': 'DE',
-          'addressRegion': 'Niedersachsen',
-        },
-      },
-    } : {}),
+    ...(locationObj ? { 'location': locationObj } : {}),
+    ...(conductorItems.length > 0 ? { 'member': conductorItems } : {}),
     ...(sameAs.length > 0 ? { 'sameAs': sameAs } : {}),
     ...(orchestra.tags && orchestra.tags.length > 0 ? { 'keywords': orchestra.tags.join(', ') } : {}),
   };
@@ -516,6 +545,8 @@ async function build() {
       ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
       : null,
     tags: o.tags || null,
+    isInactive: o.active === false,
+    founded: o.founded || null,
   }));
 
   const indexView = {
@@ -537,6 +568,36 @@ async function build() {
     const ogImageUrl = orch.image && orch.image.fallback
       ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
       : null;
+
+    // Normalise conductors for Mustache
+    const conductors = (orch.conductors || []).map((c, i, arr) => ({
+      name: c.name,
+      role: c.role || null,
+      hasRole: Boolean(c.role),
+      isLast: i === arr.length - 1,
+    }));
+
+    // Normalise address for Mustache
+    const address = orch.address ? {
+      ...orch.address,
+      hasMaps: Boolean(orch.address.maps),
+      hasStreet: Boolean(orch.address.street),
+    } : null;
+
+    // Normalise rehearsal for Mustache
+    const rehearsal = orch.rehearsal ? {
+      ...orch.rehearsal,
+      hasTime: Boolean(orch.rehearsal.time),
+      hasLocation: Boolean(orch.rehearsal.location),
+    } : null;
+
+    // Normalise contact for Mustache
+    const contact = orch.contact ? {
+      ...orch.contact,
+      hasEmail: Boolean(orch.contact.email),
+      hasPhone: Boolean(orch.contact.phone),
+    } : null;
+
     const view = {
       ...orch,
       year: CURRENT_YEAR,
@@ -544,6 +605,17 @@ async function build() {
       ogImageUrl,
       descriptionShort: truncate(orch.description, 155),
       jsonld: buildOrchestraJsonLd(orch),
+      conductors,
+      hasConductors: conductors.length > 0,
+      address,
+      hasAddress: Boolean(address),
+      rehearsal,
+      hasRehearsal: Boolean(rehearsal),
+      contact,
+      hasContact: Boolean(contact),
+      isInactive: orch.active === false,
+      founded: orch.founded || null,
+      member_count: orch.member_count || null,
     };
 
     const orchHtml = Mustache.render(orchTemplate, view, partials);
