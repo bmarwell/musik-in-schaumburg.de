@@ -73,17 +73,19 @@ tags:
 
 [source,yaml]
 ----
-title: "Name des Orchesters"
-type: brass-band            # brass-band | choir | symphony | school-band | ...
-slug: mein-orchester        # URL-Pfad, z.B. /orchester/mein-orchester/
+title: "Name des Ensembles"
+type: brass-band            # brass-band | choir | posaunenchor | symphony | big-band | ...
+slug: mein-ensemble         # URL-Pfad, z.B. /orchester/mein-ensemble/
 
 logo:
-  url: https://example.com/logo.png   # oder lokaler Pfad: assets/logo.png
+  local: "logo.png"         # BEVORZUGT: Datei liegt in orchestras/<slug>/logo.png
+  # url: https://...        # Fallback falls kein lokales Logo vorhanden
 
 image:
-  url: https://example.com/bild.jpg   # Hauptbild (wird in mehrere WebP-Größen konvertiert)
+  local: "photo.jpg"        # BEVORZUGT: Datei liegt in orchestras/<slug>/photo.jpg
+  # url: https://...        # Fallback falls kein lokales Bild vorhanden
 
-description: "Kurzbeschreibung des Orchesters."
+description: "Kurzbeschreibung des Ensembles."
 
 location: "Stadthagen"      # optional: Probenort / Standort
 website: "https://example.com"        # optional
@@ -93,19 +95,27 @@ social:
   youtube: "https://www.youtube.com/..."      # optional
 ----
 
+=== Bilder und Logos
+
+Bilder und Logos sollten **immer lokal** im Verzeichnis `orchestras/<slug>/` abgelegt und in der YAML-Datei mit `image.local` bzw. `logo.local` referenziert werden.
+`image.url` / `logo.url` dienen nur als Fallback, wenn kein lokales Asset verfügbar ist, und erzeugen beim Build eine Warnung.
+
 === Orchestertypen
 
 [cols="1,2"]
 |===
 | Typ | Bedeutung
 
-| `brass-band`    | Brass Band
-| `symphony`      | Sinfonieorchester / Sinfonisches Blasorchester
-| `choir`         | Chor
-| `school-band`   | Schulkapelle / Schülerorchester
-| `chamber`       | Kammerorchester / -ensemble
-| `wind-ensemble` | Bläserensemble
-| `other`         | Sonstiges
+| `brass-band`      | Brass Band
+| `symphony`        | Sinfonieorchester / Sinfonisches Blasorchester
+| `choir`           | Chor
+| `posaunenchor`    | Posaunenchor
+| `big-band`        | Big Band
+| `school-band`     | Schulkapelle / Schülerorchester
+| `chamber`         | Kammerorchester / -ensemble
+| `wind-ensemble`   | Bläserensemble
+| `strings-ensemble`| Streichensemble
+| `other`           | Sonstiges
 |===
 
 == Build-Pipeline
