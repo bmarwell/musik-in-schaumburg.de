@@ -3,10 +3,10 @@ type: symphony
 slug: sbo-schaumburg
 
 logo:
-  url: "https://www.sbo-schaumburg.de/wp-content/uploads/2021/02/SBO-Logo-2021.png"
+  url: "https://www.sbo-schaumburg.de/images/sbo-logo_276.png"
 
 image:
-  url: "https://www.sbo-schaumburg.de/wp-content/uploads/2022/10/SBO_Jahreskonzert2022_022_klein.jpg"
+  url: "https://www.sbo-schaumburg.de/das-orchester/sbo-schaumburg-orchesterfoto.jpg"
 
 description: >
   Das Sinfonische Blasorchester Schaumburg (SBO) ist ein großes Sinfonisches
@@ -14,7 +14,7 @@ description: >
   anspruchsvolles sinfonisches Repertoire und präsentiert dieses in
   regelmäßigen Konzerten der Öffentlichkeit.
 
-location: "Landkreis Schaumburg"
+location: "Lauenhagen"
 website: "https://www.sbo-schaumburg.de/"
 
 social:
