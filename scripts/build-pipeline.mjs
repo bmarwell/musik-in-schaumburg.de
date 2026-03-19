@@ -9,7 +9,8 @@
  *  4. Generate responsive WebP variants with sharp
  *  5. Render index.html from template (with JSON-LD)
  *  6. Render one orchestra page per YAML (with JSON-LD)
- *  7. Copy CSS, JS, and LICENSE
+ *  7. Generate sitemap.xml
+ *  8. Copy CSS, JS, LICENSE, robots.txt, and .htaccess
  */
 
 import fs from 'fs';
@@ -396,13 +397,39 @@ async function build() {
     log(`  Written: orchester/${orch.slug}/index.html`);
   }
 
-  // 7. Copy static assets
+  // 7. Generate sitemap.xml
+  log('Generating sitemap.xml...');
+  const today = new Date().toISOString().slice(0, 10);
+  const sitemapUrls = [
+    { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
+    ...orchestras.map(o => ({
+      loc: `${SITE_URL}/orchester/${o.slug}/`,
+      changefreq: 'monthly',
+      priority: '0.8',
+      lastmod: today,
+    })),
+  ];
+
+  const sitemapXml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...sitemapUrls.map(u =>
+      `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
+    ),
+    '</urlset>',
+  ].join('\n');
+
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml, 'utf8');
+
+  // 8. Copy static assets
   log('Copying static assets...');
   fse.ensureDirSync(path.join(DIST, 'css'));
   fse.ensureDirSync(path.join(DIST, 'js'));
   fse.copySync(SRC_CSS, path.join(DIST, 'css'));
   fse.copySync(SRC_JS, path.join(DIST, 'js'));
   fse.copySync(path.join(ROOT, 'LICENSE'), path.join(DIST, 'LICENSE'));
+  fse.copySync(path.join(ROOT, 'src', 'main', 'robots.txt'), path.join(DIST, 'robots.txt'));
+  fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
 
   log('Build complete ✓');
   log(`Output: ${DIST}`);
