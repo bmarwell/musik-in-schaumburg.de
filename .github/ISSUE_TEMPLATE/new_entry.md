@@ -1,6 +1,6 @@
 ---
-name: "🎵 Neuer Eintrag (Orchester, Chor, Kapelle …)"
-about: "Einen neuen Eintrag für die Website vorschlagen oder beantragen"
+name: "🎵 Neuer Eintrag (Ensemble, Chor, Kapelle …)"
+about: "Ein neues Ensemble für die Website vorschlagen oder beantragen"
 labels: ["new entry"]
 assignees: []
 ---

@@ -3,11 +3,11 @@
 :icons: font
 :source-highlighter: highlight.js
 
-Landing Page für Orchester im Landkreis Schaumburg, Niedersachsen, Deutschland.
+Landing Page für Musikensembles im Landkreis Schaumburg, Niedersachsen, Deutschland.
 
 == Überblick
 
-Diese Seite bietet eine Übersicht aller Orchester, Blasorchester, Chöre und Musikgruppen im Landkreis Schaumburg.
+Diese Seite bietet eine Übersicht aller Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg.
 
 *Betreuer:* Benjamin Marwell — link:https://bmarwell.de[bmarwell.de]
 
@@ -35,12 +35,12 @@ Die gebaute Seite liegt im `dist/`-Verzeichnis.
 [source]
 ----
 musik-in-schaumburg.de/
-├── orchestras/                 # Orchesterdaten
+├── ensembles/                  # Ensemble-Daten
 │   └── <slug>/
-│       └── index.yaml          # Orchesterkonfiguration
+│       └── index.yaml          # Ensemble-Konfiguration
 ├── src/main/html/              # Quelldateien
 │   ├── index.html              # Startseite (Template)
-│   ├── orchestra.html          # Orchesterseite (Template)
+│   ├── orchestra.html          # Ensemble-Seite (Template)
 │   ├── css/main.css            # Stylesheet
 │   └── js/lightbox.js          # Lightbox-Skript
 ├── scripts/
@@ -49,9 +49,9 @@ musik-in-schaumburg.de/
 └── package.json
 ----
 
-== Orchester hinzufügen
+== Ensemble hinzufügen
 
-Um ein neues Orchester hinzuzufügen, legt man einen neuen Ordner unter `orchestras/<slug>/` an mit einer `index.yaml`-Datei:
+Um ein neues Ensemble hinzuzufügen, legt man einen neuen Ordner unter `ensembles/<slug>/` an mit einer `index.yaml`-Datei:
 
 [.note]
 ====
@@ -75,7 +75,7 @@ tags:
 ----
 title: "Name des Ensembles"
 type: brass-band            # brass-band | choir | posaunenchor | symphony | big-band | ...
-slug: mein-ensemble         # URL-Pfad, z.B. /orchester/mein-ensemble/
+slug: mein-ensemble         # URL-Pfad, z.B. /ensemble/mein-ensemble/
 
 logo:
   local: "logo.png"         # BEVORZUGT: Datei liegt in orchestras/<slug>/logo.png
@@ -100,7 +100,7 @@ social:
 Bilder und Logos sollten **immer lokal** im Verzeichnis `orchestras/<slug>/` abgelegt und in der YAML-Datei mit `image.local` bzw. `logo.local` referenziert werden.
 `image.url` / `logo.url` dienen nur als Fallback, wenn kein lokales Asset verfügbar ist, und erzeugen beim Build eine Warnung.
 
-=== Orchestertypen
+=== Ensembletypen
 
 [cols="1,2"]
 |===
@@ -123,10 +123,10 @@ Bilder und Logos sollten **immer lokal** im Verzeichnis `orchestras/<slug>/` abg
 Die Build-Pipeline (`scripts/build-pipeline.mjs`) führt folgende Schritte durch:
 
 1. `dist/`-Verzeichnis leeren
-2. YAML-Dateien der Orchester einlesen
+2. YAML-Dateien der Ensembles einlesen
 3. Bilder und Logos herunterladen (falls URLs angegeben)
 4. Responsive WebP-Varianten erstellen (400 px, 800 px, 1200 px)
-5. HTML-Seiten aus Templates generieren (Startseite + je eine Seite pro Orchester)
+5. HTML-Seiten aus Templates generieren (Startseite + je eine Seite pro Ensemble)
 6. `sitemap.xml` generieren
 7. CSS, JavaScript, `robots.txt` und `.htaccess` kopieren
 8. Alle Textdateien vorab komprimieren: Brotli (`.br`), gzip (`.gz`) und zstd (`.zst`)
