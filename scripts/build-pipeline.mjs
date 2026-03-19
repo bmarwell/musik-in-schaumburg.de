@@ -417,6 +417,9 @@ async function build() {
   // 5. Render index.html
   log('Rendering index.html...');
   const indexTemplate = fs.readFileSync(path.join(SRC_HTML, 'index.html'), 'utf8');
+  const partials = {
+    matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
+  };
 
   // Build card image paths relative to index (dist root)
   const orchestrasForIndex = orchestras.map(o => ({
@@ -446,7 +449,7 @@ async function build() {
     availableKeywords: allowedKeywords,
   };
 
-  const indexHtml = Mustache.render(indexTemplate, indexView);
+  const indexHtml = Mustache.render(indexTemplate, indexView, partials);
   fs.writeFileSync(path.join(DIST, 'index.html'), indexHtml, 'utf8');
 
   // 6. Render each orchestra page
@@ -460,7 +463,7 @@ async function build() {
       jsonld: buildOrchestraJsonLd(orch),
     };
 
-    const orchHtml = Mustache.render(orchTemplate, view);
+    const orchHtml = Mustache.render(orchTemplate, view, partials);
     const outPath = path.join(DIST, 'orchester', orch.slug, 'index.html');
     fse.ensureDirSync(path.dirname(outPath));
     fs.writeFileSync(outPath, orchHtml, 'utf8');
