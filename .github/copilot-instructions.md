@@ -15,14 +15,15 @@ in the **Landkreis Schaumburg**, Niedersachsen, Germany.
 
 | Layer       | Choice                                              |
 |-------------|-----------------------------------------------------|
-| Build tool  | Node.js (`scripts/build-pipeline.mjs`, ES modules) |
+| Runtime     | [Bun](https://bun.sh/) (`bun run build`)            |
+| Build tool  | `scripts/build-pipeline.mjs` (Bun/Node ES module)  |
 | Templates   | [Mustache](https://github.com/janl/mustache.js)     |
 | Images      | [sharp](https://sharp.pixelplumbing.com/)           |
 | Data format | YAML (`orchestras/<slug>/index.yaml`)               |
 | CSS         | Vanilla CSS (no framework)                          |
 | JS          | Vanilla JS — only the lightbox script               |
 
-No framework, no SSG binary. The build runs with plain `node` and npm dependencies.
+No framework, no SSG binary. The build runs with `bun` and its lockfile (`bun.lock`).
 
 ---
 
@@ -42,13 +43,18 @@ musik-in-schaumburg.de/
 │   └── js/
 │       └── lightbox.js          # Lightbox for hero images
 ├── scripts/
-│   └── build-pipeline.mjs      # Main build script (Node.js ES module)
+│   └── build-pipeline.mjs      # Main build script (Bun/Node ES module)
 ├── dist/                        # Build output (git-ignored)
+├── bun.lock
 ├── package.json
 ├── README.adoc
 ├── LICENSE                      # EUPL v. 1.2
 └── .github/
-    └── copilot-instructions.md  # This file
+    ├── copilot-instructions.md  # This file
+    └── ISSUE_TEMPLATE/
+        ├── bug_report.md        # Bug report template
+        ├── feature_request.md   # Feature request template
+        └── new_entry.md         # New orchestra/band/choir entry template
 ```
 
 ---
@@ -98,8 +104,14 @@ social:                            # Optional. All sub-keys optional.
 Run with:
 
 ```bash
-npm install
-npm run build
+bun install
+bun run build
+```
+
+Preview the built site locally:
+
+```bash
+bun run preview
 ```
 
 **Steps performed:**

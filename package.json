@@ -5,9 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-pipeline.mjs",
-    "start": "npx http-server dist -p 8080 -o",
-    "clean": "node -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
+    "build": "bun scripts/build-pipeline.mjs",
+    "preview": "bunx --bun http-server dist -p 8080 -o",
+    "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
   },
   "dependencies": {
     "fs-extra": "^11.3.0",
@@ -17,10 +17,9 @@
     "sharp": "^0.34.1"
   },
   "devDependencies": {
-    "html-minifier-terser": "^7.2.0",
     "http-server": "^14.1.1"
   },
   "engines": {
-    "node": ">=20"
+    "bun": ">=1.0"
   }
 }

@@ -17,12 +17,18 @@ Abhängigkeiten installieren und die Seite bauen:
 
 [source,bash]
 ----
-npm install
-npm run build
-npm start
+bun install
+bun run build
 ----
 
-Die gebaute Seite liegt anschließend im `dist/`-Verzeichnis.
+Vorschau der gebauten Seite im Browser starten:
+
+[source,bash]
+----
+bun run preview
+----
+
+Die gebaute Seite liegt im `dist/`-Verzeichnis.
 
 == Struktur
 
