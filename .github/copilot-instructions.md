@@ -227,6 +227,54 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 ---
 
+## Coding Guidelines
+
+These rules apply to **all code changes and code reviews** in this repository.
+
+### Avoid `else`
+
+Avoid `else` at almost all costs.
+Prefer guard clauses, early returns, and `continue` statements to flatten control flow.
+If avoiding `else` makes a block too large, extract the logic into a well-named function.
+
+```js
+// Bad
+if (condition) {
+  doSomething();
+} else {
+  doOther();
+}
+
+// Good
+if (condition) {
+  doSomething();
+  return;
+}
+doOther();
+```
+
+### Comments as function names
+
+Before writing a comment, ask yourself: _could this comment be the name of a function?_
+If yes, extract the block into a function with that name and remove the comment.
+
+```js
+// Bad
+// Build conductor list
+const conductorItems = conductors.map(...);
+
+// Good
+function buildJsonLdConductors(conductors) { ... }
+const conductorItems = buildJsonLdConductors(conductors);
+```
+
+### Maximum indentation: 4 levels
+
+Code must not exceed **4 levels of indentation**.
+Extract deeply nested blocks into separate, named functions.
+
+---
+
 ## Deployment
 
 The `dist/` directory is the deployable artifact. Deploy it to an Apache server.
