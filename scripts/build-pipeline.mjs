@@ -11,6 +11,7 @@
  *  6. Render one orchestra page per YAML (with JSON-LD)
  *  7. Generate sitemap.xml
  *  8. Copy CSS, JS, LICENSE, robots.txt, and .htaccess
+ *  9. Pre-compress text assets (.br, .gz, .zst)
  */
 
 import fs from 'fs';
@@ -18,11 +19,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import https from 'https';
 import http from 'http';
+import zlib from 'zlib';
+import { promisify } from 'util';
 
 import fse from 'fs-extra';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
 import sharp from 'sharp';
+import { compress as zstdCompress } from '@mongodb-js/zstd';
+
+const brotliCompress = promisify(zlib.brotliCompress);
+const gzipCompress = promisify(zlib.gzip);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -435,7 +442,52 @@ async function build() {
   log(`Output: ${DIST}`);
 }
 
-build().catch(err => {
-  console.error('[build] Fatal error:', err);
-  process.exit(1);
-});
+build()
+  .then(() => compressAssets())
+  .catch(err => {
+    console.error('[build] Fatal error:', err);
+    process.exit(1);
+  });
+
+/**
+ * Pre-compress all text-based assets in dist/ with Brotli, gzip, and zstd.
+ * Skips binary files (images, fonts). Called after all assets are in place.
+ */
+async function compressAssets() {
+  const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg'];
+
+  function walkDir(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = [];
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        files.push(...walkDir(full));
+      } else if (COMPRESSIBLE_EXTS.includes(path.extname(e.name))) {
+        files.push(full);
+      }
+    }
+    return files;
+  }
+
+  const files = walkDir(DIST);
+  log(`Pre-compressing ${files.length} text assets...`);
+
+  await Promise.all(files.map(async (file) => {
+    const content = fs.readFileSync(file);
+
+    await Promise.all([
+      brotliCompress(content, {
+        params: { [zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY },
+      }).then(buf => fs.writeFileSync(`${file}.br`, buf)),
+
+      gzipCompress(content, { level: zlib.constants.Z_BEST_COMPRESSION })
+        .then(buf => fs.writeFileSync(`${file}.gz`, buf)),
+
+      zstdCompress(content, 19)
+        .then(buf => fs.writeFileSync(`${file}.zst`, buf)),
+    ]);
+  }));
+
+  log(`Pre-compression complete ✓ (${files.length} files × 3 encodings)`);
+}

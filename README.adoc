@@ -99,7 +99,17 @@ Die Build-Pipeline (`scripts/build-pipeline.mjs`) führt folgende Schritte durch
 3. Bilder und Logos herunterladen (falls URLs angegeben)
 4. Responsive WebP-Varianten erstellen (400 px, 800 px, 1200 px)
 5. HTML-Seiten aus Templates generieren (Startseite + je eine Seite pro Orchester)
-6. CSS und JavaScript kopieren
+6. `sitemap.xml` generieren
+7. CSS, JavaScript, `robots.txt` und `.htaccess` kopieren
+8. Alle Textdateien vorab komprimieren: Brotli (`.br`), gzip (`.gz`) und zstd (`.zst`)
+
+=== Vorab-Komprimierung
+
+Jede Textdatei in `dist/` (HTML, CSS, JS, XML, TXT, SVG) wird in drei komprimierte
+Varianten erstellt. Apache liefert die passende Variante anhand des vom Browser gesendeten
+`Accept-Encoding`-Headers aus (Priorität: zstd > brotli > gzip). Falls keine vorab
+komprimierte Datei vorhanden ist, greift Apache auf die Echtzeit-Komprimierung via
+`mod_brotli` / `mod_deflate` zurück.
 
 == Lizenz
 
