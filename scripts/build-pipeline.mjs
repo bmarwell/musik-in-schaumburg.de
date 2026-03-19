@@ -561,7 +561,7 @@ async function build() {
 
   // 6. Render each orchestra page
   log('Rendering orchestra pages...');
-  const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'orchestra.html'), 'utf8');
+  const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'ensemble.html'), 'utf8');
 
   for (const orch of orchestras) {
     const canonicalUrl = `${SITE_URL}/ensemble/${orch.slug}/`;
