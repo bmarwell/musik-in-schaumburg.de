@@ -39,6 +39,7 @@ const SRC_HTML = path.join(ROOT, 'src', 'main', 'html');
 const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
 const ORCHESTRAS_DIR = path.join(ROOT, 'orchestras');
+const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
@@ -254,6 +255,7 @@ function buildOrchestraJsonLd(orchestra) {
       },
     } : {}),
     ...(sameAs.length > 0 ? { 'sameAs': sameAs } : {}),
+    ...(orchestra.tags && orchestra.tags.length > 0 ? { 'keywords': orchestra.tags.join(', ') } : {}),
   };
 
   // Remove undefined values
@@ -271,6 +273,15 @@ async function build() {
 
   // 2. Read orchestra YAML files
   log('Reading orchestra data...');
+  let allowedKeywords = [];
+  if (fs.existsSync(KEYWORDS_FILE)) {
+    try {
+      const kw = yaml.load(fs.readFileSync(KEYWORDS_FILE, 'utf8'));
+      if (Array.isArray(kw)) allowedKeywords = kw.map(k => String(k).trim()).filter(Boolean);
+    } catch (e) {
+      console.warn('[build] WARN: Could not read keywords.yml:', e.message);
+    }
+  }
   const orchDirs = fs.readdirSync(ORCHESTRAS_DIR).filter(d =>
     fs.statSync(path.join(ORCHESTRAS_DIR, d)).isDirectory()
   );
@@ -283,9 +294,22 @@ async function build() {
       console.warn(`[build] WARN: No index.yaml in orchestras/${dirName}, skipping.`);
       continue;
     }
-    const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8'));
+    const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
     raw.slug = raw.slug || dirName;
     raw.typeLabel = TYPE_LABELS[raw.type] || raw.type || 'Orchester';
+    // Normalize tags/keywords: accept `tags` or `keywords` as array or comma-separated string
+    let tags = raw.tags || raw.keywords || [];
+    if (typeof tags === 'string') {
+      tags = tags.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    if (!Array.isArray(tags)) tags = [];
+    raw.tags = Array.from(new Set(tags.map(t => String(t).trim()).filter(Boolean)));
+    if (allowedKeywords.length > 0) {
+      const unknown = raw.tags.filter(t => !allowedKeywords.includes(t));
+      if (unknown.length > 0) {
+        console.warn(`[build] WARN: Unknown tags for ${raw.slug}: ${unknown.join(', ')}`);
+      }
+    }
     orchestras.push(raw);
     log(`  Found: ${raw.title} (${raw.slug})`);
   }
@@ -375,12 +399,14 @@ async function build() {
     logo: o.logo
       ? { ...o.logo, local: o.logo.local ? `orchester/${o.slug}/${o.logo.local}` : null }
       : null,
+    tags: o.tags || null,
   }));
 
   const indexView = {
     orchestras: orchestrasForIndex,
     year: CURRENT_YEAR,
     jsonld: buildIndexJsonLd(orchestras),
+    availableKeywords: allowedKeywords,
   };
 
   const indexHtml = Mustache.render(indexTemplate, indexView);

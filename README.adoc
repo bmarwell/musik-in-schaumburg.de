@@ -53,6 +53,24 @@ musik-in-schaumburg.de/
 
 Um ein neues Orchester hinzuzufügen, legt man einen neuen Ordner unter `orchestras/<slug>/` an mit einer `index.yaml`-Datei:
 
+[.note]
+====
+Stichworte / Tags:
+
+- Es gibt eine zentrale Liste mit auswählbaren Stichworten in `src/main/keywords.yml`.
+- In `index.yaml` kann das Feld `tags:` als Liste (oder `keywords:`) angegeben werden, z.B.
+
+[source,yaml]
+----
+tags:
+  - Jugend
+  - Kirche
+  - Blasmusik
+----
+
+- Falls ein Stichwort nicht in der zentralen Liste vorhanden ist, wird ein Warnhinweis beim Build ausgegeben, das Stichwort aber übernommen.
+====
+
 [source,yaml]
 ----
 title: "Name des Orchesters"
