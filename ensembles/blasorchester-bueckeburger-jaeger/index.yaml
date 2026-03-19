@@ -3,10 +3,10 @@ type: symphony
 slug: blasorchester-bueckeburger-jaeger
 
 logo:
-  url: "https://github.com/user-attachments/assets/462f66ec-43e5-49d0-b6a7-710578171624"
+  local: "logo.jpg"
 
 image:
-  url: "https://www.bueckeburger-jaeger.de/s/img/emotionheader_3.jpg"
+  local: "photo.jpg"
 
 description: >
   1949 als Musikkorps des Bückeburger Jägerbataillons gegründet und seit 1975 als eingetragener

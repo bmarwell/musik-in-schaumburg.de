@@ -6,7 +6,7 @@ slug: brassband-stadthagen
 #  url: "https://www.brassband-stadthagen.de/wp-content/uploads/2020/01/logo_smbb.png"
 
 image:
-  url: "https://www.brassband-stadthagen.de/wp-content/uploads/photo-gallery/St-Martini-Brass-Band-2022_2.jpg?bwg=1698786710"
+  local: "photo.jpg"
 
 description: >
   Die St. Martini-Brass-Band Stadthagen pflegt die Tradition britischer Brass Bands und tritt in der
