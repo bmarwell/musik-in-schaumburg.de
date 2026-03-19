@@ -10,7 +10,7 @@
     "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
   },
   "dependencies": {
-    "fs-extra": "^11.3.0",
+    "fs-extra": "^11.3.4",
     "glob": "^11.0.2",
     "js-yaml": "^4.1.0",
     "mustache": "^4.2.0",
