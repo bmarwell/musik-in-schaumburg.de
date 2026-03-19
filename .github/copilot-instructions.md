@@ -231,6 +231,20 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 These rules apply to **all code changes and code reviews** in this repository.
 
+### Const-first and immutable style
+
+Use `const` as the **default for every declaration**. Only use `let` when reassignment is genuinely necessary. If you reach for `let`, first ask whether the code can be restructured so a `const` suffices.
+
+Prefer deriving new values over mutating existing ones:
+- Use spread (`{ ...obj, key: value }`) to produce updated objects rather than assigning into them.
+- Prefer the non-mutating ES2023 array methods over their mutating equivalents:
+  `toSorted()` · `toReversed()` · `toSpliced()` · `with(index, value)`
+- Extract pure functions that **return** computed values instead of receiving an object and writing into it.
+
+`Object.freeze()` (the JS equivalent of TypeScript's `as const`) is useful for top-level constant maps and config tuples (e.g. `TYPE_LABELS`). Avoid it for intermediate objects produced during processing — the overhead and verbosity are not worth it there.
+
+---
+
 ### Avoid `else`
 
 Avoid `else` at almost all costs.
