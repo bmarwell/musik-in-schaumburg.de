@@ -3,14 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{{description}}">
+  <meta name="description" content="{{descriptionShort}}">
   <meta name="author" content="Benjamin Marwell">
-  <meta property="og:title" content="{{title}} – Musik in Schaumburg">
-  <meta property="og:description" content="{{description}}">
+  <link rel="canonical" href="{{{canonicalUrl}}}">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  {{#image}}
-  <meta property="og:image" content="{{{image.fallback}}}">
-  {{/image}}
+  <meta property="og:site_name" content="Musik in Schaumburg">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="{{{canonicalUrl}}}">
+  <meta property="og:title" content="{{title}} – Musik in Schaumburg">
+  <meta property="og:description" content="{{descriptionShort}}">
+  {{#ogImageUrl}}
+  <meta property="og:image" content="{{{ogImageUrl}}}">
+  <meta property="og:image:alt" content="{{title}}">
+  <meta property="og:image:width" content="800">
+  {{/ogImageUrl}}
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="{{#ogImageUrl}}summary_large_image{{/ogImageUrl}}{{^ogImageUrl}}summary{{/ogImageUrl}}">
+  <meta name="twitter:title" content="{{title}} – Musik in Schaumburg">
+  <meta name="twitter:description" content="{{descriptionShort}}">
+  {{#ogImageUrl}}
+  <meta name="twitter:image" content="{{{ogImageUrl}}}">
+  <meta name="twitter:image:alt" content="{{title}}">
+  {{/ogImageUrl}}
+
   <title>{{title}} – Musik in Schaumburg</title>
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -23,7 +41,7 @@
   <header class="site-header">
     <div class="container">
       <h1>🎵 Musik in Schaumburg</h1>
-      <p class="tagline">Orchester, Blasorchester und Chöre im Landkreis Schaumburg</p>
+      <p class="tagline">Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg</p>
     </div>
   </header>
 
@@ -65,7 +83,7 @@
     <div class="container" itemscope itemtype="https://schema.org/MusicGroup">
 
       <a class="back-link" href="../../index.html">
-        <span aria-hidden="true">←</span> Alle Orchester
+        <span aria-hidden="true">←</span> Alle Ensembles
       </a>
 
       <div class="orchestra-header">

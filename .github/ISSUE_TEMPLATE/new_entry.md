@@ -1,6 +1,6 @@
 ---
-name: "🎵 Neuer Eintrag (Orchester, Chor, Kapelle …)"
-about: "Einen neuen Eintrag für die Website vorschlagen oder beantragen"
+name: "🎵 Neuer Eintrag (Ensemble, Chor, Kapelle …)"
+about: "Ein neues Ensemble für die Website vorschlagen oder beantragen"
 labels: ["new entry"]
 assignees: []
 ---
@@ -14,13 +14,16 @@ assignees: []
 
 **Typ:**
 <!-- Bitte einen auswählen:
-  - brass-band      → Brass Band
-  - symphony        → Sinfonisches Blasorchester
-  - choir           → Chor
-  - school-band     → Schulkapelle / Schülerorchester
-  - chamber         → Kammerorchester / Kammerensemble
-  - wind-ensemble   → Bläserensemble
-  - other           → Sonstiges
+  - brass-band       → Brass Band
+  - symphony         → Sinfonisches Blasorchester
+  - choir            → Chor
+  - posaunenchor     → Posaunenchor
+  - big-band         → Big Band
+  - school-band      → Schulkapelle / Schülerorchester
+  - chamber          → Kammerorchester / Kammerensemble
+  - wind-ensemble    → Bläserensemble
+  - strings-ensemble → Streichensemble
+  - other            → Sonstiges
 -->
 
 **Kurzbeschreibung (Deutsch):**

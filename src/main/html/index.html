@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Übersicht der Orchester, Blasorchester und Chöre im Landkreis Schaumburg, Niedersachsen.">
+  <meta name="description" content="Übersicht der Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen.">
   <meta name="author" content="Benjamin Marwell">
-  <meta property="og:title" content="Musik in Schaumburg">
-  <meta property="og:description" content="Orchester, Blasorchester und Chöre im Landkreis Schaumburg.">
+  <link rel="canonical" href="https://musik-in-schaumburg.de/">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Musik in Schaumburg">
+  <meta property="og:locale" content="de_DE">
   <meta property="og:url" content="https://musik-in-schaumburg.de/">
+  <meta property="og:title" content="Musik in Schaumburg">
+  <meta property="og:description" content="Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen.">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Musik in Schaumburg">
+  <meta name="twitter:description" content="Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen.">
+
   <title>Musik in Schaumburg</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -21,7 +32,7 @@
   <header class="site-header" itemscope itemtype="https://schema.org/WebSite">
     <div class="container">
       <h1 itemprop="name">🎵 Musik in Schaumburg</h1>
-      <p class="tagline">Orchester, Blasorchester und Chöre im Landkreis Schaumburg, Niedersachsen</p>
+      <p class="tagline">Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen</p>
     </div>
   </header>
 
@@ -33,7 +44,7 @@
 
   <main>
     <div class="container">
-      <h2 class="section-heading">Alle Orchester</h2>
+      <h2 class="section-heading">Alle Ensembles</h2>
 
       <div class="cards" role="list">
         {{#orchestras}}
@@ -76,7 +87,7 @@
 
             <span class="card-type">{{typeLabel}}</span>
             <h3 class="card-title" itemprop="name">
-              <a href="orchester/{{slug}}/index.html">{{title}}</a>
+              <a href="ensemble/{{slug}}/index.html">{{title}}</a>
             </h3>
 
             <p class="card-description" itemprop="description">{{description}}</p>
@@ -96,7 +107,7 @@
               {{/website}}
             </div>
 
-            <a class="card-link" href="orchester/{{slug}}/index.html">
+            <a class="card-link" href="ensemble/{{slug}}/index.html">
               Mehr erfahren <span aria-hidden="true">→</span>
             </a>
           </div>

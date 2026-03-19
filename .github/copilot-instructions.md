@@ -19,7 +19,7 @@ in the **Landkreis Schaumburg**, Niedersachsen, Germany.
 | Build tool  | `scripts/build-pipeline.mjs` (Bun/Node ES module)  |
 | Templates   | [Mustache](https://github.com/janl/mustache.js)     |
 | Images      | [sharp](https://sharp.pixelplumbing.com/)           |
-| Data format | YAML (`orchestras/<slug>/index.yaml`)               |
+| Data format | YAML (`ensembles/<slug>/index.yaml`)               |
 | CSS         | Vanilla CSS (no framework)                          |
 | JS          | Vanilla JS — only the lightbox script               |
 
@@ -31,7 +31,7 @@ No framework, no SSG binary. The build runs with `bun` and its lockfile (`bun.lo
 
 ```
 musik-in-schaumburg.de/
-├── orchestras/                  # One directory per orchestra
+├── ensembles/                  # One directory per ensemble
 │   └── <slug>/
 │       └── index.yaml           # Orchestra metadata (see schema below)
 ├── src/main/
@@ -59,18 +59,20 @@ musik-in-schaumburg.de/
 
 ---
 
-## YAML Schema (`orchestras/<slug>/index.yaml`)
+## YAML Schema (`ensembles/<slug>/index.yaml`)
 
 ```yaml
-title: "Name des Orchesters"        # Required. Full name.
+title: "Name des Ensembles"         # Required. Full name.
 type: brass-band                    # Required. See type list below.
-slug: mein-orchester                # Required. URL-safe identifier (used as path).
+slug: mein-ensemble                 # Required. URL-safe identifier (used as path).
 
 logo:
-  url: "https://..."               # Remote URL or local path (relative to repo root)
+  local: "logo.png"                 # PREFERRED. Filename relative to ensembles/<slug>/.
+  # url: "https://..."             # Fallback only if no local file available. Warn if missing.
 
 image:
-  url: "https://..."               # Main photo. Will be converted to multiple WebP sizes.
+  local: "photo.jpg"               # PREFERRED. Filename relative to ensembles/<slug>/.
+  # url: "https://..."             # Fallback only if no local file available. Warn if missing.
 
 description: >                     # Required. German text. Plain prose, no HTML.
   Kurzbeschreibung …
@@ -85,17 +87,31 @@ social:                            # Optional. All sub-keys optional.
   twitter: "https://..."
 ```
 
+### Asset handling rules (IMPORTANT for Copilot)
+
+**Always prefer `image.local` and `logo.local` over `image.url`/`logo.url`.**
+
+When creating or updating an ensemble entry:
+1. **Download** any image or logo from the provided URL into `ensembles/<slug>/` (e.g. `photo.jpg`, `logo.png`) and **commit the file** alongside the YAML.
+2. Set `image.local: "photo.jpg"` (or the actual filename) in the YAML — **not** `image.url`.
+3. Only use `image.url` / `logo.url` if downloading is impossible (e.g. blocked by firewall). In that case add a comment explaining why.
+4. `logo` and `image` are both **optional** — omit the key entirely if no asset is available.
+5. Warn in the PR description if a remote asset URL could not be fetched.
+
 ### Supported `type` values
 
-| Value           | German label                  |
-|-----------------|-------------------------------|
-| `brass-band`    | Brass Band                    |
-| `symphony`      | Sinfonisches Blasorchester     |
-| `choir`         | Chor                          |
-| `school-band`   | Schulkapelle                  |
-| `chamber`       | Kammerorchester               |
-| `wind-ensemble` | Bläserensemble                |
-| `other`         | Sonstiges                     |
+| Value             | German label                        |
+|-------------------|-------------------------------------|
+| `brass-band`      | Brass Band                          |
+| `symphony`        | Sinfonisches Blasorchester          |
+| `choir`           | Chor                                |
+| `posaunenchor`    | Posaunenchor                        |
+| `big-band`        | Big Band                            |
+| `school-band`     | Schulkapelle / Schülerorchester     |
+| `chamber`         | Kammerorchester / Kammerensemble    |
+| `wind-ensemble`   | Bläserensemble                      |
+| `strings-ensemble`| Streichensemble                     |
+| `other`           | Sonstiges                           |
 
 ---
 
@@ -116,12 +132,12 @@ bun run preview
 
 **Steps performed:**
 1. Clean `dist/`
-2. Read all `orchestras/*/index.yaml` files
+2. Read all `ensembles/*/index.yaml` files
 3. Download remote images & logos (with redirect and timeout handling)
 4. Generate responsive WebP variants at 400 px, 800 px, 1200 px using `sharp`
 5. Generate JPEG fallback at 800 px for browsers without WebP support
 6. Render `dist/index.html` from `src/main/html/index.html` (Mustache)
-7. Render `dist/orchester/<slug>/index.html` for each orchestra
+7. Render `dist/ensemble/<slug>/index.html` for each ensemble
 8. Generate `dist/sitemap.xml` (all pages with `lastmod`, `changefreq`, `priority`)
 9. Copy CSS, JS, LICENSE, `robots.txt`, and `.htaccess` to `dist/`
 10. Pre-compress every text asset (`.html`, `.css`, `.js`, `.xml`, `.txt`, `.svg`) into
@@ -165,18 +181,23 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 ---
 
-## Adding a New Orchestra
+## Adding a New Ensemble
 
-1. Create `orchestras/<slug>/index.yaml` (use the schema above).
-2. Run `npm run build`.
-3. The orchestra card appears on the homepage and its detail page is generated automatically.
+1. Create the directory `ensembles/<slug>/`.
+2. **Download** any image or logo into `ensembles/<slug>/` (e.g. `photo.jpg`, `logo.png`) and commit the files.
+3. Create `ensembles/<slug>/index.yaml` using the schema above, with `image.local` / `logo.local` pointing to the committed files.
+4. Run `bun run build`.
+5. The ensemble card appears on the homepage and its detail page is generated automatically.
+
+> **Never** use `image.url` / `logo.url` when a local file can be committed. Only fall back to URLs when downloading is impossible (e.g. firewall-blocked CI), and document the reason in the PR.
 
 ---
 
 ## Language & Content Rules
 
 - **All UI text must be in German.**
-- Orchestra descriptions should be German prose.
+- Ensemble descriptions should be German prose.
+- Use the generic term **Ensemble** or **Musikgruppe** — not "Orchester" — in UI text and descriptions, since the site covers choirs, brass bands, Posaunenchöre, big bands, etc.
 - Type labels are defined in `TYPE_LABELS` in `scripts/build-pipeline.mjs` — add new
   types there as needed (German label required).
 

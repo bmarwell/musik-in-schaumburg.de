@@ -38,7 +38,7 @@ const DIST = path.join(ROOT, 'dist');
 const SRC_HTML = path.join(ROOT, 'src', 'main', 'html');
 const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
-const ORCHESTRAS_DIR = path.join(ROOT, 'orchestras');
+const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
@@ -193,7 +193,7 @@ function buildIndexJsonLd(orchestras) {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     'name': 'Musik in Schaumburg',
-    'description': 'Übersicht der Orchester, Blasorchester und Chöre im Landkreis Schaumburg, Niedersachsen.',
+    'description': 'Übersicht der Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen.',
     'url': SITE_URL,
     'inLanguage': 'de',
     'maintainer': {
@@ -206,17 +206,17 @@ function buildIndexJsonLd(orchestras) {
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    'name': 'Orchester im Landkreis Schaumburg',
-    'description': 'Orchester, Blasorchester und Chöre im Landkreis Schaumburg.',
+    'name': 'Musikensembles im Landkreis Schaumburg',
+    'description': 'Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg.',
     'numberOfItems': orchestras.length,
     'itemListElement': orchestras.map((o, i) => ({
       '@type': 'ListItem',
       'position': i + 1,
       'item': {
         '@type': 'MusicGroup',
-        '@id': `${SITE_URL}/orchester/${o.slug}/`,
+        '@id': `${SITE_URL}/ensemble/${o.slug}/`,
         'name': o.title,
-        'url': o.website || `${SITE_URL}/orchester/${o.slug}/`,
+        'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
         ...(o.location ? { 'location': { '@type': 'Place', 'name': o.location } } : {}),
         ...(o.description ? { 'description': o.description.trim() } : {}),
       },
@@ -240,11 +240,14 @@ function buildOrchestraJsonLd(orchestra) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'MusicGroup',
-    '@id': `${SITE_URL}/orchester/${orchestra.slug}/`,
+    '@id': `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'name': orchestra.title,
     'description': orchestra.description ? orchestra.description.trim() : undefined,
-    'url': orchestra.website || `${SITE_URL}/orchester/${orchestra.slug}/`,
+    'url': orchestra.website || `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'inLanguage': 'de',
+    ...(orchestra.image && orchestra.image.fallback ? {
+      'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
+    } : {}),
     ...(orchestra.location ? {
       'location': {
         '@type': 'Place',
@@ -264,6 +267,15 @@ function buildOrchestraJsonLd(orchestra) {
   // Remove undefined values
   const clean = JSON.parse(JSON.stringify(schema));
   return JSON.stringify(clean, null, 2);
+}
+
+/**
+ * Truncate a string to maxLen characters, appending '…' if cut.
+ */
+function truncate(str, maxLen = 155) {
+  if (!str) return '';
+  const s = str.trim();
+  return s.length <= maxLen ? s : s.slice(0, maxLen - 1).trimEnd() + '…';
 }
 
 // ── Main Build ───────────────────────────────────────────────────────────────
@@ -294,7 +306,7 @@ async function build() {
   for (const dirName of orchDirs) {
     const yamlPath = path.join(ORCHESTRAS_DIR, dirName, 'index.yaml');
     if (!fs.existsSync(yamlPath)) {
-      console.warn(`[build] WARN: No index.yaml in orchestras/${dirName}, skipping.`);
+      console.warn(`[build] WARN: No index.yaml in ensembles/${dirName}, skipping.`);
       continue;
     }
     const raw = yaml.load(fs.readFileSync(yamlPath, 'utf8')) || {};
@@ -323,7 +335,7 @@ async function build() {
 
   // 3–4. Download images & generate variants for each orchestra
   for (const orch of orchestras) {
-    const orchDistDir = path.join(DIST, 'orchester', orch.slug);
+    const orchDistDir = path.join(DIST, 'ensemble', orch.slug);
     const orchImgDir = path.join(orchDistDir, 'images');
     fse.ensureDirSync(orchImgDir);
 
@@ -492,16 +504,16 @@ async function build() {
       ? {
           ...o.image,
           srcsetWebp: o.image.srcsetWebp
-            ? o.image.srcsetWebp.split(', ').map(s => `orchester/${o.slug}/${s}`).join(', ')
+            ? o.image.srcsetWebp.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
             : null,
           srcset: o.image.srcset
-            ? o.image.srcset.split(', ').map(s => `orchester/${o.slug}/${s}`).join(', ')
+            ? o.image.srcset.split(', ').map(s => `ensemble/${o.slug}/${s}`).join(', ')
             : null,
-          fallback: o.image.fallback ? `orchester/${o.slug}/${o.image.fallback}` : null,
+          fallback: o.image.fallback ? `ensemble/${o.slug}/${o.image.fallback}` : null,
         }
       : null,
     logo: o.logo
-      ? { ...o.logo, local: o.logo.local ? `orchester/${o.slug}/${o.logo.local}` : null }
+      ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
       : null,
     tags: o.tags || null,
   }));
@@ -521,17 +533,24 @@ async function build() {
   const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'orchestra.html'), 'utf8');
 
   for (const orch of orchestras) {
+    const canonicalUrl = `${SITE_URL}/ensemble/${orch.slug}/`;
+    const ogImageUrl = orch.image && orch.image.fallback
+      ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
+      : null;
     const view = {
       ...orch,
       year: CURRENT_YEAR,
+      canonicalUrl,
+      ogImageUrl,
+      descriptionShort: truncate(orch.description, 155),
       jsonld: buildOrchestraJsonLd(orch),
     };
 
     const orchHtml = Mustache.render(orchTemplate, view, partials);
-    const outPath = path.join(DIST, 'orchester', orch.slug, 'index.html');
+    const outPath = path.join(DIST, 'ensemble', orch.slug, 'index.html');
     fse.ensureDirSync(path.dirname(outPath));
     fs.writeFileSync(outPath, orchHtml, 'utf8');
-    log(`  Written: orchester/${orch.slug}/index.html`);
+    log(`  Written: ensemble/${orch.slug}/index.html`);
   }
 
   // 7. Generate sitemap.xml
@@ -540,7 +559,7 @@ async function build() {
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
     ...orchestras.map(o => ({
-      loc: `${SITE_URL}/orchester/${o.slug}/`,
+      loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
       priority: '0.8',
       lastmod: today,
