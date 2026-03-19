@@ -1,0 +1,67 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.x
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build site
+        run: bun run build
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ vars.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz \
+            --progress \
+            --stats \
+            --human-readable \
+            --checksum \
+            --delete-after \
+            --exclude='.git' \
+            --exclude='.DS_Store' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            dist/. \
+            ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}:${{ vars.DEPLOY_PATH }}/.
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting 10 seconds for the server to process files..."
+          sleep 10
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://musik-in-schaumburg.de/)
+          if [ "$response" = "200" ]; then
+            echo "✅ Deployment successful! Site is reachable."
+          else
+            echo "❌ Deployment may have issues. HTTP status: $response"
+            exit 1
+          fi
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
