@@ -384,6 +384,16 @@ async function build() {
             }
 
             imgReady = true;
+          } else {
+            // generateImageVariants returned null (no WebP variants), but may have written a JPEG fallback
+            const jpegFallback = path.join(orchImgDir, 'photo-800w.jpg');
+            if (fs.existsSync(jpegFallback)) {
+              orch.image = { ...orch.image, fallback: 'images/photo-800w.jpg', hasSrcset: false };
+              imgReady = true;
+            }
+            if (downloaded && fs.existsSync(localImgPath)) {
+              try { fs.unlinkSync(localImgPath); } catch (e) {}
+            }
           }
         } catch (e) {
           console.warn(`[build] WARN: Could not process image for ${orch.slug}: ${e.message}`);
@@ -392,13 +402,6 @@ async function build() {
       }
 
       if (!imgReady) {
-        orch.image = null;
-      }
-    } else {
-      orch.image = null;
-    }
-        fs.unlinkSync(localImgPath);
-      } else {
         orch.image = null;
       }
     } else {
@@ -445,20 +448,21 @@ async function build() {
       if (localLogoPath) {
         try {
           const logoLocal = await generateLogoVariant(localLogoPath, orchImgDir, 'logo');
-          if (!String(localLogoPath).startsWith(orchImgDir)) {
-            // copy original into folder
-            const fallbackName = `logo-original${path.extname(localLogoPath)}`;
-            fse.copySync(localLogoPath, path.join(orchImgDir, fallbackName));
+          if (logoLocal) {
+            if (!String(localLogoPath).startsWith(orchImgDir)) {
+              // copy original into folder as fallback
+              const fallbackName = `logo-original${path.extname(localLogoPath)}`;
+              fse.copySync(localLogoPath, path.join(orchImgDir, fallbackName));
+            }
             orch.logo = { ...orch.logo, local: logoLocal };
+            logoReady = true;
           } else {
-            orch.logo = { ...orch.logo, local: logoLocal };
+            console.warn(`[build] WARN: Logo variant generation returned null for ${orch.slug}.`);
           }
 
           if (downloadedLogo && fs.existsSync(localLogoPath)) {
             try { fs.unlinkSync(localLogoPath); } catch (e) {}
           }
-
-          logoReady = true;
         } catch (e) {
           console.warn(`[build] WARN: Could not process logo for ${orch.slug}: ${e.message}`);
           if (downloadedLogo && fs.existsSync(localLogoPath)) try { fs.unlinkSync(localLogoPath); } catch (e) {}
