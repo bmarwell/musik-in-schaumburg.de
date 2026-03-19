@@ -99,6 +99,7 @@
 
         <div class="orchestra-title-group">
           <span class="orchestra-type-badge">{{typeLabel}}</span>
+          {{#isInactive}}<span class="ensemble-inactive-badge">Derzeit inaktiv</span>{{/isInactive}}
           <h1 itemprop="name">{{title}}</h1>
         </div>
       </div>
@@ -106,18 +107,71 @@
       <p class="orchestra-description" itemprop="description">{{description}}</p>
 
       <div class="orchestra-info">
+        {{#founded}}
+        <div class="info-row">
+          <span class="info-label">📅 Gegründet</span>
+          <span>{{founded}}</span>
+        </div>
+        {{/founded}}
+        {{#member_count}}
+        <div class="info-row">
+          <span class="info-label">🎼 Mitglieder</span>
+          <span>ca. {{member_count}}</span>
+        </div>
+        {{/member_count}}
+        {{#hasConductors}}
+        <div class="info-row">
+          <span class="info-label">🎶 Leitung</span>
+          <span>{{#conductors}}{{name}}{{#hasRole}} ({{role}}){{/hasRole}}{{^isLast}}, {{/isLast}}{{/conductors}}</span>
+        </div>
+        {{/hasConductors}}
+        {{#hasAddress}}
+        <div class="info-row">
+          <span class="info-label">📍 Adresse</span>
+          <span>
+            {{#address.name}}{{address.name}}<br>{{/address.name}}
+            {{#address.hasStreet}}{{address.street}}<br>{{/address.hasStreet}}
+            {{address.postcode}} {{address.city}}
+            {{#address.hasMaps}}
+            &nbsp;<a href="{{{address.maps}}}" target="_blank" rel="noopener noreferrer">Karte</a>
+            {{/address.hasMaps}}
+          </span>
+        </div>
+        {{/hasAddress}}
+        {{^hasAddress}}
         {{#location}}
         <div class="info-row">
           <span class="info-label">📍 Ort</span>
           <span itemprop="location">{{location}}</span>
         </div>
         {{/location}}
+        {{/hasAddress}}
+        {{#hasRehearsal}}
+        <div class="info-row">
+          <span class="info-label">🕐 Probe</span>
+          <span>{{rehearsal.day}}{{#rehearsal.hasTime}}, {{rehearsal.time}} Uhr{{/rehearsal.hasTime}}{{#rehearsal.hasLocation}} · {{rehearsal.location}}{{/rehearsal.hasLocation}}</span>
+        </div>
+        {{/hasRehearsal}}
         {{#website}}
         <div class="info-row">
           <span class="info-label">🌐 Website</span>
           <a href="{{{website}}}" itemprop="url" target="_blank" rel="noopener noreferrer">{{{website}}}</a>
         </div>
         {{/website}}
+        {{#hasContact}}
+        {{#contact.hasEmail}}
+        <div class="info-row">
+          <span class="info-label">✉️ Kontakt</span>
+          <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+        </div>
+        {{/contact.hasEmail}}
+        {{#contact.hasPhone}}
+        <div class="info-row">
+          <span class="info-label">📞 Telefon</span>
+          <a href="tel:{{contact.phone}}">{{contact.phone}}</a>
+        </div>
+        {{/contact.hasPhone}}
+        {{/hasContact}}
       </div>
 
       {{#hasSocial}}

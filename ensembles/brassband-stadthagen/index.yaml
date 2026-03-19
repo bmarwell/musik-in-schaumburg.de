@@ -15,6 +15,26 @@ description: >
   Neben dem Hauptensemble fördert die der Kirchengemeinde St. Martini angegliederte Kapelle mit
   ihrer Jugend-Brass-Band aktiv den musikalischen Nachwuchs in Stadthagen.
 
+active: true
+
+conductors:
+  - name: "N.N."
+    role: "Dirigent"
+
+sub_ensembles:
+  - name: "Jugend-Brass-Band St. Martini"
+    type: brass-band
+
+address:
+  name: "St.-Martini-Kirche Stadthagen"
+  street: "Kirchstraße 1"
+  postcode: "31655"
+  city: "Stadthagen"
+  maps: "https://maps.app.goo.gl/EDxsaA4UbBrN2jwQ8"
+
+contact:
+  email: "info@brassband-stadthagen.de"
+
 location: "Stadthagen"
 website: "https://www.brassband-stadthagen.de/"
 

@@ -16,6 +16,18 @@ description: >
   gemeinsame Konzertabende mit befreundeten Orchestern der Region, darunter Bläserensembles des
   Wilhelm-Busch-Gymnasiums.
 
+active: false
+
+conductors:
+  - name: "Stephan Winkelhake"
+    role: "Dirigent"
+
+address:
+  name: "Lauenhagen"
+  postcode: "31714"
+  city: "Lauenhagen"
+  maps: "https://maps.app.goo.gl/xG7K6SQqPZJfLyxj8"
+
 location: "Lauenhagen"
 website: "https://www.sbo-schaumburg.de/"
 

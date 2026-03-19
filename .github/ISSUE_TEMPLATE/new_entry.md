@@ -36,11 +36,26 @@ assignees: []
 
 <!-- Diese Felder können leer bleiben, verbessern den Eintrag aber erheblich. -->
 
-**Probenort / Standort:**
-<!-- z.B. Rinteln, Landkreis Schaumburg -->
+**Gründungsjahr:**
+<!-- z.B. 1952 -->
+
+**Anzahl Mitglieder (ungefähr):**
+<!-- z.B. 35 -->
+
+**Dirigent / Leitung:**
+<!-- Name und ggf. Funktion, z.B. "Max Mustermann (Dirigent)" -->
+
+**Adresse / Probenort:**
+<!-- Straße, PLZ, Ort und ggf. Link zu Google Maps -->
+
+**Probenzeiten:**
+<!-- z.B. Dienstags, 19:30 Uhr, Gemeindehaus XY -->
 
 **Website:**
 <!-- z.B. https://www.stadtkapelle-rinteln.de/ -->
+
+**Kontakt (öffentlich):**
+<!-- E-Mail oder Telefon, nur wenn öffentlich bekannt -->
 
 **Logo (URL oder Datei-Upload):**
 <!-- Direktlink zu einem Bild (PNG, JPG oder WebP) oder Anhang hier -->

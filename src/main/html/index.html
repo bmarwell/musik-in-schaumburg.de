@@ -86,6 +86,7 @@
             {{/logo}}
 
             <span class="card-type">{{typeLabel}}</span>
+            {{#isInactive}}<span class="ensemble-inactive-badge">Inaktiv</span>{{/isInactive}}
             <h3 class="card-title" itemprop="name">
               <a href="ensemble/{{slug}}/index.html">{{title}}</a>
             </h3>
@@ -99,6 +100,12 @@
                 <span itemprop="location">{{location}}</span>
               </span>
               {{/location}}
+              {{#founded}}
+              <span class="card-meta-item">
+                <span aria-hidden="true">📅</span>
+                <span>seit {{founded}}</span>
+              </span>
+              {{/founded}}
               {{#website}}
               <span class="card-meta-item">
                 <span aria-hidden="true">🌐</span>
