@@ -226,6 +226,9 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 - Use the generic term **Ensemble** or **Musikgruppe** — not "Orchester" — in UI text and descriptions, since the site covers choirs, brass bands, Posaunenchöre, big bands, etc.
 - Type labels are defined in `TYPE_LABELS` in `scripts/build-pipeline.mjs` — add new
   types there as needed (German label required).
+- **Quotation marks**: Always use »guillemets« (`»text«`) for quoted names and terms in
+  `title` and `description` fields. Do **not** use `"…"`, `„…"`, or `'…'` for quotation
+  purposes. Example: `»Liederkranz«`, `»The Attic«`.
 
 ---
 
