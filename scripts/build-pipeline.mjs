@@ -360,6 +360,12 @@ function buildIndexJsonLd(orchestras) {
     'description': 'Übersicht der Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen.',
     'url': SITE_URL,
     'inLanguage': 'de',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `${SITE_URL}/icon-512.png`,
+      'width': 512,
+      'height': 512,
+    },
     'maintainer': {
       '@type': 'Person',
       'name': 'Benjamin Marwell',
@@ -605,6 +611,7 @@ function buildEnsembleView(orch) {
     ogImageUrl: orch.image && orch.image.fallback
       ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
       : null,
+    ogImageHeight: orch.image && orch.image.height ? orch.image.height : null,
     descriptionShort: truncate(orch.description, 155),
     jsonld: buildOrchestraJsonLd(orch),
     conductors,
