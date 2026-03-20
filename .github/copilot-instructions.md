@@ -292,9 +292,68 @@ Check every committed image file:
 
 ---
 
+## Workflow & Agent Behaviour
+
+### Plan-First Default
+
+Enter plan mode for **any non-trivial task** (3+ steps or architectural decisions).
+
+- Write detailed specs upfront to reduce ambiguity.
+- Use plan mode for verification steps, not just building.
+- If something goes sideways, **stop and re-plan immediately** — don't keep pushing.
+
+### Subagent Strategy
+
+Use subagents **sparingly** — only for **research and exploration** tasks.
+
+- Do **not** use subagents for coding tasks; the overhead outweighs the benefit for most changes.
+- One focus per subagent for clean, focused execution.
+
+### Self-Improvement Loop
+
+After **any correction** from the user: update `tasks/lessons.md` with the pattern.
+
+- Write rules for yourself that prevent the same mistake.
+- Ruthlessly iterate on these lessons until the mistake rate drops.
+- Review `tasks/lessons.md` at session start for relevant context.
+
+### Verification Before Done
+
+Never mark a task complete without proving it works.
+
+- Diff behaviour between `main` and your changes when relevant.
+- Ask yourself: *"Would a staff engineer approve this?"*
+- Run the build, check logs, demonstrate correctness.
+
+### Autonomous Bug Fixing
+
+When given a bug report: propose a fix in the plan first, then wait for human approval before implementing.
+
+- Point at logs, errors, and failing tests to ground the diagnosis.
+- Zero context switching required from the user once approved.
+
+---
+
+## Task Management
+
+1. **Plan First**: Write the plan to `tasks/todo.md` with checkable items.
+2. **Verify Plan**: Check in before starting implementation.
+3. **Track Progress**: Mark items complete as you go.
+4. **Explain Changes**: Provide a high-level summary at each step.
+5. **Document Results**: Add a review section to `tasks/todo.md` when done.
+6. **Capture Lessons**: Update `tasks/lessons.md` after any correction.
+
+---
+
 ## Coding Guidelines
 
 These rules apply to **all code changes and code reviews** in this repository.
+
+### Core Principles
+
+- **Simplicity First**: Make every change as simple as possible. Minimise the code footprint.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Changes should only touch what is necessary. Avoid introducing bugs by keeping scope tight.
 
 ### Const-first and immutable style
 
