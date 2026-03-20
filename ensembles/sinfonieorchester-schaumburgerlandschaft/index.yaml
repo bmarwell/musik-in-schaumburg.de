@@ -1,5 +1,5 @@
 title: "Sinfonieorchester der Schaumburger Landschaft"
-type: symphony
+type: symphony-orchestra
 slug: sinfonieorchester-schaumburgerlandschaft
 
 founded: 1994
@@ -17,16 +17,13 @@ image:
   local: "photo.jpg"
 
 description: >
-  Das Sinfonieorchester der Schaumburger Landschaft ist das einzige Orchester
+  Das Sinfonieorchester der Schaumburger Landschaft ist das einzige Ensemble
   in Niedersachsen, das von einem Landschaftsverband getragen wird. Seit seiner
   Gründung 1994 erarbeitet das Ensemble mit rund 60 Musikerinnen und Musikern
   unter Leitung von Siegfried Westphal jährlich ein anspruchsvolles klassisches
   Programm. Hauptspielstätte ist die St.-Martini-Kirche Stadthagen; darüber
-  hinaus gastiert das Orchester in historischen Spielstätten der gesamten Region
+  hinaus gastiert das Ensemble in historischen Spielstätten der gesamten Region
   Schaumburg.
-
-address:
-  city: "Stadthagen / Bückeburg"
 
 location: "Stadthagen"
 website: "https://www.sinfonieorchester-schaumburgerlandschaft.de"

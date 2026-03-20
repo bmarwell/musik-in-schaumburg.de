@@ -50,6 +50,7 @@ const LOGO_SIZE = 128;
 const TYPE_LABELS = {
   'brass-band': 'Brass Band',
   'symphony': 'Sinfonisches Blasorchester',
+  'symphony-orchestra': 'Sinfonieorchester',
   'choir': 'Chor',
   'school-band': 'Schulkapelle',
   'chamber': 'Kammerorchester',

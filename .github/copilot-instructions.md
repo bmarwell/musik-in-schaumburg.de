@@ -128,6 +128,7 @@ When creating or updating an ensemble entry:
 |-------------------|-------------------------------------|
 | `brass-band`      | Brass Band                          |
 | `symphony`        | Sinfonisches Blasorchester          |
+| `symphony-orchestra` | Sinfonieorchester                |
 | `choir`           | Chor                                |
 | `posaunenchor`    | Posaunenchor                        |
 | `big-band`        | Big Band                            |
