@@ -2,6 +2,9 @@ title: "Männerchor Schaumburg von 1946 e.V."
 type: choir
 slug: maennerchor-schaumburg
 
+image:
+  local: "photo.jpg"
+
 founded: 1946
 active: false
 
