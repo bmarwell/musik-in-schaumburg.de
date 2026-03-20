@@ -577,6 +577,8 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     year: CURRENT_YEAR,
     jsonld: buildIndexJsonLd(orchestras),
     availableKeywords: allowedKeywords,
+    headerImgRoot: '',
+    isHomepage: true,
   };
 
   const indexHtml = Mustache.render(indexTemplate, indexView, partials);
@@ -597,6 +599,7 @@ function buildEnsembleView(orch) {
     ...orch,
     location: orch.location || orch.address?.city || null,
     year: CURRENT_YEAR,
+    headerImgRoot: '../../',
     canonicalUrl: `${SITE_URL}/ensemble/${orch.slug}/`,
     ogImageUrl: orch.image && orch.image.fallback
       ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
@@ -660,6 +663,7 @@ function renderImpressumPage(orchestras, partials) {
     year: CURRENT_YEAR,
     bildquellen,
     hasBildquellen: bildquellen.length > 0,
+    headerImgRoot: '../',
   };
   const html = Mustache.render(template, view, partials);
   const outPath = path.join(DIST, 'impressum', 'index.html');
@@ -685,6 +689,7 @@ function renderMapPage(orchestras, partials) {
     year: CURRENT_YEAR,
     mapDataJson: JSON.stringify(mapData),
     ensembleCount: withGeo.length,
+    headerImgRoot: '../',
   };
   const html = Mustache.render(mapTemplate, view, partials);
   const outPath = path.join(DIST, 'karte', 'index.html');
@@ -777,6 +782,7 @@ async function build() {
   log('Rendering index.html...');
   const partials = {
     matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
+    'site-header': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-header.html'), 'utf8'),
   };
   renderIndexPage(orchestras, allowedKeywords, partials);
 
