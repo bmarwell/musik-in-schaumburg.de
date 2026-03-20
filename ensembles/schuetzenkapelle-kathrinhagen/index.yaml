@@ -1,0 +1,27 @@
+title: 'Schützenkapelle Kathrinhagen'
+type: blaskapelle
+slug: schuetzenkapelle-kathrinhagen
+
+founded: 1954
+active: true
+
+conductors:
+  - name: 'Frank Rinne'
+    role: 'Musikalischer Leiter'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  Die Schützenkapelle Kathrinhagen wurde 1954 auf Initiative von Fritz Hahne und Fritz
+  Struckmeier gegründet und ist seitdem fester Bestandteil des kulturellen Lebens in
+  der Region. Seit Herbst 1999 leitet Frank Rinne das Ensemble musikalisch. Das
+  vielseitige Repertoire reicht von Märschen und Walzern über Egerländer- und
+  Oberkrainermusik bis hin zu modernen Konzertstücken und Schlagern. Mit dem
+  Musikverein Hülsede verbindet die Kapelle eine seit 1978 gewachsene, enge
+  Freundschaft. Seit 2004 ist das alljährliche Adventskonzert in der Kirche Hattendorf
+  eine lieb gewordene Tradition.
+
+location: 'Kathrinhagen'
+
+website: 'http://www.sv-kathrinhagen-westerwald.de/'
