@@ -7,7 +7,7 @@ active: true
 member_count: 6
 
 logo:
-  url: 'https://web.archive.org/web/20181206090418im_/http://www.razzledazzle.de/grafiken/jpg/microstartseite.jpg'
+  local: 'logo.jpg'
 
 image:
   local: 'photo.jpg'
