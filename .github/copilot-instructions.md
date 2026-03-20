@@ -104,6 +104,8 @@ contact:                           # Optional. Public contact info only.
   email: "info@example.de"
   phone: "+49 5722 …"              # Only if publicly listed.
 
+membership_fee: "60 €/Jahr"        # Optional. Free-form string shown as "💰 Mitgliedsbeitrag" on the detail page.
+
 social:                            # Optional. All sub-keys optional.
   facebook: "https://..."
   instagram: "https://..."
