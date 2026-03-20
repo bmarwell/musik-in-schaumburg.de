@@ -1,0 +1,22 @@
+title: "Posaunenchor Probsthagen"
+type: posaunenchor
+slug: posaunenchor-probsthagen
+
+active: true
+
+image:
+  local: "photo.jpg"
+
+description: >
+  Der Posaunenchor Probsthagen gehört zur Ev.-Luth. Kirchengemeinde Probsthagen
+  und ist ein fester Bestandteil des kirchenmusikalischen Lebens in Heuerßen.
+  Er begleitet Gottesdienste, Gemeindefeste und kirchliche Feiern im Kirchspiel
+  Probsthagen mit Blechbläsermusik.
+
+address:
+  name: "Kirche Probsthagen"
+  city: "Heuerßen"
+  postcode: "31691"
+
+location: "Heuerßen"
+website: "https://www.kircheprobsthagen.de/kirchenmusik/posaunenchor"
