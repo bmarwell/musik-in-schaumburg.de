@@ -1,0 +1,35 @@
+title: 'Schaumburger Trachtenkapelle'
+type: blaskapelle
+slug: schaumburger-trachtenkapelle
+
+founded: 1970
+active: true
+member_count: 14
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  Die Schaumburger Trachtenkapelle wurde 1970 gegründet und ist eine feste Größe in der
+  regionalen Volksmusikszene. In ihren traditionellen Schaumburger Trachten begleiten
+  sie Festumzüge, Erntedankfeste und andere Veranstaltungen in der Region Schaumburg
+  und darüber hinaus. Besonders bekannt sind sie als langjährige Stammkapelle beim
+  Nammer Erntefest in Porta Westfalica, wo sie seit ihrer Gründung ohne Unterbrechung
+  auftreten. Das Repertoire umfasst Blasmusikklassiker sowie volksmusikalische Stücke
+  in der Tradition der Schaumburger Landschaft.
+
+address:
+  street: 'Wiesenstr. 10'
+  postcode: '31691'
+  city: 'Helpsen'
+
+location: 'Helpsen/Südhorsten'
+geo:
+  lat: 52.2703
+  lng: 9.1622
+
+website: 'http://www.schaumburger-trachtenkapelle.de/'
+
+contact:
+  email: 'boegellars@gmail.com'
+  phone: '+49 5724 4040410'
