@@ -24,13 +24,15 @@ description: >
   Festen auf.
 
 address:
+  name: 'Bürgerhaus Haste'
+  street: 'Hauptstraße 42'
+  postcode: '31559'
   city: 'Haste'
-  postcode: '31707'
 
 location: 'Haste'
 geo:
-  lat: 52.2619
-  lng: 9.2438
+  lat: 52.3804998
+  lng: 9.3893219
 
 website: 'https://www.eisenbahnchor-haste.de/'
 
