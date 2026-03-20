@@ -140,6 +140,16 @@ async function downloadRemoteAsset(url, destDir, prefix) {
 
 // ── Image Generation ─────────────────────────────────────────────────────────
 
+async function readImageDimensions(imgPath) {
+  try {
+    const meta = await sharp(imgPath).metadata();
+    return { width: meta.width, height: meta.height };
+  } catch (err) {
+    console.warn(`[build] WARN: Could not read image dimensions for ${imgPath}: ${err.message}`);
+    return { width: null, height: null };
+  }
+}
+
 async function generateImageVariants(srcPath, outputDir, baseName) {
   fse.ensureDirSync(outputDir);
   const variants = [];
@@ -174,8 +184,9 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
   const srcsetWebp = variants.map(v => `images/${v.webp} ${v.w}w`).join(', ');
   const srcset = `images/${fallbackName} 800w`;
   const fallback = `images/${fallbackName}`;
+  const { width, height } = await readImageDimensions(fallbackPath);
 
-  return { srcsetWebp, srcset, fallback, hasSrcset: true };
+  return { srcsetWebp, srcset, fallback, hasSrcset: true, width, height };
 }
 
 async function generateLogoVariant(srcPath, outputDir, baseName) {
@@ -202,8 +213,9 @@ async function applyImageVariants(localImgPath, orchImgDir, downloaded) {
 
   if (!variants) {
     const jpegFallback = path.join(orchImgDir, 'photo-800w.jpg');
-    if (fs.existsSync(jpegFallback)) return { fallback: 'images/photo-800w.jpg', hasSrcset: false };
-    return null;
+    if (!fs.existsSync(jpegFallback)) return null;
+    const { width, height } = await readImageDimensions(jpegFallback);
+    return { fallback: 'images/photo-800w.jpg', hasSrcset: false, width, height };
   }
 
   return variants;
