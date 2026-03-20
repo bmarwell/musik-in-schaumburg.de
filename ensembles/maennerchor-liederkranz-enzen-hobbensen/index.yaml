@@ -11,7 +11,7 @@ conductors:
     role: "Chorleiter"
 
 image:
-  local: "photo.jpg"
+  local: "2024-maennerchor-liederkranz-enzen-hobbensen.jpg"
   source: "https://www.liederkranz-enzen-hobbensen.de"
   copyright: "Männerchor »Liederkranz« Enzen-Hobbensen"
 

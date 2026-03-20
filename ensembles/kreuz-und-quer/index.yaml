@@ -11,13 +11,13 @@ conductors:
     role: "Chorleiter"
 
 logo:
-  local: "logo.png"
+  local: "logo-kreuz-und-quer.png"
   source: "https://www.kuq.de/"
   copyright: "kreuz & quer"
 
 
 image:
-  local: "photo.jpg"
+  local: "2014-kreuz-und-quer.jpg"
   source: "https://www.kuq.de/"
   copyright: "kreuz & quer"
 

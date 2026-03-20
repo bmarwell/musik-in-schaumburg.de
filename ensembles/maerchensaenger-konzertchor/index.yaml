@@ -11,13 +11,13 @@ conductors:
     role: "Chorleitung"
 
 logo:
-  local: "logo.png"
+  local: "logo-maerchensaenger-konzertchor.png"
   source: "https://www.maerchensaenger.de/konzertchor/"
   copyright: "Schaumburger Märchensänger (Konzertchor)"
 
 
 image:
-  local: "photo.jpg"
+  local: "maerchensaenger-konzertchor.jpg"
   source: "https://www.maerchensaenger.de/konzertchor/"
   copyright: "Schaumburger Märchensänger (Konzertchor)"
 

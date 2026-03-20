@@ -10,7 +10,7 @@ conductors:
     role: "Musikalische Leitung"
 
 image:
-  local: "photo.jpg"
+  local: "the-jazzigators.jpg"
   source: "http://www.jazzigators.de"
   copyright: "The Jazzigators"
 

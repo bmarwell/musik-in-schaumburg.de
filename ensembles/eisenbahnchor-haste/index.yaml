@@ -11,7 +11,7 @@ conductors:
     role: 'Chorleiter'
 
 image:
-  local: 'photo.jpg'
+  local: 'eisenbahnchor-haste.jpg'
   source: "https://www.eisenbahnchor-haste.de/"
   copyright: "Eisenbahnchor Haste e.V."
 

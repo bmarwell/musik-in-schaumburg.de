@@ -3,13 +3,13 @@ type: symphony
 slug: blasorchester-bueckeburger-jaeger
 
 logo:
-  local: "logo.jpg"
+  local: "logo-blasorchester-bueckeburger-jaeger.jpg"
   source: "https://www.bueckeburger-jaeger.de/"
   copyright: "Blasorchester Bückeburger Jäger e.V."
 
 
 image:
-  local: "photo.jpg"
+  local: "blasorchester-bueckeburger-jaeger.jpg"
   source: "https://www.bueckeburger-jaeger.de/"
   copyright: "Blasorchester Bückeburger Jäger e.V."
 

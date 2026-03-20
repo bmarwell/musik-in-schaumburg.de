@@ -11,13 +11,13 @@ conductors:
     role: "Dirigent"
 
 logo:
-  local: "logo.png"
+  local: "logo-sinfonieorchester-schaumburgerlandschaft.png"
   source: "https://www.sinfonieorchester-schaumburgerlandschaft.de"
   copyright: "Sinfonieorchester der Schaumburger Landschaft"
 
 
 image:
-  local: "photo.jpg"
+  local: "2022-sinfonieorchester-schaumburgerlandschaft.jpg"
   source: "https://www.sinfonieorchester-schaumburgerlandschaft.de"
   copyright: "Sinfonieorchester der Schaumburger Landschaft"
 
