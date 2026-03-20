@@ -806,6 +806,14 @@ async function minifyDistJs() {
     const filePath = path.join(jsDir, file);
     const code = fs.readFileSync(filePath, 'utf8');
     const result = await terserMinify(code, TERSER_OPTIONS);
+
+    if (result.error) {
+      throw new Error(`Terser-Fehler beim Minifizieren von ${file}: ${String(result.error)}`);
+    }
+
+    if (typeof result.code !== 'string') {
+      throw new Error(`Terser lieferte keinen gültigen Code beim Minifizieren von ${file}.`);
+    }
     fs.writeFileSync(filePath, result.code, 'utf8');
   }));
 
