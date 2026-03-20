@@ -294,7 +294,7 @@ function buildJsonLdConductors(conductors) {
   }));
 }
 
-function buildStructuredLocation(addr) {
+function buildStructuredLocation(addr, geo) {
   return {
     '@type': 'Place',
     ...(addr.name ? { 'name': addr.name } : {}),
@@ -307,10 +307,11 @@ function buildStructuredLocation(addr) {
       'addressRegion': 'Niedersachsen',
     },
     ...(addr.maps ? { 'hasMap': addr.maps } : {}),
+    ...(geo ? { 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } } : {}),
   };
 }
 
-function buildFallbackLocation(location) {
+function buildFallbackLocation(location, geo) {
   return {
     '@type': 'Place',
     'name': location,
@@ -320,12 +321,15 @@ function buildFallbackLocation(location) {
       'addressCountry': 'DE',
       'addressRegion': 'Niedersachsen',
     },
+    ...(geo ? { 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } } : {}),
   };
 }
 
 function buildLocationObject(orchestra) {
-  if (orchestra.address) return buildStructuredLocation(orchestra.address);
-  if (orchestra.location) return buildFallbackLocation(orchestra.location);
+  const geo = orchestra.geo && orchestra.geo.lat ? orchestra.geo : null;
+  if (orchestra.address) return buildStructuredLocation(orchestra.address, geo);
+  if (orchestra.location) return buildFallbackLocation(orchestra.location, geo);
+  if (geo) return { '@type': 'Place', 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } };
   return undefined;
 }
 
@@ -363,7 +367,7 @@ function buildIndexJsonLd(orchestras) {
         '@id': `${SITE_URL}/ensemble/${o.slug}/`,
         'name': o.title,
         'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
-        ...(o.location ? { 'location': { '@type': 'Place', 'name': o.location } } : {}),
+        ...(buildLocationObject(o) ? { 'location': buildLocationObject(o) } : {}),
         ...(o.description ? { 'description': o.description.trim() } : {}),
       },
     })),
@@ -389,6 +393,9 @@ function buildOrchestraJsonLd(orchestra) {
     ...(orchestra.member_count ? { 'numberOfEmployees': { '@type': 'QuantitativeValue', 'value': orchestra.member_count } } : {}),
     ...(orchestra.image && orchestra.image.fallback ? {
       'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
+    } : {}),
+    ...(orchestra.logo && orchestra.logo.local ? {
+      'logo': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.logo.local}`,
     } : {}),
     ...(locationObj ? { 'location': locationObj } : {}),
     ...(conductorItems.length > 0 ? { 'member': conductorItems } : {}),
