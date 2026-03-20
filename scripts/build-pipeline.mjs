@@ -590,6 +590,16 @@ function buildEnsembleView(orch) {
   };
 }
 
+function renderImpressumPage(partials) {
+  const template = fs.readFileSync(path.join(SRC_HTML, 'impressum.html'), 'utf8');
+  const view = { year: CURRENT_YEAR };
+  const html = Mustache.render(template, view, partials);
+  const outPath = path.join(DIST, 'impressum', 'index.html');
+  fse.ensureDirSync(path.dirname(outPath));
+  fs.writeFileSync(outPath, html, 'utf8');
+  log('Written: impressum/index.html');
+}
+
 function renderMapPage(orchestras, partials) {
   const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'karte.html'), 'utf8');
   const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
@@ -631,6 +641,7 @@ function generateSitemap(orchestras) {
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
     { loc: `${SITE_URL}/karte/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
+    { loc: `${SITE_URL}/impressum/`, changefreq: 'yearly', priority: '0.2', lastmod: today },
     ...orchestras.map(o => ({
       loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
@@ -707,6 +718,9 @@ async function build() {
 
   log('Rendering map page...');
   renderMapPage(orchestras, partials);
+
+  log('Rendering impressum page...');
+  renderImpressumPage(partials);
 
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);
