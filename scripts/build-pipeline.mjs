@@ -49,6 +49,7 @@ const IMAGE_WIDTHS = [400, 800, 1200];
 const LOGO_SIZE = 128;
 
 const TYPE_LABELS = {
+  'blaskapelle': 'Blaskapelle',
   'brass-band': 'Brass Band',
   'symphony': 'Sinfonisches Blasorchester',
   'symphony-orchestra': 'Sinfonieorchester',
