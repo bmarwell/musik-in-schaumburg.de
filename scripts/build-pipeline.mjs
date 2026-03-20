@@ -38,6 +38,7 @@ const DIST = path.join(ROOT, 'dist');
 const SRC_HTML = path.join(ROOT, 'src', 'main', 'html');
 const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
+const SRC_IMG = path.join(ROOT, 'src', 'main', 'img');
 const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
@@ -667,6 +668,20 @@ function copyStaticAssets() {
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
 }
 
+async function processHeaderImage() {
+  const distImgDir = path.join(DIST, 'img');
+  fse.ensureDirSync(distImgDir);
+
+  const srcFile = path.join(SRC_IMG, 'header-schaumburg.jpg');
+  if (!fs.existsSync(srcFile)) return;
+
+  const webpOut = path.join(distImgDir, 'header-schaumburg.webp');
+  const jpgOut = path.join(distImgDir, 'header-schaumburg.jpg');
+
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 82 }).toFile(webpOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(jpgOut);
+}
+
 // ── Main Build ────────────────────────────────────────────────────────────────
 
 async function build() {
@@ -698,6 +713,9 @@ async function build() {
 
   log('Copying static assets...');
   copyStaticAssets();
+
+  log('Processing header image...');
+  await processHeaderImage();
 
   log('Build complete ✓');
   log(`Output: ${DIST}`);

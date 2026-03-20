@@ -58,13 +58,40 @@ img {
 
 /* ── Site Header ────────────────────────────────────────────────── */
 .site-header {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #0f2d52 100%);
+  position: relative;
+  overflow: hidden;
+  background: var(--color-primary);
   color: #fff;
-  padding: 2.5rem 1.25rem 2rem;
+  padding: 3rem 1.25rem 2.5rem;
   text-align: center;
+  min-height: 180px;
+}
+
+.site-header-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.site-header-bg picture,
+.site-header-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  display: block;
+}
+
+.site-header-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26, 79, 138, 0.80) 0%, rgba(15, 45, 82, 0.90) 100%);
 }
 
 .site-header .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,6 +110,25 @@ img {
   font-size: 1rem;
   opacity: 0.85;
   max-width: 520px;
+}
+
+.site-header-attribution {
+  position: absolute;
+  bottom: 0.3rem;
+  right: 0.6rem;
+  margin: 0;
+  font-size: 0.65rem;
+  opacity: 0.6;
+  z-index: 2;
+}
+
+.site-header-attribution a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-header-attribution a:hover {
+  text-decoration: underline;
 }
 
 /* ── Navigation ─────────────────────────────────────────────────── */
