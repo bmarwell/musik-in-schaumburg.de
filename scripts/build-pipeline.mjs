@@ -592,7 +592,7 @@ function buildEnsembleView(orch) {
 }
 
 function renderMapPage(orchestras, partials) {
-  const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'map.html'), 'utf8');
+  const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'karte.html'), 'utf8');
   const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
   const mapData = withGeo.map(o => ({
     slug: o.slug,
@@ -610,10 +610,10 @@ function renderMapPage(orchestras, partials) {
     ensembleCount: withGeo.length,
   };
   const html = Mustache.render(mapTemplate, view, partials);
-  const outPath = path.join(DIST, 'map', 'index.html');
+  const outPath = path.join(DIST, 'karte', 'index.html');
   fse.ensureDirSync(path.dirname(outPath));
   fs.writeFileSync(outPath, html, 'utf8');
-  log('Written: map/index.html');
+  log('Written: karte/index.html');
 }
 
 function renderEnsemblePages(orchestras, orchTemplate, partials) {
@@ -631,7 +631,7 @@ function generateSitemap(orchestras) {
   const today = new Date().toISOString().slice(0, 10);
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
-    { loc: `${SITE_URL}/map/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
+    { loc: `${SITE_URL}/karte/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
     ...orchestras.map(o => ({
       loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
