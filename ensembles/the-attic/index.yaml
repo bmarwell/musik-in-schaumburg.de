@@ -22,6 +22,10 @@ address:
   postcode: "31675"
 
 location: "Rinteln"
+geo:
+  lat: 52.1874
+  lng: 9.0805
+
 website: "https://linktr.ee/theatticband"
 
 contact:

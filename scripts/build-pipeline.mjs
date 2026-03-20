@@ -40,6 +40,7 @@ const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
 const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
+const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
@@ -294,7 +295,7 @@ function buildJsonLdConductors(conductors) {
   }));
 }
 
-function buildStructuredLocation(addr) {
+function buildStructuredLocation(addr, geo) {
   return {
     '@type': 'Place',
     ...(addr.name ? { 'name': addr.name } : {}),
@@ -307,10 +308,11 @@ function buildStructuredLocation(addr) {
       'addressRegion': 'Niedersachsen',
     },
     ...(addr.maps ? { 'hasMap': addr.maps } : {}),
+    ...(geo ? { 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } } : {}),
   };
 }
 
-function buildFallbackLocation(location) {
+function buildFallbackLocation(location, geo) {
   return {
     '@type': 'Place',
     'name': location,
@@ -320,12 +322,16 @@ function buildFallbackLocation(location) {
       'addressCountry': 'DE',
       'addressRegion': 'Niedersachsen',
     },
+    ...(geo ? { 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } } : {}),
   };
 }
 
 function buildLocationObject(orchestra) {
-  if (orchestra.address) return buildStructuredLocation(orchestra.address);
-  if (orchestra.location) return buildFallbackLocation(orchestra.location);
+  const g = orchestra.geo;
+  const geo = g && typeof g.lat === 'number' && typeof g.lng === 'number' ? g : null;
+  if (orchestra.address) return buildStructuredLocation(orchestra.address, geo);
+  if (orchestra.location) return buildFallbackLocation(orchestra.location, geo);
+  if (geo) return { '@type': 'Place', 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } };
   return undefined;
 }
 
@@ -355,18 +361,21 @@ function buildIndexJsonLd(orchestras) {
     'name': 'Musikensembles im Landkreis Schaumburg',
     'description': 'Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg.',
     'numberOfItems': orchestras.length,
-    'itemListElement': orchestras.map((o, i) => ({
-      '@type': 'ListItem',
-      'position': i + 1,
-      'item': {
-        '@type': 'MusicGroup',
-        '@id': `${SITE_URL}/ensemble/${o.slug}/`,
-        'name': o.title,
-        'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
-        ...(o.location ? { 'location': { '@type': 'Place', 'name': o.location } } : {}),
-        ...(o.description ? { 'description': o.description.trim() } : {}),
-      },
-    })),
+    'itemListElement': orchestras.map((o, i) => {
+      const locationObj = buildLocationObject(o);
+      return {
+        '@type': 'ListItem',
+        'position': i + 1,
+        'item': {
+          '@type': 'MusicGroup',
+          '@id': `${SITE_URL}/ensemble/${o.slug}/`,
+          'name': o.title,
+          'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
+          ...(locationObj ? { 'location': locationObj } : {}),
+          ...(o.description ? { 'description': o.description.trim() } : {}),
+        },
+      };
+    }),
   };
 
   return JSON.stringify([website, itemList], null, 2);
@@ -389,6 +398,9 @@ function buildOrchestraJsonLd(orchestra) {
     ...(orchestra.member_count ? { 'numberOfEmployees': { '@type': 'QuantitativeValue', 'value': orchestra.member_count } } : {}),
     ...(orchestra.image && orchestra.image.fallback ? {
       'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
+    } : {}),
+    ...(orchestra.logo && orchestra.logo.local ? {
+      'logo': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.logo.local}`,
     } : {}),
     ...(locationObj ? { 'location': locationObj } : {}),
     ...(conductorItems.length > 0 ? { 'member': conductorItems } : {}),
@@ -553,6 +565,10 @@ function buildEnsembleView(orch) {
   const address = normalizeAddress(orch.address);
   const rehearsal = normalizeRehearsal(orch.rehearsal);
   const contact = normalizeContact(orch.contact);
+  const hasGeo = !!(orch.geo && orch.geo.lat && orch.geo.lng);
+  const geoJson = hasGeo
+    ? JSON.stringify({ lat: orch.geo.lat, lng: orch.geo.lng, title: orch.title })
+    : null;
 
   return {
     ...orch,
@@ -574,7 +590,34 @@ function buildEnsembleView(orch) {
     isInactive: orch.active === false,
     founded: orch.founded || null,
     member_count: orch.member_count || null,
+    hasGeo,
+    geoJson,
   };
+}
+
+function renderMapPage(orchestras, partials) {
+  const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'karte.html'), 'utf8');
+  const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
+  const mapData = withGeo.map(o => ({
+    slug: o.slug,
+    title: o.title,
+    typeLabel: o.typeLabel,
+    lat: o.geo.lat,
+    lng: o.geo.lng,
+    url: `../ensemble/${o.slug}/index.html`,
+    logoUrl: o.logo && o.logo.local ? `../ensemble/${o.slug}/${o.logo.local}` : null,
+    excerpt: truncate(o.description, 80),
+  }));
+  const view = {
+    year: CURRENT_YEAR,
+    mapDataJson: JSON.stringify(mapData),
+    ensembleCount: withGeo.length,
+  };
+  const html = Mustache.render(mapTemplate, view, partials);
+  const outPath = path.join(DIST, 'karte', 'index.html');
+  fse.ensureDirSync(path.dirname(outPath));
+  fs.writeFileSync(outPath, html, 'utf8');
+  log('Written: karte/index.html');
 }
 
 function renderEnsemblePages(orchestras, orchTemplate, partials) {
@@ -592,6 +635,7 @@ function generateSitemap(orchestras) {
   const today = new Date().toISOString().slice(0, 10);
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
+    { loc: `${SITE_URL}/karte/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
     ...orchestras.map(o => ({
       loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
@@ -612,11 +656,18 @@ function generateSitemap(orchestras) {
   fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml, 'utf8');
 }
 
+function copyLeafletFromNodeModules() {
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.js'), path.join(DIST, 'js', 'leaflet.js'));
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.css'), path.join(DIST, 'css', 'leaflet.css'));
+  fse.copySync(path.join(LEAFLET_DIST, 'images'), path.join(DIST, 'css', 'images'));
+}
+
 function copyStaticAssets() {
   fse.ensureDirSync(path.join(DIST, 'css'));
   fse.ensureDirSync(path.join(DIST, 'js'));
   fse.copySync(SRC_CSS, path.join(DIST, 'css'));
   fse.copySync(SRC_JS, path.join(DIST, 'js'));
+  copyLeafletFromNodeModules();
   fse.copySync(path.join(ROOT, 'LICENSE'), path.join(DIST, 'LICENSE'));
   fse.copySync(path.join(ROOT, 'src', 'main', 'robots.txt'), path.join(DIST, 'robots.txt'));
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
@@ -644,6 +695,9 @@ async function build() {
   log('Rendering orchestra pages...');
   const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'ensemble.html'), 'utf8');
   renderEnsemblePages(orchestras, orchTemplate, partials);
+
+  log('Rendering map page...');
+  renderMapPage(orchestras, partials);
 
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);

@@ -27,6 +27,10 @@ address:
   postcode: "31655"
 
 location: "Stadthagen-Enzen"
+geo:
+  lat: 52.3246
+  lng: 9.1588
+
 website: "https://www.liederkranz-enzen-hobbensen.de"
 
 contact:

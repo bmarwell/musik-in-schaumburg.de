@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Karte aller Musikensembles im Landkreis Schaumburg, Niedersachsen.">
+  <meta name="author" content="Benjamin Marwell">
+  <link rel="canonical" href="https://musik-in-schaumburg.de/karte/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Musik in Schaumburg">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://musik-in-schaumburg.de/karte/">
+  <meta property="og:title" content="Karte – Musik in Schaumburg">
+  <meta property="og:description" content="Karte aller Musikensembles im Landkreis Schaumburg.">
+
+  <title>Karte – Musik in Schaumburg</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/leaflet.css">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <h1>🎵 Musik in Schaumburg</h1>
+      <p class="tagline">Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg, Niedersachsen</p>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="Hauptnavigation">
+    <div class="container">
+      <a href="../index.html">Startseite</a>
+      <a href="index.html" class="active">🗺 Karte</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <h2 class="section-heading">Ensembles auf der Karte</h2>
+      <p class="map-intro">{{ensembleCount}} Ensembles mit bekanntem Proben- oder Aufführungsort sind auf der Karte eingetragen. Ein Klick auf einen Pin öffnet eine Kurzinfo mit direktem Link zur Detailseite.</p>
+      <div id="map-overview" class="map-overview" aria-label="Karte aller Ensembles im Landkreis Schaumburg"></div>
+      <div class="map-list-section">
+        <h3 class="map-list-heading">Sichtbare Ensembles <span id="map-list-count" class="map-list-count"></span></h3>
+        <ul id="map-ensemble-list" class="map-ensemble-list" aria-live="polite" aria-label="Sichtbare Ensembles"></ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© {{year}} Musik in Schaumburg</span>
+      <span class="maintainer-notice">
+        Betreut von <a href="https://bmarwell.de" target="_blank" rel="noopener noreferrer">Benjamin Marwell</a>
+        &nbsp;·&nbsp;
+        <a href="../LICENSE" target="_blank" rel="noopener noreferrer">EUPL v. 1.2</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/bmarwell/musik-in-schaumburg.de" target="_blank" rel="noopener noreferrer">Quellcode</a>
+      </span>
+    </div>
+  </footer>
+
+  <script id="map-data" type="application/json">
+  {{{mapDataJson}}}
+  </script>
+  <script>
+  (function () {
+    const el = document.getElementById('map-data');
+    if (!el) return;
+    try { window.MAP_DATA = JSON.parse(el.textContent); }
+    catch (e) { window.MAP_DATA = []; }
+  }());
+  </script>
+  <script src="../js/leaflet.js"></script>
+  <script src="../js/map.js"></script>
+
+  {{> matomo}}
+</body>
+</html>

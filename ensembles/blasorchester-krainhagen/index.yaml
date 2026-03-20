@@ -33,6 +33,10 @@ rehearsal:
   location: "Krainhagen"
 
 location: "Krainhagen"
+geo:
+  lat: 52.2494
+  lng: 9.1204
+
 website: "https://blasorchester-krainhagen.de/"
 
 social:

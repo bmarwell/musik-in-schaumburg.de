@@ -24,6 +24,10 @@ description: >
   Stadthagen zu erleben.
 
 location: "Stadthagen"
+geo:
+  lat: 52.329
+  lng: 9.2053
+
 website: "http://www.jazzigators.de"
 
 contact:
