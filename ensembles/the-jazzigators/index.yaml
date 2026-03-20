@@ -1,0 +1,30 @@
+title: "The Jazzigators"
+type: big-band
+slug: the-jazzigators
+
+founded: 1990
+active: false
+
+conductors:
+  - name: "Stephan Winkelhake"
+    role: "Musikalische Leitung"
+
+image:
+  local: "photo.jpg"
+
+description: >
+  Die »Jazzigators« wurden 1990 von jazzbegeisterten Oberstufenschülerinnen
+  und -schülern des Ratsgymnasiums Stadthagen zusammen mit ihrem Mentor
+  Johann Zornek gegründet. In den 90er Jahren spielte das Ensemble zahlreiche
+  Konzerte und Wettbewerbe in ganz Norddeutschland. Das Repertoire umfasste
+  Swingklassiker wie »In the Mood« und »A String of Pearls« sowie
+  lateinamerikanische Titel in modernen Arrangements. Nach einer Pause meldete
+  sich die Formation 2012 unter der musikalischen Leitung von Stephan Winkelhake
+  mit einem »All Stars«-Comeback zurück und war u. a. beim Lichterfest
+  Stadthagen zu erleben.
+
+location: "Stadthagen"
+website: "http://www.jazzigators.de"
+
+contact:
+  email: "info@jazzigators.de"
