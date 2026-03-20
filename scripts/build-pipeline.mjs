@@ -64,6 +64,8 @@ const TYPE_LABELS = {
   'posaunenchor': 'Posaunenchor',
   'big-band': 'Big Band',
   'strings-ensemble': 'Streichensemble',
+  'drum-corps': 'Drum Corps',
+  'spielmannszug': 'Spielmannszug',
   'band': 'Band',
   'other': 'Sonstiges',
 };

@@ -1,0 +1,46 @@
+title: "Schaumburger Shanty-Chor Sachsenhagen e.V."
+type: choir
+slug: schaumburger-shanty-chor
+active: false
+
+logo:
+  local: "2024-logo-schaumburger-shanty-chor.jpg"
+  source: "https://www.schaumburger-shanty-chor.de/"
+
+image:
+  local: 2024-08-11_shanty_chor_schaumburg_Herr_Jehle.jpg
+  source: "https://www.hallo-minden.de/nachrichten/die-mindener-hafenkonzerte-mit-dem-schaumburger-shantychor-41700.html"
+  copyright: "Herr Jehle"
+
+description: |
+  Der Schaumburger Shanty-Chor wurde 1989 in Sachsenhagen gegründet 
+  und ist durch die Nähe zum Steinhuder Meer fest mit der maritimen Tradition verwurzelt. 
+  Unter der langjährigen Leitung des Musiklehrers Igor Tomanoski 
+  präsentiert das Ensemble klassische Shantys und Seemannslieder 
+  mit aktuell etwa zwanzig Sängern und zwei Instrumentalisten. 
+  Der Chor ist überregional gut vernetzt und pflegt 
+  intensive Freundschaften zu Ensembles in ganz Deutschland 
+  sowie in den Niederlanden. Die Auftritte führen die „Sachsenhäger Jungs“ 
+  regelmäßig zu großen Shanty-Festivals und 
+  Traditionsveranstaltungen wie den Mindener Hafenkonzerten. 
+  Seit über 35 Jahren leistet der Verein damit einen wichtigen Beitrag 
+  zur Pflege des maritimen Liedgutes im Landkreis Schaumburg.
+
+conductors:
+  - name: Igor Tomanoski
+    role: "Dirigent"
+
+address:
+  name: "Ratskeller Sachsenhagen"
+  postcode: "31553"
+  city: "Sachsenhagen"
+  maps: "https://maps.app.goo.gl/9wooxDF11v2Wb4Ag6"
+
+location: "Sachsenhagen"
+geo:
+  lat: 52.39647
+  lng: 9.262699
+
+website: "https://web.archive.org/web/20240721065928/https://www.schaumburger-shanty-chor.de/"
+
+

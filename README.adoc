@@ -153,10 +153,12 @@ Bilder und Logos sollten **immer lokal** im Verzeichnis `ensembles/<slug>/` abge
 | `choir`             | Chor
 | `posaunenchor`      | Posaunenchor
 | `big-band`          | Big Band
-| `school-band`       | Schulkapelle
-| `chamber`           | Kammerorchester
+| `school-band`       | Schulkapelle / Schülerorchester
+| `chamber`           | Kammerorchester / -ensemble
 | `wind-ensemble`     | Bläserensemble
 | `strings-ensemble`  | Streichensemble
+| `drum-corps`        | Drum Corps
+| `spielmannszug`     | Spielmannszug
 | `band`              | Band
 | `other`             | Sonstiges
 |===

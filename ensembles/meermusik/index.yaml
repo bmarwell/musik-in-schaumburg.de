@@ -1,0 +1,40 @@
+title: Gemischter Chor MEERMUSIK
+type: choir
+slug: meermusik
+active: true
+
+image:
+  local: gemischter-chor-meermusik-hagenburg.jpg
+  source: "https://www.meermusik.com/"
+  copyright: "Gemischter Chor MEERMUSIK"
+
+description: |
+  Der Gemischte Chor MEERMUSIK aus Hagenburg vereint über 30 Sängerinnen und Sänger 
+  direkt am Steinhuder Meer und wird seit mehr als 25 Jahren von 
+  Anette Wiborg geleitet. 
+  Das Ensemble zeichnet sich durch ein breites, mehrsprachiges Repertoire aus, 
+  das von Pop, Jazz und Musicals bis hin zu moderner und klassischer Kirchenmusik reicht. 
+  Besondere Höhepunkte der Chorgeschichte markieren die Teilnahme 
+  am Deutschen Jazzchorfestival sowie gefeierte Konzerte mit den Göttinger Symphonikern 
+  in der Hagenburger Nicolai-Kirche. Die Gemeinschaft probt montags im evangelischen Gemeindehaus 
+  und bereichert mit ihren Auftritten regelmäßig das kulturelle Leben sowie private Feierlichkeiten 
+  in der gesamten Region.
+
+conductors:
+  - name: "Anette Wiborg"
+    role: "Dirigentin"
+
+address:
+  name: "Evangelisches Gemeindehaus"
+  postcode: "31558"
+  city: "Hagenburg"
+  maps: "https://maps.app.goo.gl/u1FydSmcZUfjF9hL8"
+
+geo:
+  lat: 52.396469
+  lng: 9.229134
+
+website: "https://www.meermusik.com/"
+
+social:
+  facebook: "https://www.facebook.com/profile.php?id=100066371690395"

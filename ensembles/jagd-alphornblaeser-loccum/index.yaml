@@ -1,0 +1,38 @@
+title: "Jagd- und Alphornbläser Loccum"
+type: "wind-ensemble"
+slug: jagd-alphornblaeser-loccum
+active: true
+
+image:
+  local: "ensemble-jagdblaeser-alphoerner-loccum.jpg"
+  source: "https://www.jagd-und-alphornblaeser-loccum.de/galerie-ein-blick-zur%C3%BCck/"
+  copyright: "Jagd- und Alphornbläser Loccum"
+
+description: |
+  Die Jagd- und Alphornbläser Loccum pflegen eine traditionsreiche Musikkultur 
+  auf reinen Naturinstrumenten wie dem Fürst-Pless- und dem Parforcehorn. 
+  Das Repertoire hat sich über die Jahrzehnte von ursprünglichen Jagdsignalen 
+  hin zu anspruchsvollen konzertanten Vortragsstücken entwickelt, 
+  die weit über das rein Waidmännische hinausgehen. 
+  Eine absolute Besonderheit des Ensembles ist das Alphornblasen, 
+  welches in norddeutschen Breitengraden ein echtes Alleinstellungsmerkmal darstellt. 
+  Der Verein verbindet ein aktives Gemeinschaftsleben mit der Leidenschaft 
+  für die Naturtonmusik und lädt Interessierte regelmäßig dazu ein, 
+  diese besondere Klangwelt bei Auftritten in der Region kennenzulernen.
+
+conductors:
+  - name: "Werner Boehm"
+    role: "Dirigent"
+
+address:
+  name: "Schützenhaus"
+  postcode: "31547"
+  city: "Loccum"
+
+geo:
+  lat: 52.45396
+  lng: 9.12234
+
+website: "https://www.jagd-und-alphornblaeser-loccum.de/"
+
+

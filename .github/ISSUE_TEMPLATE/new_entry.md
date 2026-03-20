@@ -24,6 +24,8 @@ assignees: []
   - chamber          → Kammerorchester / Kammerensemble
   - wind-ensemble    → Bläserensemble
   - strings-ensemble → Streichensemble
+  - drum-corps       → Drum Corps
+  - spielmannszug    → Spielmannszug
   - band             → Band
   - other            → Sonstiges
 -->
