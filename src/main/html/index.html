@@ -93,11 +93,14 @@
           <div class="card-image-wrap">
             {{#image.srcsetWebp}}
             <picture>
-              <source type="image/webp" srcset="{{{image.srcsetWebp}}}">
+              <source type="image/webp" srcset="{{{image.srcsetWebp}}}"
+                      sizes="(max-width: 600px) calc(100vw - 2rem), (max-width: 900px) 50vw, 420px">
               <img src="{{{image.fallback}}}"
                    alt="{{title}}"
                    width="400" height="225"
-                   loading="lazy"
+                   loading="{{imageLoading}}"
+                   {{#imageFetchPriorityHigh}}fetchpriority="high"{{/imageFetchPriorityHigh}}
+                   sizes="(max-width: 600px) calc(100vw - 2rem), (max-width: 900px) 50vw, 420px"
                    itemprop="image">
             </picture>
             {{/image.srcsetWebp}}
@@ -106,7 +109,8 @@
               <img src="{{{image.fallback}}}"
                    alt="{{title}}"
                    width="400" height="225"
-                   loading="lazy"
+                   loading="{{imageLoading}}"
+                   {{#imageFetchPriorityHigh}}fetchpriority="high"{{/imageFetchPriorityHigh}}
                    itemprop="image">
             </picture>
             {{/image.srcsetWebp}}

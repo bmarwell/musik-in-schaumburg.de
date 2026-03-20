@@ -46,10 +46,7 @@ const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
 
-/** Sources whose copyright is legally uncertain — omit from public Bildquellennachweis. */
-const RISKY_SOURCE_DOMAINS = ['sn-online.de', 'schaumburger-nachrichten.de'];
-
-const IMAGE_WIDTHS = [400, 800, 1200];
+const IMAGE_WIDTHS = [400, 640, 800, 1200];
 const LOGO_SIZE = 128;
 
 const TYPE_LABELS = {
@@ -150,7 +147,7 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
     try {
       await sharp(srcPath)
         .resize(w, null, { withoutEnlargement: true })
-        .webp({ quality: 82 })
+        .webp({ quality: 72 })
         .toFile(webpPath);
       variants.push({ w, webp: webpName });
     } catch (err) {
@@ -163,7 +160,7 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
   try {
     await sharp(srcPath)
       .resize(800, null, { withoutEnlargement: true })
-      .jpeg({ quality: 85 })
+      .jpeg({ quality: 75 })
       .toFile(fallbackPath);
   } catch (err) {
     console.warn(`[build] WARN: Could not create fallback image: ${err.message}`);
@@ -185,7 +182,7 @@ async function generateLogoVariant(srcPath, outputDir, baseName) {
   try {
     await sharp(srcPath)
       .resize(LOGO_SIZE, LOGO_SIZE, { fit: 'inside', withoutEnlargement: true })
-      .webp({ quality: 90 })
+      .webp({ quality: 80 })
       .toFile(logoPath);
     return `images/${logoName}`;
   } catch (err) {
@@ -535,7 +532,7 @@ async function processEnsembleAssets(orchestras) {
 function renderIndexPage(orchestras, allowedKeywords, partials) {
   const indexTemplate = fs.readFileSync(path.join(SRC_HTML, 'index.html'), 'utf8');
 
-  const orchestrasForIndex = orchestras.map(o => ({
+  const orchestrasForIndex = orchestras.map((o, i) => ({
     ...o,
     image: buildIndexImagePaths(o),
     logo: o.logo
@@ -544,6 +541,8 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     tags: o.tags || null,
     isInactive: o.active === false,
     founded: o.founded || null,
+    imageLoading: i === 0 ? 'eager' : 'lazy',
+    imageFetchPriorityHigh: i === 0,
   }));
 
   const indexView = {
@@ -593,19 +592,6 @@ function buildEnsembleView(orch) {
   };
 }
 
-function isRiskySource(url) {
-  return url ? RISKY_SOURCE_DOMAINS.some(d => url.includes(d)) : false;
-}
-
-function isSafeHttpUrl(value) {
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-  } catch {
-    return false;
-  }
-}
-
 function buildBildquellenList(orchestras) {
   const seen = new Set();
   const entries = [];
@@ -613,10 +599,12 @@ function buildBildquellenList(orchestras) {
   for (const o of orchestras) {
     for (const assetKey of ['image', 'logo']) {
       const asset = o[assetKey];
-      if (!asset?.local || !asset?.source || isRiskySource(asset.source)) continue;
+      if (!asset?.local || !asset?.source) continue;
 
-      if (!isSafeHttpUrl(asset.source)) {
-        console.warn(`[WARN] Unsicheres oder ungültiges source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
+      let sourceParsed;
+      try { sourceParsed = new URL(asset.source); } catch { /* invalid URL */ }
+      if (!sourceParsed || (sourceParsed.protocol !== 'http:' && sourceParsed.protocol !== 'https:')) {
+        console.warn(`[WARN] Ungültige source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
         continue;
       }
 
@@ -741,8 +729,8 @@ async function processHeaderImage() {
   const webpOut = path.join(distImgDir, 'header-schaumburg.webp');
   const jpgOut = path.join(distImgDir, 'header-schaumburg.jpg');
 
-  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 82 }).toFile(webpOut);
-  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(jpgOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 75 }).toFile(webpOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 78 }).toFile(jpgOut);
 }
 
 // ── Main Build ────────────────────────────────────────────────────────────────
