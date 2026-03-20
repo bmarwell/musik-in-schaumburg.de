@@ -327,7 +327,8 @@ function buildFallbackLocation(location, geo) {
 }
 
 function buildLocationObject(orchestra) {
-  const geo = orchestra.geo && orchestra.geo.lat ? orchestra.geo : null;
+  const g = orchestra.geo;
+  const geo = g && typeof g.lat === 'number' && typeof g.lng === 'number' ? g : null;
   if (orchestra.address) return buildStructuredLocation(orchestra.address, geo);
   if (orchestra.location) return buildFallbackLocation(orchestra.location, geo);
   if (geo) return { '@type': 'Place', 'geo': { '@type': 'GeoCoordinates', 'latitude': geo.lat, 'longitude': geo.lng } };
@@ -360,18 +361,21 @@ function buildIndexJsonLd(orchestras) {
     'name': 'Musikensembles im Landkreis Schaumburg',
     'description': 'Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg.',
     'numberOfItems': orchestras.length,
-    'itemListElement': orchestras.map((o, i) => ({
-      '@type': 'ListItem',
-      'position': i + 1,
-      'item': {
-        '@type': 'MusicGroup',
-        '@id': `${SITE_URL}/ensemble/${o.slug}/`,
-        'name': o.title,
-        'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
-        ...(buildLocationObject(o) ? { 'location': buildLocationObject(o) } : {}),
-        ...(o.description ? { 'description': o.description.trim() } : {}),
-      },
-    })),
+    'itemListElement': orchestras.map((o, i) => {
+      const locationObj = buildLocationObject(o);
+      return {
+        '@type': 'ListItem',
+        'position': i + 1,
+        'item': {
+          '@type': 'MusicGroup',
+          '@id': `${SITE_URL}/ensemble/${o.slug}/`,
+          'name': o.title,
+          'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
+          ...(locationObj ? { 'location': locationObj } : {}),
+          ...(o.description ? { 'description': o.description.trim() } : {}),
+        },
+      };
+    }),
   };
 
   return JSON.stringify([website, itemList], null, 2);
@@ -653,8 +657,8 @@ function generateSitemap(orchestras) {
 }
 
 function copyLeafletFromNodeModules() {
-  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.js'), path.join(DIST, 'js', 'leaflet.min.js'));
-  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.css'), path.join(DIST, 'css', 'leaflet.min.css'));
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.js'), path.join(DIST, 'js', 'leaflet.js'));
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.css'), path.join(DIST, 'css', 'leaflet.css'));
   fse.copySync(path.join(LEAFLET_DIST, 'images'), path.join(DIST, 'css', 'images'));
 }
 

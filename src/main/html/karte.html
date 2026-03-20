@@ -17,7 +17,7 @@
 
   <title>Karte – Musik in Schaumburg</title>
   <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/leaflet.min.css">
+  <link rel="stylesheet" href="../css/leaflet.css">
   <link rel="icon" href="../favicon.ico" sizes="any">
 </head>
 <body>
@@ -61,8 +61,18 @@
     </div>
   </footer>
 
-  <script>window.MAP_DATA = {{{mapDataJson}}};</script>
-  <script src="../js/leaflet.min.js"></script>
+  <script id="map-data" type="application/json">
+  {{{mapDataJson}}}
+  </script>
+  <script>
+  (function () {
+    const el = document.getElementById('map-data');
+    if (!el) return;
+    try { window.MAP_DATA = JSON.parse(el.textContent); }
+    catch (e) { window.MAP_DATA = []; }
+  }());
+  </script>
+  <script src="../js/leaflet.js"></script>
   <script src="../js/map.js"></script>
 
   {{> matomo}}

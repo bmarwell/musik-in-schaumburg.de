@@ -31,7 +31,7 @@
 
   <title>{{title}} – Musik in Schaumburg</title>
   <link rel="stylesheet" href="../../css/main.css">
-  <link rel="stylesheet" href="../../css/leaflet.min.css">
+  {{#hasGeo}}<link rel="stylesheet" href="../../css/leaflet.css">{{/hasGeo}}
   <link rel="icon" href="../../favicon.ico" sizes="any">
   <script type="application/ld+json">
   {{{jsonld}}}
@@ -226,8 +226,18 @@
 
   <script src="../../js/lightbox.js"></script>
   {{#hasGeo}}
-  <script>window.ENSEMBLE_GEO = {{{geoJson}}};</script>
-  <script src="../../js/leaflet.min.js"></script>
+  <script src="../../js/leaflet.js"></script>
+  <script type="application/json" id="ensemble-geo-data">
+  {{{geoJson}}}
+  </script>
+  <script>
+  (function () {
+    const el = document.getElementById('ensemble-geo-data');
+    if (!el) return;
+    try { window.ENSEMBLE_GEO = JSON.parse(el.textContent); }
+    catch (e) { console.error('Fehler beim Parsen der Ensemble-Geodaten', e); }
+  }());
+  </script>
   <script src="../../js/map.js"></script>
   {{/hasGeo}}
 
