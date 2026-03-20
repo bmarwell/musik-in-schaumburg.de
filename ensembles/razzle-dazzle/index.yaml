@@ -8,9 +8,13 @@ member_count: 6
 
 logo:
   local: 'logo.jpg'
+  source: "https://web.archive.org/web/2008*/http://www.razzledazzle.de/"
+  copyright: "Razzle Dazzle"
 
 image:
   local: 'photo.jpg'
+  source: "https://web.archive.org/web/2008*/http://www.razzledazzle.de/"
+  copyright: "Razzle Dazzle"
 
 description: >
   »Razzle Dazzle« bringen die Musik der 50er und 60er Jahre authentisch auf die Bühne.

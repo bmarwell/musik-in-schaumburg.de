@@ -4,9 +4,15 @@ slug: blasorchester-bueckeburger-jaeger
 
 logo:
   local: "logo.jpg"
+  source: "https://www.bueckeburger-jaeger.de/"
+  copyright: "Blasorchester Bückeburger Jäger e.V."
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.bueckeburger-jaeger.de/"
+  copyright: "Blasorchester Bückeburger Jäger e.V."
+
 
 description: >
   1949 als Musikkorps des Bückeburger Jägerbataillons gegründet und seit 1975 als eingetragener

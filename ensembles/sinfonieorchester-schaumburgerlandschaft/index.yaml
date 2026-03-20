@@ -12,9 +12,15 @@ conductors:
 
 logo:
   local: "logo.png"
+  source: "https://www.sinfonieorchester-schaumburgerlandschaft.de"
+  copyright: "Sinfonieorchester der Schaumburger Landschaft"
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.sinfonieorchester-schaumburgerlandschaft.de"
+  copyright: "Sinfonieorchester der Schaumburger Landschaft"
+
 
 description: >
   Das Sinfonieorchester der Schaumburger Landschaft ist das einzige Ensemble

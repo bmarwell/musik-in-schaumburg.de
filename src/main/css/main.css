@@ -58,13 +58,40 @@ img {
 
 /* ── Site Header ────────────────────────────────────────────────── */
 .site-header {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #0f2d52 100%);
+  position: relative;
+  overflow: hidden;
+  background: var(--color-primary);
   color: #fff;
-  padding: 2.5rem 1.25rem 2rem;
+  padding: 3rem 1.25rem 2.5rem;
   text-align: center;
+  min-height: 180px;
+}
+
+.site-header-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.site-header-bg picture,
+.site-header-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  display: block;
+}
+
+.site-header-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26, 79, 138, 0.80) 0%, rgba(15, 45, 82, 0.90) 100%);
 }
 
 .site-header .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,6 +110,25 @@ img {
   font-size: 1rem;
   opacity: 0.85;
   max-width: 520px;
+}
+
+.site-header-attribution {
+  position: absolute;
+  bottom: 0.3rem;
+  right: 0.6rem;
+  margin: 0;
+  font-size: 0.65rem;
+  opacity: 0.6;
+  z-index: 2;
+}
+
+.site-header-attribution a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-header-attribution a:hover {
+  text-decoration: underline;
 }
 
 /* ── Navigation ─────────────────────────────────────────────────── */
@@ -646,4 +692,75 @@ main {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* ── Impressum ─────────────────────────────────────────────────── */
+.impressum-content {
+  max-width: 800px;
+  margin-block: 2rem;
+}
+
+.impressum-content h2 {
+  font-size: 1.8rem;
+  margin-block-end: 1.5rem;
+}
+
+.impressum-content h3 {
+  font-size: 1.25rem;
+  margin-block-start: 2rem;
+  margin-block-end: 0.5rem;
+  color: var(--color-primary);
+}
+
+.impressum-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-block-start: 1.25rem;
+  margin-block-end: 0.25rem;
+}
+
+.impressum-content p,
+.impressum-content address {
+  line-height: 1.7;
+  margin-block-end: 0.75rem;
+  font-style: normal;
+}
+
+.impressum-note {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* Material-Design-style data table: row dividers only, no outer box */
+.bildquellen-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.bildquellen-table thead th {
+  text-align: left;
+  padding: 0 16px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.bildquellen-table tbody td {
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.bildquellen-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bildquellen-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--color-primary) 4%, transparent);
 }

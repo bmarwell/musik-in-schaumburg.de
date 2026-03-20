@@ -6,6 +6,9 @@ active: true
 
 image:
   local: "photo.jpg"
+  source: "https://www.kircheprobsthagen.de/kirchenmusik/posaunenchor"
+  copyright: "Posaunenchor Probsthagen"
+
 
 description: >
   Der Posaunenchor Probsthagen gehört zur Ev.-Luth. Kirchengemeinde Probsthagen

@@ -12,9 +12,15 @@ conductors:
 
 logo:
   local: "logo.png"
+  source: "https://www.kuq.de/"
+  copyright: "kreuz & quer"
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.kuq.de/"
+  copyright: "kreuz & quer"
+
 
 description: >
   „kreuz & quer" wurde 1995 vom damaligen Pastor Hartmut Spier und Mathias Goedecke

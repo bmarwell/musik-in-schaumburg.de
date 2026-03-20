@@ -6,6 +6,8 @@ active: true
 
 image:
   local: photo.jpg
+  source: "https://www.facebook.com/p/Musikverein-H%C3%BClsede-eV-100071137823563/"
+  copyright: "Musikverein Hülsede e.V."
 
 description: >
   Der Musikverein Hülsede e.V. ist ein im Landkreis Schaumburg verwurzelter Musikverein.

@@ -4,9 +4,15 @@ slug: sbo-schaumburg
 
 logo:
   local: "logo.png"
+  source: "https://www.sbo-schaumburg.de/"
+  copyright: "Sinfonisches Blasorchester Schaumburg"
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.sbo-schaumburg.de/"
+  copyright: "Sinfonisches Blasorchester Schaumburg"
+
 
 description: >
   Das Sinfonische Blasorchester Schaumburg (SBO) aus Lauenhagen widmet sich unter der Leitung von

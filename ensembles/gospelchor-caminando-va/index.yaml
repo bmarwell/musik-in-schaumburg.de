@@ -7,6 +7,9 @@ active: true
 
 image:
   local: 'photo.jpg'
+  source: "https://caminandova.wir-e.de/"
+  copyright: "Gospelchor Caminando Va"
+
 
 description: >
   »Caminando Va« – der Gospelchor der St. Jacobi Kirchengemeinde Rodenberg – besteht

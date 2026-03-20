@@ -12,9 +12,15 @@ conductors:
 
 logo:
   local: "logo.png"
+  source: "https://www.maerchensaenger.de/konzertchor/"
+  copyright: "Schaumburger Märchensänger (Konzertchor)"
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.maerchensaenger.de/konzertchor/"
+  copyright: "Schaumburger Märchensänger (Konzertchor)"
+
 
 description: >
   Die Schaumburger Märchensänger wurden 1948 gegründet und erlangten weltweiten

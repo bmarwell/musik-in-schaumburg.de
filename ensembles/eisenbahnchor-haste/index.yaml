@@ -12,6 +12,9 @@ conductors:
 
 image:
   local: 'photo.jpg'
+  source: "https://www.eisenbahnchor-haste.de/"
+  copyright: "Eisenbahnchor Haste e.V."
+
 
 description: >
   Der Eisenbahnchor Haste e.V. wurde 1905 gegründet und blickt auf eine über 120-jährige

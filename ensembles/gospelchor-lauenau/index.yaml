@@ -6,9 +6,15 @@ active: true
 
 logo:
   local: 'logo.png'
+  source: "https://happy-people-lauenau.de/"
+  copyright: "Gospelchor Lauenau – The Happy People"
+
 
 image:
   local: 'photo.jpg'
+  source: "https://happy-people-lauenau.de/"
+  copyright: "Gospelchor Lauenau – The Happy People"
+
 
 description: >
   »The Happy People« ist der Gospelchor aus Lauenau, der von Gospel bis Pop alles singt.

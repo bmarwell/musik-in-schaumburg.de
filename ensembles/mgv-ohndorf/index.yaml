@@ -11,6 +11,9 @@ conductors:
 
 image:
   local: 'photo.jpg'
+  source: "https://www.sn-online.de/"
+  copyright: "Schaumburger Nachrichten"
+
 
 description: >
   Der Männergesangverein Ohndorf e.V. wurde 1922 gegründet und war über Jahrzehnte

@@ -38,12 +38,16 @@ const DIST = path.join(ROOT, 'dist');
 const SRC_HTML = path.join(ROOT, 'src', 'main', 'html');
 const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
+const SRC_IMG = path.join(ROOT, 'src', 'main', 'img');
 const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
+
+/** Sources whose copyright is legally uncertain — omit from public Bildquellennachweis. */
+const RISKY_SOURCE_DOMAINS = ['sn-online.de', 'schaumburger-nachrichten.de'];
 
 const IMAGE_WIDTHS = [400, 800, 1200];
 const LOGO_SIZE = 128;
@@ -589,6 +593,65 @@ function buildEnsembleView(orch) {
   };
 }
 
+function isRiskySource(url) {
+  return url ? RISKY_SOURCE_DOMAINS.some(d => url.includes(d)) : false;
+}
+
+function isSafeHttpUrl(value) {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function buildBildquellenList(orchestras) {
+  const seen = new Set();
+  const entries = [];
+
+  for (const o of orchestras) {
+    for (const assetKey of ['image', 'logo']) {
+      const asset = o[assetKey];
+      if (!asset?.local || !asset?.source || isRiskySource(asset.source)) continue;
+
+      if (!isSafeHttpUrl(asset.source)) {
+        console.warn(`[WARN] Unsicheres oder ungültiges source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
+        continue;
+      }
+
+      const key = `${o.slug}/${assetKey}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      entries.push({
+        ensemble: o.title,
+        ensembleUrl: `../ensemble/${o.slug}/index.html`,
+        assetType: assetKey === 'logo' ? 'Logo' : 'Ensemblefoto',
+        source: asset.source,
+        copyright: asset.copyright ?? o.title,
+      });
+    }
+  }
+
+  return entries.sort((a, b) => a.ensemble.localeCompare(b.ensemble, 'de'));
+}
+
+function renderImpressumPage(orchestras, partials) {
+  const template = fs.readFileSync(path.join(SRC_HTML, 'impressum.html'), 'utf8');
+  const bildquellen = buildBildquellenList(orchestras);
+  const view = {
+    year: CURRENT_YEAR,
+    bildquellen,
+    hasBildquellen: bildquellen.length > 0,
+  };
+  const html = Mustache.render(template, view, partials);
+  const outPath = path.join(DIST, 'impressum', 'index.html');
+  fse.ensureDirSync(path.dirname(outPath));
+  fs.writeFileSync(outPath, html, 'utf8');
+  log('Written: impressum/index.html');
+}
+
 function renderMapPage(orchestras, partials) {
   const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'karte.html'), 'utf8');
   const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
@@ -630,6 +693,7 @@ function generateSitemap(orchestras) {
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
     { loc: `${SITE_URL}/karte/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
+    { loc: `${SITE_URL}/impressum/`, changefreq: 'yearly', priority: '0.2', lastmod: today },
     ...orchestras.map(o => ({
       loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
@@ -667,6 +731,20 @@ function copyStaticAssets() {
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
 }
 
+async function processHeaderImage() {
+  const distImgDir = path.join(DIST, 'img');
+  fse.ensureDirSync(distImgDir);
+
+  const srcFile = path.join(SRC_IMG, 'header-schaumburg.jpg');
+  if (!fs.existsSync(srcFile)) return;
+
+  const webpOut = path.join(distImgDir, 'header-schaumburg.webp');
+  const jpgOut = path.join(distImgDir, 'header-schaumburg.jpg');
+
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 82 }).toFile(webpOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(jpgOut);
+}
+
 // ── Main Build ────────────────────────────────────────────────────────────────
 
 async function build() {
@@ -693,11 +771,17 @@ async function build() {
   log('Rendering map page...');
   renderMapPage(orchestras, partials);
 
+  log('Rendering impressum page...');
+  renderImpressumPage(orchestras, partials);
+
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);
 
   log('Copying static assets...');
   copyStaticAssets();
+
+  log('Processing header image...');
+  await processHeaderImage();
 
   log('Build complete ✓');
   log(`Output: ${DIST}`);

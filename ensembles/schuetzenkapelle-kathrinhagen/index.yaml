@@ -11,6 +11,9 @@ conductors:
 
 image:
   local: 'photo.jpg'
+  source: "https://fotos.verwaltungsportal.de/"
+  copyright: "Schützenkapelle Kathrinhagen / Schützenverein Kathrinhagen-Westerwald"
+
 
 description: >
   Die Schützenkapelle Kathrinhagen wurde 1954 auf Initiative von Fritz Hahne und Fritz
