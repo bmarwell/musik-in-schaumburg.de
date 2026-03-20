@@ -123,6 +123,7 @@ When creating or updating an ensemble entry:
 3. Only use `image.url` / `logo.url` if downloading is impossible (e.g. blocked by firewall). In that case add a comment explaining why.
 4. `logo` and `image` are both **optional** — omit the key entirely if no asset is available.
 5. Warn in the PR description if a remote asset URL could not be fetched.
+6. **Strip EXIF metadata** from all images before committing them. Use a tool such as `exiftool -all= photo.jpg` or `convert -strip photo.jpg photo.jpg` (ImageMagick) to remove all metadata (GPS location, device model, capture date, etc.) from the file. The build pipeline intentionally does not copy original files to `dist/` — all published variants are re-encoded by sharp and therefore EXIF-free — but the source file in the repository should also be clean.
 
 ### Supported `type` values
 
@@ -270,6 +271,11 @@ Check every committed image file:
 - Logo and photo must clearly depict the named ensemble, not a generic image or stock photo.
 - Prefer files with a meaningful aspect ratio: logos should be roughly square or
   landscape; photos ideally 4:3 or 16:9.
+- **Check for sensitive EXIF metadata**: run `exiftool photo.jpg` and verify that sensitive
+  tags (GPS location, device model, serial number, capture date/time, author) are absent.
+  If present, request that the contributor strips them (`exiftool -all= photo.jpg`) before merging.
+  Note: all published image variants are re-encoded by sharp and thus EXIF-free in `dist/`,
+  but the source files committed to the repository must also be clean.
 
 ---
 

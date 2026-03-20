@@ -202,11 +202,7 @@ async function applyImageVariants(localImgPath, orchImgDir, downloaded) {
     return null;
   }
 
-  if (String(localImgPath).startsWith(orchImgDir)) return variants;
-
-  const fallbackName = `photo-original${path.extname(localImgPath)}`;
-  fse.copySync(localImgPath, path.join(orchImgDir, fallbackName));
-  return { ...variants, fallback: `images/${fallbackName}` };
+  return variants;
 }
 
 async function resolveImagePath(imageSpec, slug, ensembleDir, orchImgDir) {
@@ -267,10 +263,6 @@ async function processLogo(logoSpec, slug, ensembleDir, orchImgDir) {
       console.warn(`[build] WARN: Logo variant generation returned null for ${slug}.`);
       cleanupDownloadedTempFile(localPath, downloaded);
       return null;
-    }
-    if (!String(localPath).startsWith(orchImgDir)) {
-      const fallbackName = `logo-original${path.extname(localPath)}`;
-      fse.copySync(localPath, path.join(orchImgDir, fallbackName));
     }
     cleanupDownloadedTempFile(localPath, downloaded);
     return { ...logoSpec, local: logoLocal };
