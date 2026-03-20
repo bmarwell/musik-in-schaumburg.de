@@ -1,0 +1,36 @@
+title: 'Gospelchor Caminando Va'
+type: choir
+slug: gospelchor-caminando-va
+
+founded: 1986
+active: true
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  »Caminando Va« – der Gospelchor der St. Jacobi Kirchengemeinde Rodenberg – besteht
+  seit 1986 und gehört damit zu den erfahrensten Gospelchören der Region Schaumburg.
+  Das Repertoire umfasst traditionelle Gospels ebenso wie zeitgenössische Worship-Songs.
+  Der Chor tritt regelmäßig zu Adventssingen, Gospelgottesdiensten und anderen
+  kirchlichen Veranstaltungen auf und arbeitet gelegentlich mit Gastsolisten und
+  befreundeten Chören zusammen.
+
+address:
+  name: 'St. Jacobi Kirchengemeinde Rodenberg'
+  street: 'Grover Str. 32'
+  postcode: '31552'
+  city: 'Rodenberg'
+
+location: 'Rodenberg'
+geo:
+  lat: 52.2936
+  lng: 9.3426
+
+website: 'https://caminandova.wir-e.de/'
+
+contact:
+  email: 'kontakt@caminandova.de'
+
+social:
+  facebook: 'https://www.facebook.com/CaminandoVaRodenberg'
