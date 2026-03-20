@@ -590,6 +590,7 @@ function buildEnsembleView(orch) {
     isInactive: orch.active === false,
     founded: orch.founded || null,
     member_count: orch.member_count || null,
+    membership_fee: orch.membership_fee || null,
     hasGeo,
     geoJson,
   };
