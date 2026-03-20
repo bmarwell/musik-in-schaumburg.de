@@ -42,6 +42,33 @@ function buildPopupHtml(ens) {
   );
 }
 
+function buildListItem(ens) {
+  const li = document.createElement('li');
+  li.className = 'map-ensemble-item';
+  li.dataset.slug = ens.slug;
+  li.innerHTML =
+    `<a href="${ens.url}" class="map-ensemble-item-link">` +
+    `<span class="map-ensemble-item-title">${ens.title}</span>` +
+    `<span class="map-ensemble-item-type">${ens.typeLabel}</span>` +
+    `</a>`;
+  return li;
+}
+
+function updateVisibleList(map, data) {
+  const listEl = document.getElementById('map-ensemble-list');
+  const countEl = document.getElementById('map-list-count');
+  if (!listEl) return;
+
+  const bounds = map.getBounds();
+  const visible = data.filter(ens => bounds.contains([ens.lat, ens.lng]));
+
+  listEl.innerHTML = '';
+  for (const ens of visible) {
+    listEl.appendChild(buildListItem(ens));
+  }
+  if (countEl) countEl.textContent = `(${visible.length})`;
+}
+
 function initOverviewMap() {
   const el = document.getElementById('map-overview');
   if (!el || !window.MAP_DATA || !window.MAP_DATA.length) return;
@@ -55,6 +82,11 @@ function initOverviewMap() {
       .bindPopup(buildPopupHtml(ens))
       .addTo(map);
   }
+
+  const refresh = () => updateVisibleList(map, window.MAP_DATA);
+  map.on('moveend', refresh);
+  map.on('zoomend', refresh);
+  map.whenReady(refresh);
 }
 
 function initEnsembleMap() {
