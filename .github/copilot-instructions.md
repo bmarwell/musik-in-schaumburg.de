@@ -219,6 +219,58 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 
 ---
 
+## Reviewing New Entries
+
+These rules apply when reviewing PRs that add or update ensemble entries.
+
+### Fact-checking (highest priority)
+
+Fact-checking is the **most important** review step. Every claim in `index.yaml` must be
+verifiable from at least one authoritative source (official website, archived snapshot,
+reputable local press).
+
+- **Cross-check all facts**: founding year, conductor/leader name, member count, location,
+  awards, and any specific claims in the description.
+- Use the Wayback Machine (`web.archive.org`) if the live website is unavailable.
+- Search local press (Schaumburger Nachrichten, Schaumburger Wochenblatt, szlz.de) to
+  corroborate claims that cannot be verified from the ensemble's own site.
+- If a fact cannot be verified, either omit it or flag it explicitly in the review comment.
+- If a fact is verifiably wrong, request a correction and cite the source.
+
+### Spam and plausibility checks
+
+Flag an entry as **suspicious** (add a review comment and request changes) if any of the
+following are true:
+
+- The ensemble has no verifiable web presence (no archived snapshot, no press coverage,
+  no social media, no official directory entry).
+- The description reads like marketing copy or SEO text with no concrete local facts.
+- The founding year, member count, or award claims are implausibly specific but
+  unverifiable.
+- The slug, title, or description does not match an ensemble that is plausibly located in
+  **Landkreis Schaumburg** (check postcode/city against the Landkreis boundary).
+- Contact details or links point to unrelated businesses or generic parking pages.
+
+### Image / asset quality
+
+Check every committed image file:
+
+| Asset | Minimum size | Maximum size | Notes |
+|-------|-------------|-------------|-------|
+| Logo (`logo.*`) | 5 KB | 500 KB | Must be readable at small display sizes |
+| Photo (`photo.*`) | 20 KB | 5 MB | Used as hero image; must show the ensemble, not a stock photo |
+
+- **Too small** (below minimum): likely a thumbnail, placeholder, or corrupt file — request
+  a higher-resolution asset.
+- **Too large** (above maximum): should be flagged; the build pipeline resizes images, but
+  committing very large originals bloats the repository unnecessarily.
+- Verify the file is actually the correct format (`file photo.jpg` must report a valid JPEG/PNG/WebP).
+- Logo and photo must clearly depict the named ensemble, not a generic image or stock photo.
+- Prefer files with a meaningful aspect ratio: logos should be roughly square or
+  landscape; photos ideally 4:3 or 16:9.
+
+---
+
 ## Language & Content Rules
 
 - **All UI text must be in German.**
