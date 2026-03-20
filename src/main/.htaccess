@@ -130,6 +130,16 @@ RewriteRule ^ %{REQUEST_URI}.gz [L]
   Header always set X-Frame-Options        "SAMEORIGIN"
   Header always set Referrer-Policy        "strict-origin-when-cross-origin"
   Header always set Permissions-Policy     "camera=(), microphone=(), geolocation=()"
+
+  # CDN / proxy caching: static assets are safe to cache publicly for 1 year
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico|css|js|woff2|woff)$">
+    Header merge Cache-Control "public"
+  </FilesMatch>
+
+  # HTML may contain user-session-specific content; keep private
+  <FilesMatch "\.html$">
+    Header merge Cache-Control "private"
+  </FilesMatch>
 </IfModule>
 
 # ── Error documents ───────────────────────────────────────────────────────────
