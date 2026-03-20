@@ -108,6 +108,33 @@
 
       <p class="orchestra-description" itemprop="description">{{description}}</p>
 
+      {{#image}}
+      <figure class="ensemble-photo">
+        {{#image.srcsetWebp}}
+        <picture>
+          <source type="image/webp" srcset="{{{image.srcsetWebp}}}">
+          <img src="{{{image.fallback}}}"
+               srcset="{{{image.srcset}}}"
+               sizes="(max-width: 760px) 100vw, 760px"
+               alt="{{title}}"
+               loading="lazy"
+               data-lightbox
+               data-lightbox-src="{{{image.fallback}}}"
+               data-lightbox-alt="{{title}}">
+        </picture>
+        {{/image.srcsetWebp}}
+        {{^image.srcsetWebp}}
+        <img src="{{{image.fallback}}}"
+             alt="{{title}}"
+             loading="lazy"
+             data-lightbox
+             data-lightbox-src="{{{image.fallback}}}"
+             data-lightbox-alt="{{title}}">
+        {{/image.srcsetWebp}}
+        <figcaption>Foto: {{title}}</figcaption>
+      </figure>
+      {{/image}}
+
       <div class="orchestra-info">
         {{#founded}}
         <div class="info-row">
