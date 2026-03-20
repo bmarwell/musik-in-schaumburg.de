@@ -1,0 +1,40 @@
+title: 'Kinderchor Rodenberg'
+type: choir
+slug: kinderchor-rodenberg
+
+active: true
+
+conductors:
+  - name: 'Julia Knubbe'
+    role: 'Chorleiterin'
+
+description: >
+  Der Kinderchor Rodenberg unter Leitung von Julia Knubbe richtet sich an alle Kinder
+  von 6 bis 7 Jahren. In einer spielerischen und fröhlichen Atmosphäre lernen die Kinder
+  gemeinsam zu singen. Zwei kostenlose Probestunden zum Kennenlernen sind möglich –
+  einfach anmelden und vorbeikommen!
+
+address:
+  name: 'St. Johannes / Gemeindehaus'
+  street: 'Lange Straße 82'
+  postcode: '31552'
+  city: 'Rodenberg'
+
+location: 'Rodenberg'
+geo:
+  lat: 52.2936
+  lng: 9.3426
+
+website: 'https://julia-knubbe.de/chor'
+
+rehearsal:
+  day: 'Montag'
+  time: '16:30–17:15 Uhr'
+  location: 'St. Johannes / Gemeindehaus, Rodenberg'
+
+contact:
+  email: 'mail@julia-knubbe.de'
+  phone: '+49 176 84 63 68 00'
+
+social:
+  instagram: 'https://www.instagram.com/_juliaknubbe_/'
