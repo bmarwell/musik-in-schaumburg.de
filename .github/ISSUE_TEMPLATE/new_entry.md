@@ -62,9 +62,19 @@ assignees: []
 **Logo (URL oder Datei-Upload):**
 <!-- Direktlink zu einem Bild (PNG, JPG oder WebP) oder Anhang hier -->
 
+**Lizenz / Urheber des Logos:**
+<!-- Wer hat das Logo erstellt oder besitzt die Rechte daran?
+     z.B. "Eigentum des Ensembles" oder "Erstellt von Max Mustermann"
+     Bei fremdem Material: Lizenz angeben, z.B. CC BY 4.0 -->
+
 **Hauptbild / Ensemble-Foto (URL oder Datei-Upload):**
 <!-- Direktlink zu einem Foto oder Anhang hier. Wird automatisch in mehrere
      WebP-Größen konvertiert. Querformat (16:9) bevorzugt. -->
+
+**Lizenz / Urheber des Fotos:**
+<!-- Fotograf und Lizenz des Bildes, z.B. "Foto: Maria Muster, CC BY-SA 4.0"
+     oder "Eigenes Foto des Ensembles, alle Rechte vorbehalten".
+     Quelle/Fundort angeben, falls das Bild aus dem Internet stammt. -->
 
 **Social Media:**
 - Facebook: <!-- https://www.facebook.com/... -->
@@ -76,3 +86,4 @@ assignees: []
 
 - [ ] Ich bestätige, dass alle Angaben korrekt sind und das Ensemble im Landkreis Schaumburg oder im direkten Umfeld aktiv ist.
 - [ ] Das verwendete Bild- und Logo-Material darf auf dieser Website verwendet werden (eigenes Material, lizenzfreie Inhalte oder Genehmigung liegt vor).
+- [ ] Ich habe Lizenz und Urheber für alle eingereichten Bilder und Logos angegeben (Felder oben).

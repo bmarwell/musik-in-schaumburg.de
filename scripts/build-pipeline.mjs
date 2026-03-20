@@ -27,6 +27,9 @@ import yaml from 'js-yaml';
 import Mustache from 'mustache';
 import sharp from 'sharp';
 import { compress as zstdCompress } from '@mongodb-js/zstd';
+import { minify as terserMinify } from 'terser';
+import { transform as lightningcssTransform } from 'lightningcss';
+import { minify as htmlMinify } from 'html-minifier-terser';
 
 const brotliCompress = promisify(zlib.brotliCompress);
 const gzipCompress = promisify(zlib.gzip);
@@ -434,7 +437,8 @@ function normalizeRehearsal(rehearsal) {
 
 function normalizeContact(contact) {
   if (!contact) return null;
-  return { ...contact, hasEmail: Boolean(contact.email), hasPhone: Boolean(contact.phone) };
+  const phoneDisplay = contact.phone ? contact.phone.replace(/ /g, '\u00a0') : null;
+  return { ...contact, hasEmail: Boolean(contact.email), hasPhone: Boolean(contact.phone), phoneDisplay };
 }
 
 function buildIndexImagePaths(o) {
@@ -775,7 +779,74 @@ async function build() {
   log(`Output: ${DIST}`);
 }
 
+// ── Minification ──────────────────────────────────────────────────────────────
+
+const TERSER_OPTIONS = Object.freeze({
+  compress: true,
+  mangle: false,
+  format: { comments: false },
+});
+
+const HTML_MINIFY_OPTIONS = Object.freeze({
+  collapseWhitespace: true,
+  removeComments: true,
+  removeRedundantAttributes: false,
+  minifyCSS: false,
+  minifyJS: false,
+});
+
+const VENDOR_JS = new Set(['leaflet.js']);
+const VENDOR_CSS = new Set(['leaflet.css']);
+
+async function minifyDistJs() {
+  const jsDir = path.join(DIST, 'js');
+  const files = fs.readdirSync(jsDir).filter(f => f.endsWith('.js') && !VENDOR_JS.has(f));
+
+  await Promise.all(files.map(async (file) => {
+    const filePath = path.join(jsDir, file);
+    const code = fs.readFileSync(filePath, 'utf8');
+    const result = await terserMinify(code, TERSER_OPTIONS);
+    fs.writeFileSync(filePath, result.code, 'utf8');
+  }));
+
+  log(`  Minified ${files.length} JS file(s)`);
+}
+
+function minifyDistCss() {
+  const cssDir = path.join(DIST, 'css');
+  const files = fs.readdirSync(cssDir).filter(f => f.endsWith('.css') && !VENDOR_CSS.has(f));
+
+  for (const file of files) {
+    const filePath = path.join(cssDir, file);
+    const css = fs.readFileSync(filePath);
+    const { code } = lightningcssTransform({ filename: file, code: css, minify: true });
+    fs.writeFileSync(filePath, code);
+  }
+
+  log(`  Minified ${files.length} CSS file(s)`);
+}
+
+async function minifyDistHtml() {
+  const files = walkCompressibleFiles(DIST).filter(f => f.endsWith('.html'));
+
+  await Promise.all(files.map(async (filePath) => {
+    const html = fs.readFileSync(filePath, 'utf8');
+    const minified = await htmlMinify(html, HTML_MINIFY_OPTIONS);
+    fs.writeFileSync(filePath, minified, 'utf8');
+  }));
+
+  log(`  Minified ${files.length} HTML file(s)`);
+}
+
+async function minifyDistAssets() {
+  log('Minifying assets...');
+  await minifyDistJs();
+  minifyDistCss();
+  await minifyDistHtml();
+}
+
 build()
+  .then(() => minifyDistAssets())
   .then(() => compressAssets())
   .catch(err => {
     console.error('[build] Fatal error:', err);

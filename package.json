@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "bun scripts/build-pipeline.mjs",
+    "test": "bun test",
     "preview": "bunx http-server dist -p 8080 -o",
     "clean": "bun -e \"import('fs').then(fs => fs.default.rmSync('dist', { recursive: true, force: true }))\""
   },
@@ -19,7 +20,13 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "acorn": "^8.16.0",
+    "css-tree": "^3.2.1",
+    "html-minifier-terser": "^7.2.0",
+    "html-validate": "^10.11.2",
+    "http-server": "^14.1.1",
+    "lightningcss": "^1.32.0",
+    "terser": "^5.46.1"
   },
   "engines": {
     "bun": ">=1.0"

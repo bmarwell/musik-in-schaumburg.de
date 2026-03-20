@@ -204,7 +204,7 @@
         {{#contact.hasPhone}}
         <div class="info-row">
           <span class="info-label">📞 Telefon</span>
-          <a href="tel:{{contact.phone}}">{{contact.phone}}</a>
+          <a href="tel:{{contact.phone}}">{{contact.phoneDisplay}}</a>
         </div>
         {{/contact.hasPhone}}
         {{/hasContact}}
@@ -217,7 +217,7 @@
       </div>
 
       {{#hasSocial}}
-      <div class="social-links" aria-label="Social Media">
+      <div class="social-links" role="group" aria-label="Social Media">
         {{#social.facebook}}
         <a class="social-link" href="{{{social.facebook}}}" target="_blank" rel="noopener noreferrer">
           <span aria-hidden="true">📘</span> Facebook
@@ -244,7 +244,7 @@
       {{#hasGeo}}
       <div class="map-section">
         <h2 class="map-section-heading">Auf der Karte</h2>
-        <div id="map-ensemble" class="map-ensemble" aria-label="Karte mit Standort von {{title}}"></div>
+        <section id="map-ensemble" class="map-ensemble" aria-label="Karte mit Standort von {{title}}"></section>
       </div>
       {{/hasGeo}}
 
