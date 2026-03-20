@@ -27,6 +27,9 @@ import yaml from 'js-yaml';
 import Mustache from 'mustache';
 import sharp from 'sharp';
 import { compress as zstdCompress } from '@mongodb-js/zstd';
+import { minify as terserMinify } from 'terser';
+import { transform as lightningcssTransform } from 'lightningcss';
+import { minify as htmlMinify } from 'html-minifier-terser';
 
 const brotliCompress = promisify(zlib.brotliCompress);
 const gzipCompress = promisify(zlib.gzip);
@@ -46,10 +49,7 @@ const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
 
-/** Sources whose copyright is legally uncertain — omit from public Bildquellennachweis. */
-const RISKY_SOURCE_DOMAINS = ['sn-online.de', 'schaumburger-nachrichten.de'];
-
-const IMAGE_WIDTHS = [400, 800, 1200];
+const IMAGE_WIDTHS = [400, 640, 800, 1200];
 const LOGO_SIZE = 128;
 
 const TYPE_LABELS = {
@@ -140,6 +140,16 @@ async function downloadRemoteAsset(url, destDir, prefix) {
 
 // ── Image Generation ─────────────────────────────────────────────────────────
 
+async function readImageDimensions(imgPath) {
+  try {
+    const meta = await sharp(imgPath).metadata();
+    return { width: meta.width, height: meta.height };
+  } catch (err) {
+    console.warn(`[build] WARN: Could not read image dimensions for ${imgPath}: ${err.message}`);
+    return { width: null, height: null };
+  }
+}
+
 async function generateImageVariants(srcPath, outputDir, baseName) {
   fse.ensureDirSync(outputDir);
   const variants = [];
@@ -150,7 +160,7 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
     try {
       await sharp(srcPath)
         .resize(w, null, { withoutEnlargement: true })
-        .webp({ quality: 82 })
+        .webp({ quality: 72 })
         .toFile(webpPath);
       variants.push({ w, webp: webpName });
     } catch (err) {
@@ -163,7 +173,7 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
   try {
     await sharp(srcPath)
       .resize(800, null, { withoutEnlargement: true })
-      .jpeg({ quality: 85 })
+      .jpeg({ quality: 75 })
       .toFile(fallbackPath);
   } catch (err) {
     console.warn(`[build] WARN: Could not create fallback image: ${err.message}`);
@@ -174,8 +184,9 @@ async function generateImageVariants(srcPath, outputDir, baseName) {
   const srcsetWebp = variants.map(v => `images/${v.webp} ${v.w}w`).join(', ');
   const srcset = `images/${fallbackName} 800w`;
   const fallback = `images/${fallbackName}`;
+  const { width, height } = await readImageDimensions(fallbackPath);
 
-  return { srcsetWebp, srcset, fallback, hasSrcset: true };
+  return { srcsetWebp, srcset, fallback, hasSrcset: true, width, height };
 }
 
 async function generateLogoVariant(srcPath, outputDir, baseName) {
@@ -185,7 +196,7 @@ async function generateLogoVariant(srcPath, outputDir, baseName) {
   try {
     await sharp(srcPath)
       .resize(LOGO_SIZE, LOGO_SIZE, { fit: 'inside', withoutEnlargement: true })
-      .webp({ quality: 90 })
+      .webp({ quality: 80 })
       .toFile(logoPath);
     return `images/${logoName}`;
   } catch (err) {
@@ -202,8 +213,9 @@ async function applyImageVariants(localImgPath, orchImgDir, downloaded) {
 
   if (!variants) {
     const jpegFallback = path.join(orchImgDir, 'photo-800w.jpg');
-    if (fs.existsSync(jpegFallback)) return { fallback: 'images/photo-800w.jpg', hasSrcset: false };
-    return null;
+    if (!fs.existsSync(jpegFallback)) return null;
+    const { width, height } = await readImageDimensions(jpegFallback);
+    return { fallback: 'images/photo-800w.jpg', hasSrcset: false, width, height };
   }
 
   return variants;
@@ -437,7 +449,15 @@ function normalizeRehearsal(rehearsal) {
 
 function normalizeContact(contact) {
   if (!contact) return null;
-  return { ...contact, hasEmail: Boolean(contact.email), hasPhone: Boolean(contact.phone) };
+  const phoneDisplay = contact.phone ? contact.phone.replace(/ /g, '\u00a0') : null;
+  const phoneNormalized = contact.phone ? contact.phone.replace(/[^\d+]/g, '') : null;
+  return {
+    ...contact,
+    hasEmail: Boolean(contact.email),
+    hasPhone: Boolean(contact.phone),
+    phoneDisplay,
+    phoneNormalized,
+  };
 }
 
 function buildIndexImagePaths(o) {
@@ -535,7 +555,7 @@ async function processEnsembleAssets(orchestras) {
 function renderIndexPage(orchestras, allowedKeywords, partials) {
   const indexTemplate = fs.readFileSync(path.join(SRC_HTML, 'index.html'), 'utf8');
 
-  const orchestrasForIndex = orchestras.map(o => ({
+  const orchestrasForIndex = orchestras.map((o, i) => ({
     ...o,
     image: buildIndexImagePaths(o),
     logo: o.logo
@@ -544,6 +564,8 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     tags: o.tags || null,
     isInactive: o.active === false,
     founded: o.founded || null,
+    imageLoading: i === 0 ? 'eager' : 'lazy',
+    imageFetchPriorityHigh: i === 0,
   }));
 
   const indexView = {
@@ -593,19 +615,6 @@ function buildEnsembleView(orch) {
   };
 }
 
-function isRiskySource(url) {
-  return url ? RISKY_SOURCE_DOMAINS.some(d => url.includes(d)) : false;
-}
-
-function isSafeHttpUrl(value) {
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-  } catch {
-    return false;
-  }
-}
-
 function buildBildquellenList(orchestras) {
   const seen = new Set();
   const entries = [];
@@ -613,10 +622,12 @@ function buildBildquellenList(orchestras) {
   for (const o of orchestras) {
     for (const assetKey of ['image', 'logo']) {
       const asset = o[assetKey];
-      if (!asset?.local || !asset?.source || isRiskySource(asset.source)) continue;
+      if (!asset?.local || !asset?.source) continue;
 
-      if (!isSafeHttpUrl(asset.source)) {
-        console.warn(`[WARN] Unsicheres oder ungültiges source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
+      let sourceParsed;
+      try { sourceParsed = new URL(asset.source); } catch { /* invalid URL */ }
+      if (!sourceParsed || (sourceParsed.protocol !== 'http:' && sourceParsed.protocol !== 'https:')) {
+        console.warn(`[WARN] Ungültige source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
         continue;
       }
 
@@ -741,8 +752,8 @@ async function processHeaderImage() {
   const webpOut = path.join(distImgDir, 'header-schaumburg.webp');
   const jpgOut = path.join(distImgDir, 'header-schaumburg.jpg');
 
-  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 82 }).toFile(webpOut);
-  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(jpgOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).webp({ quality: 75 }).toFile(webpOut);
+  await sharp(srcFile).resize(1400, null, { withoutEnlargement: true }).jpeg({ quality: 78 }).toFile(jpgOut);
 }
 
 // ── Main Build ────────────────────────────────────────────────────────────────
@@ -787,7 +798,82 @@ async function build() {
   log(`Output: ${DIST}`);
 }
 
+// ── Minification ──────────────────────────────────────────────────────────────
+
+const TERSER_OPTIONS = Object.freeze({
+  compress: true,
+  mangle: false,
+  format: { comments: false },
+});
+
+const HTML_MINIFY_OPTIONS = Object.freeze({
+  collapseWhitespace: true,
+  removeComments: true,
+  removeRedundantAttributes: false,
+  minifyCSS: false,
+  minifyJS: false,
+});
+
+const VENDOR_JS = new Set(['leaflet.js']);
+const VENDOR_CSS = new Set(['leaflet.css']);
+
+async function minifyDistJs() {
+  const jsDir = path.join(DIST, 'js');
+  const files = fs.readdirSync(jsDir).filter(f => f.endsWith('.js') && !VENDOR_JS.has(f));
+
+  await Promise.all(files.map(async (file) => {
+    const filePath = path.join(jsDir, file);
+    const code = fs.readFileSync(filePath, 'utf8');
+    const result = await terserMinify(code, TERSER_OPTIONS);
+
+    if (result.error) {
+      throw new Error(`Terser-Fehler beim Minifizieren von ${file}: ${String(result.error)}`);
+    }
+
+    if (typeof result.code !== 'string') {
+      throw new Error(`Terser lieferte keinen gültigen Code beim Minifizieren von ${file}.`);
+    }
+    fs.writeFileSync(filePath, result.code, 'utf8');
+  }));
+
+  log(`  Minified ${files.length} JS file(s)`);
+}
+
+function minifyDistCss() {
+  const cssDir = path.join(DIST, 'css');
+  const files = fs.readdirSync(cssDir).filter(f => f.endsWith('.css') && !VENDOR_CSS.has(f));
+
+  for (const file of files) {
+    const filePath = path.join(cssDir, file);
+    const css = fs.readFileSync(filePath);
+    const { code } = lightningcssTransform({ filename: file, code: css, minify: true });
+    fs.writeFileSync(filePath, code);
+  }
+
+  log(`  Minified ${files.length} CSS file(s)`);
+}
+
+async function minifyDistHtml() {
+  const files = walkCompressibleFiles(DIST).filter(f => f.endsWith('.html'));
+
+  await Promise.all(files.map(async (filePath) => {
+    const html = fs.readFileSync(filePath, 'utf8');
+    const minified = await htmlMinify(html, HTML_MINIFY_OPTIONS);
+    fs.writeFileSync(filePath, minified, 'utf8');
+  }));
+
+  log(`  Minified ${files.length} HTML file(s)`);
+}
+
+async function minifyDistAssets() {
+  log('Minifying assets...');
+  await minifyDistJs();
+  minifyDistCss();
+  await minifyDistHtml();
+}
+
 build()
+  .then(() => minifyDistAssets())
   .then(() => compressAssets())
   .catch(err => {
     console.error('[build] Fatal error:', err);

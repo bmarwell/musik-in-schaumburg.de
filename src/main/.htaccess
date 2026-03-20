@@ -130,6 +130,16 @@ RewriteRule ^ %{REQUEST_URI}.gz [L]
   Header always set X-Frame-Options        "SAMEORIGIN"
   Header always set Referrer-Policy        "strict-origin-when-cross-origin"
   Header always set Permissions-Policy     "camera=(), microphone=(), geolocation=()"
+
+  # CDN / Proxy-Caching: statische Assets sind 1 Jahr lang öffentlich cachebar
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico|css|js|woff2|woff)$">
+    Header merge Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML ist statisch; kurze öffentliche Cache-Dauer für bessere Performance
+  <FilesMatch "\.html$">
+    Header merge Cache-Control "public, max-age=3600"
+  </FilesMatch>
 </IfModule>
 
 # ── Error documents ───────────────────────────────────────────────────────────
