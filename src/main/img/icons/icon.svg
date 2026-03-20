@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="rr"><rect width="64" height="64" rx="14"/></clipPath>
+  </defs>
+
+  <!-- Three equal horizontal stripes: blue / white / red -->
+  <g clip-path="url(#rr)">
+    <rect width="64" height="22" fill="#1a4f8a"/>
+    <rect y="22" width="64" height="20" fill="#ffffff"/>
+    <rect y="42" width="64" height="22" fill="#ce1126"/>
+  </g>
+
+  <!-- Musical eighth note: dark navy fill + white outline for contrast on all bands -->
+  <!-- Note head -->
+  <ellipse cx="25" cy="48" rx="12.5" ry="8.5"
+           transform="rotate(-18 25 48)"
+           stroke="#ffffff" stroke-width="2.5" fill="#0f2d52"/>
+  <!-- Stem -->
+  <rect x="35.5" y="13" width="4.5" height="38" rx="2"
+        stroke="#ffffff" stroke-width="2" fill="#0f2d52"/>
+  <!-- Flag (drawn twice: thick white outline, then thinner dark fill on top) -->
+  <path d="M40 13 C57 21 56 38 41 42"
+        stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M40 13 C57 21 56 38 41 42"
+        stroke="#0f2d52" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

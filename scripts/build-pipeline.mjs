@@ -42,6 +42,7 @@ const SRC_HTML = path.join(ROOT, 'src', 'main', 'html');
 const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
 const SRC_IMG = path.join(ROOT, 'src', 'main', 'img');
+const SRC_ICONS = path.join(ROOT, 'src', 'main', 'img', 'icons');
 const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
@@ -750,6 +751,10 @@ function copyStaticAssets() {
   fse.copySync(path.join(ROOT, 'LICENSE'), path.join(DIST, 'LICENSE'));
   fse.copySync(path.join(ROOT, 'src', 'main', 'robots.txt'), path.join(DIST, 'robots.txt'));
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
+  fse.copySync(path.join(ROOT, 'src', 'main', 'site.webmanifest'), path.join(DIST, 'site.webmanifest'));
+  for (const file of ['favicon.ico', 'icon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png']) {
+    fse.copySync(path.join(SRC_ICONS, file), path.join(DIST, file));
+  }
 }
 
 async function processHeaderImage() {
@@ -783,6 +788,7 @@ async function build() {
   const partials = {
     matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
     'site-header': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-header.html'), 'utf8'),
+    'head-icons': fs.readFileSync(path.join(SRC_HTML, 'partials', 'head-icons.html'), 'utf8'),
   };
   renderIndexPage(orchestras, allowedKeywords, partials);
 
@@ -893,7 +899,7 @@ build()
 
 // ── Compression ───────────────────────────────────────────────────────────────
 
-const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg'];
+const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg', '.webmanifest'];
 
 function walkCompressibleFiles(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
