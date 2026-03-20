@@ -37,12 +37,15 @@ Die gebaute Seite liegt im `dist/`-Verzeichnis.
 musik-in-schaumburg.de/
 ├── ensembles/                  # Ensemble-Daten
 │   └── <slug>/
-│       └── index.yaml          # Ensemble-Konfiguration
-├── src/main/html/              # Quelldateien
-│   ├── index.html              # Startseite (Template)
-│   ├── orchestra.html          # Ensemble-Seite (Template)
+│       └── index.yaml          # Ensemble-Konfiguration (YAML-Schema s.u.)
+├── src/main/
+│   ├── html/
+│   │   ├── index.html          # Startseite (Mustache-Template)
+│   │   ├── ensemble.html       # Ensemble-Detailseite (Mustache-Template)
+│   │   └── karte.html          # Kartenübersicht (Mustache-Template)
 │   ├── css/main.css            # Stylesheet
-│   └── js/lightbox.js          # Lightbox-Skript
+│   ├── js/lightbox.js          # Lightbox-Skript
+│   └── keywords.yml            # Erlaubte Stichwörter für das tags-Feld
 ├── scripts/
 │   └── build-pipeline.mjs     # Build-Pipeline
 ├── dist/                       # Gebaute Seite (nicht ins Git)
@@ -51,85 +54,111 @@ musik-in-schaumburg.de/
 
 == Ensemble hinzufügen
 
-Um ein neues Ensemble hinzuzufügen, legt man einen neuen Ordner unter `ensembles/<slug>/` an mit einer `index.yaml`-Datei:
+Um ein neues Ensemble hinzuzufügen, legt man einen neuen Ordner unter `ensembles/<slug>/` an mit einer `index.yaml`-Datei.
 
-[.note]
-====
-Stichworte / Tags:
-
-- Es gibt eine zentrale Liste mit auswählbaren Stichworten in `src/main/keywords.yml`.
-- In `index.yaml` kann das Feld `tags:` als Liste (oder `keywords:`) angegeben werden, z.B.
+=== YAML-Schema
 
 [source,yaml]
 ----
-tags:
-  - Jugend
-  - Kirche
-  - Blasmusik
-----
-
-- Falls ein Stichwort nicht in der zentralen Liste vorhanden ist, wird ein Warnhinweis beim Build ausgegeben, das Stichwort aber übernommen.
-====
-
-[source,yaml]
-----
+# ── Pflichtfelder ─────────────────────────────────────────────────────────────
 title: "Name des Ensembles"
-type: brass-band            # brass-band | choir | posaunenchor | symphony | big-band | ...
+type: brass-band            # Typ-Schlüssel – siehe Tabelle unten
 slug: mein-ensemble         # URL-Pfad, z.B. /ensemble/mein-ensemble/
+description: >
+  Kurzbeschreibung des Ensembles auf Deutsch. Kein HTML.
+  Anführungszeichen immer als »Guillemets«.
 
+# ── Allgemeine Angaben ────────────────────────────────────────────────────────
+founded: 1975               # optional: Gründungsjahr (ganze Zahl)
+active: true                # optional: false = aufgelöst / inaktiv (Standard: true)
+member_count: 40            # optional: Ungefähre Mitgliederzahl
+
+conductors:                 # optional: Dirigent(en) / Leitung
+  - name: "Max Mustermann"
+    role: "Dirigent"        # optional: Dirigent, Jugenddirigent, Chorleiterin, …
+
+membership_fee: "60 €/Jahr" # optional: Mitgliedsbeitrag (Freitext)
+
+# ── Bilder ─────────────────────────────────────────────────────────────────
 logo:
-  local: "logo.png"         # BEVORZUGT: Datei liegt in orchestras/<slug>/logo.png
-  # url: https://...        # Fallback falls kein lokales Logo vorhanden
+  local: "logo.png"         # BEVORZUGT: Datei in ensembles/<slug>/logo.png
+  # url: https://...        # Nur als Fallback, wenn kein lokales Logo möglich
 
 image:
-  local: "photo.jpg"        # BEVORZUGT: Datei liegt in orchestras/<slug>/photo.jpg
-  # url: https://...        # Fallback falls kein lokales Bild vorhanden
+  local: "photo.jpg"        # BEVORZUGT: Datei in ensembles/<slug>/photo.jpg
+  # url: https://...        # Nur als Fallback, wenn kein lokales Bild möglich
 
-description: "Kurzbeschreibung des Ensembles."
-
+# ── Standort ──────────────────────────────────────────────────────────────────
 # location: Nur setzen, wenn kein address-Block vorhanden ist ODER wenn der
 # Anzeigeort vom address.city abweichen soll (z.B. "Steinbergen / Rinteln"
-# statt "Rinteln"). Ist address.city gesetzt, wird es automatisch als Ort
-# auf der Karte und in der Karte verwendet – location ist dann redundant.
+# statt "Rinteln"). Ist address.city gesetzt, wird es automatisch verwendet –
+# location wäre dann redundant.
 location: "Stadthagen"      # optional
+
 address:
   name: "Probenraum XY"     # optional: Gebäude-/Raumname (kein Stadtname!)
   street: "Musterstraße 1"  # optional
   postcode: "31655"
   city: "Stadthagen"
   maps: "https://maps.app.goo.gl/…"  # optional: Google Maps-Kurzlink
+
+geo:                        # optional: Koordinaten für die Kartenansicht
+  lat: 52.3250              # Breitengrad (Dezimalgrad, Zahl)
+  lng: 9.1360               # Längengrad (Dezimalgrad, Zahl)
+
+# ── Proben ────────────────────────────────────────────────────────────────────
 rehearsal:
-  day: "Donnerstag"         # Wochentag
-  time: "19:30"             # optional
-  # location entfällt, wenn address.name bereits den Probenort nennt
-website: "https://example.com"        # optional
-social:
-  facebook: "https://www.facebook.com/..."   # optional
-  instagram: "https://www.instagram.com/..."  # optional
-  youtube: "https://www.youtube.com/..."      # optional
+  day: "Donnerstag"         # Wochentag auf Deutsch
+  time: "19:30"             # optional: Uhrzeit (HH:MM)
+  # location: Nur setzen, wenn der Probenort von address.name abweicht
+
+# ── Kontakt & Web ─────────────────────────────────────────────────────────────
+website: "https://example.com"  # optional
+
+contact:                    # optional: nur öffentlich zugängliche Daten
+  email: "info@example.de"
+  phone: "+49 5722 …"       # optional: nur wenn öffentlich gelistet
+
+social:                     # optional: alle Unterfelder optional
+  facebook: "https://www.facebook.com/..."
+  instagram: "https://www.instagram.com/..."
+  youtube: "https://www.youtube.com/..."
+  twitter: "https://twitter.com/..."
+
+# ── Stichwörter ───────────────────────────────────────────────────────────────
+# Erlaubte Werte stehen in src/main/keywords.yml. Unbekannte Tags erzeugen
+# beim Build eine Warnung, werden aber dennoch übernommen.
+# Alias: keywords (wird intern zu tags zusammengeführt)
+tags:
+  - Jugend
+  - Kirche
+  - Blasmusik
 ----
 
 === Bilder und Logos
 
-Bilder und Logos sollten **immer lokal** im Verzeichnis `orchestras/<slug>/` abgelegt und in der YAML-Datei mit `image.local` bzw. `logo.local` referenziert werden.
+Bilder und Logos sollten **immer lokal** im Verzeichnis `ensembles/<slug>/` abgelegt und in der YAML-Datei mit `image.local` bzw. `logo.local` referenziert werden.
 `image.url` / `logo.url` dienen nur als Fallback, wenn kein lokales Asset verfügbar ist, und erzeugen beim Build eine Warnung.
 
 === Ensembletypen
 
 [cols="1,2"]
 |===
-| Typ | Bedeutung
+| Typ | Anzeigebezeichnung
 
-| `brass-band`      | Brass Band
-| `symphony`        | Sinfonieorchester / Sinfonisches Blasorchester
-| `choir`           | Chor
-| `posaunenchor`    | Posaunenchor
-| `big-band`        | Big Band
-| `school-band`     | Schulkapelle / Schülerorchester
-| `chamber`         | Kammerorchester / -ensemble
-| `wind-ensemble`   | Bläserensemble
-| `strings-ensemble`| Streichensemble
-| `other`           | Sonstiges
+| `blaskapelle`       | Blaskapelle
+| `brass-band`        | Brass Band
+| `symphony`          | Sinfonisches Blasorchester
+| `symphony-orchestra`| Sinfonieorchester
+| `choir`             | Chor
+| `posaunenchor`      | Posaunenchor
+| `big-band`          | Big Band
+| `school-band`       | Schulkapelle
+| `chamber`           | Kammerorchester
+| `wind-ensemble`     | Bläserensemble
+| `strings-ensemble`  | Streichensemble
+| `band`              | Band
+| `other`             | Sonstiges
 |===
 
 == Build-Pipeline

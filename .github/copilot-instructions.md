@@ -113,11 +113,22 @@ contact:                           # Optional. Public contact info only.
 
 membership_fee: "60 €/Jahr"        # Optional. Free-form string shown as "💰 Mitgliedsbeitrag" on the detail page.
 
+geo:                               # Optional. Coordinates for the map view (karte/).
+  lat: 52.3250                     # Latitude as decimal number.
+  lng: 9.1360                      # Longitude as decimal number.
+
 social:                            # Optional. All sub-keys optional.
   facebook: "https://..."
   instagram: "https://..."
   youtube: "https://..."
   twitter: "https://..."
+
+# tags: Optional. Keywords from src/main/keywords.yml. Unknown tags trigger a build warning.
+# Alias: keywords (merged internally into tags).
+tags:
+  - Jugend
+  - Kirche
+  - Blasmusik
 ```
 
 ### Asset handling rules (IMPORTANT for Copilot)
@@ -136,6 +147,7 @@ When creating or updating an ensemble entry:
 
 | Value             | German label                        |
 |-------------------|-------------------------------------|
+| `blaskapelle`     | Blaskapelle                         |
 | `brass-band`      | Brass Band                          |
 | `symphony`        | Sinfonisches Blasorchester          |
 | `symphony-orchestra` | Sinfonieorchester                |
