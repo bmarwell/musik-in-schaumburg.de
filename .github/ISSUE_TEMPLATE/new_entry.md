@@ -16,6 +16,7 @@ assignees: []
 <!-- Bitte einen auswählen:
   - brass-band       → Brass Band
   - symphony         → Sinfonisches Blasorchester
+  - symphony-orchestra → Sinfonieorchester
   - choir            → Chor
   - posaunenchor     → Posaunenchor
   - big-band         → Big Band
