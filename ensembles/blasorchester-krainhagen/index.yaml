@@ -33,7 +33,6 @@ address:
 rehearsal:
   day: "Dienstag"
   time: "20:00"
-  location: "Krainhagen"
 
 location: "Krainhagen"
 geo:

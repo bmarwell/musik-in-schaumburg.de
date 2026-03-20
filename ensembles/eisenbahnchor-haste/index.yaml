@@ -29,7 +29,6 @@ address:
   postcode: '31559'
   city: 'Haste'
 
-location: 'Haste'
 geo:
   lat: 52.3804998
   lng: 9.3893219
@@ -39,7 +38,6 @@ website: 'https://www.eisenbahnchor-haste.de/'
 rehearsal:
   day: 'Dienstag'
   time: '20:00'
-  location: 'Bürgerhaus Haste'
 
 contact:
   email: 'info@eisenbahnchor-haste.de'

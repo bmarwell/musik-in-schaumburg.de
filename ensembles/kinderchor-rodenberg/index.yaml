@@ -20,7 +20,6 @@ address:
   postcode: '31552'
   city: 'Rodenberg'
 
-location: 'Rodenberg'
 geo:
   lat: 52.2936
   lng: 9.3426
@@ -30,7 +29,6 @@ website: 'https://julia-knubbe.de/chor'
 rehearsal:
   day: 'Montag'
   time: '16:30–17:15 Uhr'
-  location: 'St. Johannes / Gemeindehaus, Rodenberg'
 
 contact:
   email: 'mail@julia-knubbe.de'

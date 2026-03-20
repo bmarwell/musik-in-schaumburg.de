@@ -28,13 +28,13 @@ conductors:
   - name: "Stephan Winkelhake"
     role: "Dirigent"
 
+# address: Kein fester Probenraum bekannt; der Ort Lauenhagen wird als allgemeine
+# Ortsangabe geführt. address.name wird weggelassen – der Ort ist bereits in city enthalten.
 address:
-  name: "Lauenhagen"
   postcode: "31714"
   city: "Lauenhagen"
   maps: "https://maps.app.goo.gl/xG7K6SQqPZJfLyxj8"
 
-location: "Lauenhagen"
 geo:
   lat: 52.3559
   lng: 9.2071

@@ -36,7 +36,6 @@ address:
   postcode: "31675"
   city: "Bückeburg"
 
-location: "Bückeburg"
 geo:
   lat: 52.2611
   lng: 9.0489

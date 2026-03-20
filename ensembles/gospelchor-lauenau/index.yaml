@@ -27,7 +27,6 @@ address:
   city: 'Lauenau'
   postcode: '31867'
 
-location: 'Lauenau'
 geo:
   lat: 52.2836
   lng: 9.4014
@@ -40,4 +39,3 @@ social:
 rehearsal:
   day: 'Donnerstag'
   time: '19:00–20:30'
-  location: 'Gemeindehaus der ev. Kirche Lauenau'

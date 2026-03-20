@@ -25,7 +25,6 @@ address:
   postcode: '31552'
   city: 'Rodenberg'
 
-location: 'Rodenberg'
 geo:
   lat: 52.2936
   lng: 9.3426

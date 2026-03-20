@@ -86,19 +86,26 @@ description: >                     # Required. German text. Plain prose, no HTML
   Kurzbeschreibung …
 
 address:                           # Optional. Structured location/address.
-  name: "Probenraum XY"            # Venue name (optional).
+  name: "Probenraum XY"            # Venue/building name (optional). Do NOT use the city name here.
   street: "Musterstraße 1"         # Street address (optional).
   postcode: "31655"
   city: "Stadthagen"
   maps: "https://maps.app.goo.gl/…" # Google Maps short link (optional).
 
-location: "Stadthagen"             # Optional. Simple city fallback if no address block.
+# location: Optional. Explicit city label shown on cards and used as JSON-LD fallback.
+# ONLY set this when there is no address block OR when the display label should differ
+# from address.city (e.g. "Steinbergen / Rinteln" instead of "Rinteln").
+# When address.city is present the build pipeline derives location automatically —
+# an explicit location that merely repeats address.city is redundant and should be omitted.
+location: "Stadthagen"
 website: "https://..."             # Optional. Official website URL.
 
 rehearsal:                         # Optional. Regular rehearsal info.
   day: "Donnerstag"                # Weekday in German.
   time: "19:30"                    # Start time (HH:MM, optional).
-  location: "Probenraum XY"        # Location name (optional).
+  # location: optional. Omit when address.name already names the rehearsal venue —
+  # the build pipeline falls back to address.name automatically.
+  location: "Probenraum XY"
 
 contact:                           # Optional. Public contact info only.
   email: "info@example.de"

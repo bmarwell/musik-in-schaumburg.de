@@ -21,7 +21,6 @@ address:
   city: "Heuerßen"
   postcode: "31691"
 
-location: "Heuerßen"
 geo:
   lat: 52.3416
   lng: 9.2327

@@ -87,7 +87,21 @@ image:
 
 description: "Kurzbeschreibung des Ensembles."
 
-location: "Stadthagen"      # optional: Probenort / Standort
+# location: Nur setzen, wenn kein address-Block vorhanden ist ODER wenn der
+# Anzeigeort vom address.city abweichen soll (z.B. "Steinbergen / Rinteln"
+# statt "Rinteln"). Ist address.city gesetzt, wird es automatisch als Ort
+# auf der Karte und in der Karte verwendet – location ist dann redundant.
+location: "Stadthagen"      # optional
+address:
+  name: "Probenraum XY"     # optional: Gebäude-/Raumname (kein Stadtname!)
+  street: "Musterstraße 1"  # optional
+  postcode: "31655"
+  city: "Stadthagen"
+  maps: "https://maps.app.goo.gl/…"  # optional: Google Maps-Kurzlink
+rehearsal:
+  day: "Donnerstag"         # Wochentag
+  time: "19:30"             # optional
+  # location entfällt, wenn address.name bereits den Probenort nennt
 website: "https://example.com"        # optional
 social:
   facebook: "https://www.facebook.com/..."   # optional

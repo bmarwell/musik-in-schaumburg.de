@@ -442,9 +442,10 @@ function normalizeAddress(address) {
   return { ...address, hasMaps: Boolean(address.maps), hasStreet: Boolean(address.street) };
 }
 
-function normalizeRehearsal(rehearsal) {
+function normalizeRehearsal(rehearsal, address) {
   if (!rehearsal) return null;
-  return { ...rehearsal, hasTime: Boolean(rehearsal.time), hasLocation: Boolean(rehearsal.location) };
+  const location = rehearsal.location || address?.name || null;
+  return { ...rehearsal, hasTime: Boolean(rehearsal.time), location, hasLocation: Boolean(location) };
 }
 
 function normalizeContact(contact) {
@@ -557,6 +558,7 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
 
   const orchestrasForIndex = orchestras.map((o, i) => ({
     ...o,
+    location: o.location || o.address?.city || null,
     image: buildIndexImagePaths(o),
     logo: o.logo
       ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
@@ -582,7 +584,7 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
 function buildEnsembleView(orch) {
   const conductors = normalizeConductors(orch.conductors);
   const address = normalizeAddress(orch.address);
-  const rehearsal = normalizeRehearsal(orch.rehearsal);
+  const rehearsal = normalizeRehearsal(orch.rehearsal, orch.address);
   const contact = normalizeContact(orch.contact);
   const hasGeo = !!(orch.geo && orch.geo.lat && orch.geo.lng);
   const geoJson = hasGeo
@@ -591,6 +593,7 @@ function buildEnsembleView(orch) {
 
   return {
     ...orch,
+    location: orch.location || orch.address?.city || null,
     year: CURRENT_YEAR,
     canonicalUrl: `${SITE_URL}/ensemble/${orch.slug}/`,
     ogImageUrl: orch.image && orch.image.fallback

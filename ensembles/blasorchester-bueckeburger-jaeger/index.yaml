@@ -40,9 +40,7 @@ address:
 rehearsal:
   day: "Donnerstag"
   time: "19:30"
-  location: "Jägerkaserne Bückeburg"
 
-location: "Bückeburg"
 geo:
   lat: 52.2611
   lng: 9.0489

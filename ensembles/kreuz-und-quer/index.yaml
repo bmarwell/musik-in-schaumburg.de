@@ -35,7 +35,6 @@ address:
   city: "Heuerßen"
   postcode: "31691"
 
-location: "Heuerßen"
 geo:
   lat: 52.3359
   lng: 9.2766
@@ -45,4 +44,3 @@ website: "https://www.kuq.de/"
 rehearsal:
   day: "Mittwoch"
   time: "19:00"
-  location: "Gemeindehaus Probsthagen"
