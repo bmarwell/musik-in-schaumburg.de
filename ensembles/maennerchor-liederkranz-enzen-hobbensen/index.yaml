@@ -1,0 +1,33 @@
+title: 'Männerchor „Liederkranz" Enzen-Hobbensen'
+type: choir
+slug: maennerchor-liederkranz-enzen-hobbensen
+
+founded: 1898
+active: true
+member_count: 50
+
+conductors:
+  - name: "Manfred Neumann"
+    role: "Chorleiter"
+
+image:
+  local: "photo.jpg"
+
+description: >
+  Der Männerchor „Liederkranz" Enzen-Hobbensen wurde am 4. März 1898 von elf
+  Männern aus dem Dorf gegründet und zählt heute zu den leistungsstärksten
+  Männerchören im Landkreis Schaumburg. Der Chor pflegt ein vielseitiges
+  Repertoire aus traditionellem und modernem Liedgut und tritt regelmäßig bei
+  Konzerten und Veranstaltungen in der Region auf. 2023 feierte der Verein
+  sein 125-jähriges Bestehen.
+
+address:
+  name: "Vereinshaus Enzen"
+  city: "Stadthagen"
+  postcode: "31655"
+
+location: "Stadthagen-Enzen"
+website: "https://www.liederkranz-enzen-hobbensen.de"
+
+contact:
+  email: "kontakt@liederkranz-enzen-hobbensen.de"
