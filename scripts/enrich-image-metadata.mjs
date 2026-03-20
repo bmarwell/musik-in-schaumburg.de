@@ -19,7 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const ENSEMBLES_DIR = path.join(ROOT, 'ensembles');
 
-/** Domains where copyright is uncertain / legally risky. */
+/** Domains where copyright is uncertain / legally risky. Flag them but still add source. */
 const RISKY_DOMAINS = ['sn-online.de', 'schaumburger-nachrichten.de'];
 
 function gitLogBody(relPath) {
@@ -108,8 +108,7 @@ for (const slug of slugDirs) {
     }
 
     if (isRisky(source)) {
-      console.log(`[SKIP] ${slug}/${blockKey}: risky source (${source}) — not adding`);
-      continue;
+      console.log(`[WARN] ${slug}/${blockKey}: source from ${source} — adding with note`);
     }
 
     const copyright = ensembleTitle;
