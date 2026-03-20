@@ -1,0 +1,40 @@
+title: 'Chor Joy to Sing'
+type: choir
+slug: chor-joy-to-sing
+
+active: true
+
+conductors:
+  - name: 'Julia Knubbe'
+    role: 'Chorleiterin'
+
+description: >
+  »Chor Joy to Sing« ist der Gemeindechor der Kirche Steinbergen unter Leitung von Julia Knubbe.
+  Das Repertoire reicht von geistlicher Musik bis zu modernen Chorarrangements.
+  Neue Sängerinnen und Sänger sind stets willkommen – eine kostenlose Probestunde
+  ist nach Absprache möglich.
+
+address:
+  name: 'Jugendhaus der Kirche Steinbergen'
+  street: 'Kirchstraße 11'
+  postcode: '31737'
+  city: 'Rinteln'
+
+location: 'Steinbergen / Rinteln'
+geo:
+  lat: 52.1951
+  lng: 9.1303
+
+website: 'https://julia-knubbe.de/chor'
+
+rehearsal:
+  day: 'Mittwoch'
+  time: '20:00'
+  location: 'Jugendhaus der Kirche Steinbergen'
+
+contact:
+  email: 'mail@julia-knubbe.de'
+  phone: '+4917684636800'
+
+social:
+  instagram: 'https://www.instagram.com/_juliaknubbe_/'
