@@ -18,6 +18,18 @@ description: >
   auftreten. Das Repertoire umfasst Blasmusikklassiker sowie volksmusikalische Stücke
   in der Tradition der Schaumburger Landschaft.
 
-location: 'Bad Eilsen'
+address:
+  street: 'Wiesenstr. 10'
+  postcode: '31691'
+  city: 'Helpsen'
+
+location: 'Helpsen/Südhorsten'
+geo:
+  lat: 52.2703
+  lng: 9.1622
 
 website: 'http://www.schaumburger-trachtenkapelle.de/'
+
+contact:
+  email: 'boegellars@gmail.com'
+  phone: '+49 5724 4040410'
