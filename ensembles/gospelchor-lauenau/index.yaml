@@ -26,7 +26,10 @@ geo:
   lat: 52.2836
   lng: 9.4014
 
-website: 'https://happy-people-lauenau.de/'
+website: 'http://happy-people-lauenau.de/'
+
+social:
+  facebook: 'https://www.facebook.com/HappyPeopleLauenau'
 
 rehearsal:
   day: 'Donnerstag'
