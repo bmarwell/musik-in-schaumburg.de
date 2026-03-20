@@ -1,0 +1,32 @@
+title: "The Attic"
+type: band
+slug: the-attic
+
+active: true
+
+image:
+  local: "photo.png"
+
+description: >
+  The Attic ist eine Rockband aus Rinteln, bestehend aus Janek Meyer-Oeldig
+  (Gesang/Gitarre), Toto Mendoza (Lead-Gitarre), Noah Bröker (Bass) und
+  Liam McGinty (Schlagzeug). Die vier Rintelner kennen sich seit ihrer
+  Schulzeit und verbinden Rock, Indie und Alternative zu einem
+  unverwechselbaren Sound. 2024 gewannen sie den regionalen Vorentscheid
+  von „local heroes“ für die Landkreise Schaumburg, Hameln-Pyrmont und
+  Holzminden und eröffneten das Live Rock Schaumburg-Festival.
+
+address:
+  name: "Jugendzentrum Bückeburg"
+  city: "Bückeburg"
+  postcode: "31675"
+
+location: "Rinteln"
+website: "https://linktr.ee/theatticband"
+
+contact:
+  email: "theatticgermany@gmail.com"
+
+social:
+  instagram: "https://www.instagram.com/theatticgermany/"
+  youtube: "https://www.youtube.com/channel/UCuS1d8_RmNZCS8ESSwKkPHw"
