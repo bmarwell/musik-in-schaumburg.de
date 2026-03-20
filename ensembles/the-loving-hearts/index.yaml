@@ -1,0 +1,25 @@
+title: "The Loving Hearts"
+type: band
+slug: the-loving-hearts
+
+founded: 1964
+active: true
+
+logo:
+  local: "logo.png"
+
+image:
+  local: "photo.jpg"
+
+description: >
+  The Loving Hearts gelten als Urgestein der Stadthäger Beat-Szene. Das
+  Ensemble wurde 1964 von Gerhard Gundlach, Dieter Gundlach, Harald Böckmann
+  und Gerhard Widdel in Stadthagen gegründet. Am 18. Februar 1966 gewannen
+  sie das erste Beatfestival in der Aula des Ratsgymnasiums Stadthagen und
+  sicherten sich damit eine Kulturreise nach Berlin. In wechselnden Besetzungen
+  begeisterten sie die Schaumburger Jugend mit Beat und Rock 'n' Roll.
+  Bekannt sind sie für Auftritte im Ratskeller Stadthagen – zuletzt beim
+  60-jährigen Bühnenjubiläumskonzert im April 2024.
+
+location: "Stadthagen"
+website: "https://www.the-loving-hearts.de"
