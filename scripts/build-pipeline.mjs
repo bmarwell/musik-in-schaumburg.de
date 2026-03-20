@@ -597,6 +597,15 @@ function isRiskySource(url) {
   return url ? RISKY_SOURCE_DOMAINS.some(d => url.includes(d)) : false;
 }
 
+function isSafeHttpUrl(value) {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 function buildBildquellenList(orchestras) {
   const seen = new Set();
   const entries = [];
@@ -605,6 +614,11 @@ function buildBildquellenList(orchestras) {
     for (const assetKey of ['image', 'logo']) {
       const asset = o[assetKey];
       if (!asset?.local || !asset?.source || isRiskySource(asset.source)) continue;
+
+      if (!isSafeHttpUrl(asset.source)) {
+        console.warn(`[WARN] Unsicheres oder ungültiges source-URL für ${o.slug}/${assetKey}: "${asset.source}" – wird übersprungen.`);
+        continue;
+      }
 
       const key = `${o.slug}/${assetKey}`;
       if (seen.has(key)) continue;
