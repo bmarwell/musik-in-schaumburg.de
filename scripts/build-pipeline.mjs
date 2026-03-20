@@ -438,7 +438,14 @@ function normalizeRehearsal(rehearsal) {
 function normalizeContact(contact) {
   if (!contact) return null;
   const phoneDisplay = contact.phone ? contact.phone.replace(/ /g, '\u00a0') : null;
-  return { ...contact, hasEmail: Boolean(contact.email), hasPhone: Boolean(contact.phone), phoneDisplay };
+  const phoneNormalized = contact.phone ? contact.phone.replace(/[^\d+]/g, '') : null;
+  return {
+    ...contact,
+    hasEmail: Boolean(contact.email),
+    hasPhone: Boolean(contact.phone),
+    phoneDisplay,
+    phoneNormalized,
+  };
 }
 
 function buildIndexImagePaths(o) {
