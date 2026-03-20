@@ -145,21 +145,22 @@ When creating or updating an ensemble entry:
 
 ### Supported `type` values
 
-| Value             | German label                        |
-|-------------------|-------------------------------------|
-| `blaskapelle`     | Blaskapelle                         |
-| `brass-band`      | Brass Band                          |
-| `symphony`        | Sinfonisches Blasorchester          |
+| Value                | German label                        |
+|----------------------|-------------------------------------|
+| `blaskapelle`        | Blaskapelle                         |
+| `brass-band`         | Brass Band                          |
+| `symphony`           | Sinfonisches Blasorchester       |
 | `symphony-orchestra` | Sinfonieorchester                |
-| `choir`           | Chor                                |
-| `posaunenchor`    | Posaunenchor                        |
-| `big-band`        | Big Band                            |
-| `school-band`     | Schulkapelle / Schülerorchester     |
-| `chamber`         | Kammerorchester / Kammerensemble    |
-| `wind-ensemble`   | Bläserensemble                      |
-| `strings-ensemble`| Streichensemble                     |
-| `band`            | Band                                |
-| `other`           | Sonstiges                           |
+| `choir`              | Chor                             |
+| `posaunenchor`       | Posaunenchor                     |
+| `big-band`           | Big Band                         |
+| `school-band`        | Schulkapelle / Schülerorchester  |
+| `chamber`            | Kammerorchester / Kammerensemble |
+| `wind-ensemble`      | Bläserensemble                   |
+| `strings-ensemble`   | Streichensemble                  |
+| `drum-corps`         | Drum Corps                       |
+| `band`               | Band                             |
+| `other`              | Sonstiges                        |
 
 ---
 
