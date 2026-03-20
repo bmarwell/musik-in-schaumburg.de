@@ -102,16 +102,6 @@
           {{/image}}
 
           <div class="card-body">
-            {{#logo}}
-            {{#logo.local}}
-            <img class="card-logo"
-                 src="{{{logo.local}}}"
-                 alt="Logo {{title}}"
-                 width="64" height="64"
-                 loading="lazy">
-            {{/logo.local}}
-            {{/logo}}
-
             <span class="card-type">{{typeLabel}}</span>
             {{#isInactive}}<span class="ensemble-inactive-badge">Inaktiv</span>{{/isInactive}}
             <h3 class="card-title" itemprop="name">
@@ -120,7 +110,8 @@
 
             <p class="card-description" itemprop="description">{{description}}</p>
 
-            <div class="card-meta">
+            <div class="card-meta-row">
+              <div class="card-meta">
               {{#location}}
               <span class="card-meta-item">
                 <span aria-hidden="true">📍</span>
@@ -139,6 +130,16 @@
                 <a href="{{{website}}}" itemprop="url" target="_blank" rel="noopener noreferrer">Website</a>
               </span>
               {{/website}}
+              </div>
+              {{#logo}}
+              {{#logo.local}}
+              <img class="card-logo"
+                   src="{{{logo.local}}}"
+                   alt="Logo {{title}}"
+                   width="64" height="64"
+                   loading="lazy">
+              {{/logo.local}}
+              {{/logo}}
             </div>
 
             <a class="card-link" href="ensemble/{{slug}}/index.html">
