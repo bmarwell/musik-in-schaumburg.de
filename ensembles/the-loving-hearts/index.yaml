@@ -7,9 +7,15 @@ active: true
 
 logo:
   local: "logo.png"
+  source: "https://www.the-loving-hearts.de"
+  copyright: "The Loving Hearts"
+
 
 image:
   local: "photo.jpg"
+  source: "https://www.the-loving-hearts.de"
+  copyright: "The Loving Hearts"
+
 
 description: >
   The Loving Hearts gelten als Urgestein der Stadthäger Beat-Szene. Das

@@ -10,9 +10,15 @@ conductors:
 
 logo:
   local: 'logo.svg'
+  source: "https://julia-knubbe.de/chor"
+  copyright: "HeartChor Schaumburg"
+
 
 image:
   local: 'photo.jpg'
+  source: "https://julia-knubbe.de/chor"
+  copyright: "HeartChor Schaumburg"
+
 
 description: >
   Der HeartChor Schaumburg singt Rock, Pop, Musical und Evergreens – und noch viel mehr!

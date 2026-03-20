@@ -11,6 +11,9 @@ conductors:
 
 image:
   local: "photo.jpg"
+  source: "http://www.jazzigators.de"
+  copyright: "The Jazzigators"
+
 
 description: >
   Die »Jazzigators« wurden 1990 von jazzbegeisterten Oberstufenschülerinnen

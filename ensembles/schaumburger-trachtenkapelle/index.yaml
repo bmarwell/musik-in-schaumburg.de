@@ -8,6 +8,9 @@ member_count: 14
 
 image:
   local: 'photo.jpg'
+  source: "https://www.sn-online.de/"
+  copyright: "Schaumburger Nachrichten"
+
 
 description: >
   Die Schaumburger Trachtenkapelle wurde 1970 gegründet und ist eine feste Größe in der

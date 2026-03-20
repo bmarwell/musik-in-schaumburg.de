@@ -12,6 +12,9 @@ conductors:
 
 image:
   local: "photo.jpg"
+  source: "https://www.liederkranz-enzen-hobbensen.de"
+  copyright: "Männerchor »Liederkranz« Enzen-Hobbensen"
+
 
 description: >
   Der Männerchor »Liederkranz« Enzen-Hobbensen wurde am 4. März 1898 von elf

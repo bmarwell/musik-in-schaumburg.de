@@ -6,6 +6,9 @@ active: true
 
 image:
   local: "photo.png"
+  source: "https://www.live-rock-schaumburg.de/"
+  copyright: "The Attic / Live Rock Schaumburg"
+
 
 description: >
   The Attic ist eine Rockband aus Rinteln, bestehend aus Janek Meyer-Oeldig
