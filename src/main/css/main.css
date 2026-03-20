@@ -731,21 +731,36 @@ main {
   color: var(--color-text-muted);
 }
 
+/* Material-Design-style data table: row dividers only, no outer box */
 .bildquellen-table {
   width: 100%;
   border-collapse: collapse;
-  margin-block: 0.75rem 1rem;
-  font-size: 0.9rem;
-}
-
-.bildquellen-table th,
-.bildquellen-table td {
-  text-align: left;
-  padding: 0.5rem 0.75rem;
-  border-block-end: 1px solid var(--color-border, #e0e0e0);
+  margin-block: 0.5rem 1.5rem;
+  font-size: 0.875rem;
 }
 
 .bildquellen-table thead th {
-  background: var(--color-bg-alt, #f5f5f5);
+  text-align: left;
+  padding: 0 16px 8px;
+  font-size: 0.7rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.bildquellen-table tbody td {
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.bildquellen-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bildquellen-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--color-primary) 4%, transparent);
 }
