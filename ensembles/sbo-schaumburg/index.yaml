@@ -3,13 +3,13 @@ type: symphony
 slug: sbo-schaumburg
 
 logo:
-  local: "logo.png"
+  local: "logo-sbo-schaumburg.png"
   source: "https://www.sbo-schaumburg.de/"
   copyright: "Sinfonisches Blasorchester Schaumburg"
 
 
 image:
-  local: "photo.jpg"
+  local: "sbo-schaumburg.jpg"
   source: "https://www.sbo-schaumburg.de/"
   copyright: "Sinfonisches Blasorchester Schaumburg"
 

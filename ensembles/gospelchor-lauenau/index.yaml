@@ -5,13 +5,13 @@ slug: gospelchor-lauenau
 active: true
 
 logo:
-  local: 'logo.png'
+  local: 'logo-gospelchor-lauenau.png'
   source: "https://happy-people-lauenau.de/"
   copyright: "Gospelchor Lauenau – The Happy People"
 
 
 image:
-  local: 'photo.jpg'
+  local: 'gospelchor-lauenau.jpg'
   source: "https://happy-people-lauenau.de/"
   copyright: "Gospelchor Lauenau – The Happy People"
 

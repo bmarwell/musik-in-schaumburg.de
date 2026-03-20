@@ -7,12 +7,12 @@ active: true
 member_count: 6
 
 logo:
-  local: 'logo.jpg'
+  local: 'logo-razzle-dazzle.jpg'
   source: "https://web.archive.org/web/2008*/http://www.razzledazzle.de/"
   copyright: "Razzle Dazzle"
 
 image:
-  local: 'photo.jpg'
+  local: 'razzle-dazzle.jpg'
   source: "https://web.archive.org/web/2008*/http://www.razzledazzle.de/"
   copyright: "Razzle Dazzle"
 

@@ -10,7 +10,7 @@ conductors:
     role: 'Musikalischer Leiter'
 
 image:
-  local: 'photo.jpg'
+  local: 'schuetzenkapelle-kathrinhagen.jpg'
   source: "https://fotos.verwaltungsportal.de/"
   copyright: "Schützenkapelle Kathrinhagen / Schützenverein Kathrinhagen-Westerwald"
 

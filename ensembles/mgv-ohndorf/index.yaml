@@ -10,7 +10,7 @@ conductors:
     role: 'Chorleiterin'
 
 image:
-  local: 'photo.jpg'
+  local: 'mgv-ohndorf.jpg'
   source: "https://www.sn-online.de/"
   copyright: "Schaumburger Nachrichten"
 
