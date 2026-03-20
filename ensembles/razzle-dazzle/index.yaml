@@ -1,0 +1,29 @@
+title: 'Razzle Dazzle'
+type: band
+slug: razzle-dazzle
+
+founded: 1991
+active: true
+member_count: 6
+
+logo:
+  local: 'logo.jpg'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  »Razzle Dazzle« bringen die Musik der 50er und 60er Jahre authentisch auf die Bühne.
+  Seit ihrer Gründung 1991 präsentieren die sechs Musiker aus Stadthagen Rock'n'Roll-Klassiker
+  von Elvis über Chuck Berry bis Buddy Holly in einer mitreißenden Bühnenshow.
+  1993 gewannen sie einen norddeutschen Rock'n'Roll-Bandwettbewerb und standen im Laufe ihrer
+  Karriere gemeinsam mit Größen wie Peter Kraus, den Lords und der Spider Murphy Gang auf der Bühne.
+  Über Jahrzehnte waren sie Stammgäste beim Pflastertrubel vor dem Ratskeller Stadthagen.
+
+location: 'Stadthagen'
+
+rehearsal:
+  location: 'Stadthagen'
+
+social:
+  facebook: 'https://www.facebook.com/RazzleDazzleDieBand/'
