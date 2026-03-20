@@ -1,0 +1,44 @@
+title: "Spielmannszug Münchehagen e.V."
+type: "spielmannszug"
+slug: "spielmannszug-muenchehagen"
+active: true
+
+image:
+  local: "ensemble-spielmannszug-sz-muenchehagen.jpg"
+  source: "http://www.sz-muenchehagen.de/"
+  copyright: "Spielmannszug Münchehagen e.V."
+
+logo:
+  local: "logo-sz-muenchehagen.jpg"
+  source: "http://www.sz-muenchehagen.de/"
+  copyright: "Spielmannszug Münchehagen e.V."
+
+description: |
+  Der Spielmannszug Münchehagen e.V. prägt seit über sieben Jahrzehnten 
+  das kulturelle Geschehen in Rehburg-Loccum und ist ein fester Bestandteil 
+  regionaler Schützen- und Erntefeste. 
+  Mit einer Besetzung aus Querflöten, Lyren und modernem Schlagwerk 
+  umfasst das Repertoire sowohl traditionelle Marschmusik als auch zeitgemäße Arrangements 
+  aus dem Pop- und Unterhaltungsbereich. 
+  Das Ensemble legt großen Wert auf eine fundierte Nachwuchsarbeit und 
+  die Förderung der Gemeinschaft innerhalb des Vereins. 
+  Die Spielfreude der „Blauröcke“ zeigt sich bei zahlreichen Auftritten 
+  im gesamten Landkreis Schaumburg und den angrenzenden Regionen.
+
+conductors:
+  - name: "Thomas Kleine"
+    role: "1. Vorsitzender"
+
+address:
+  postcode: "31547"
+  city: "Rehburg-Loccum"
+  maps: "https://maps.app.goo.gl/ZkrnJgqy6ZNTb7p17"
+
+geo:
+  lat: 52.43935
+  lng: 9.18444
+
+website: "http://www.sz-muenchehagen.de/"
+
+social:
+  facebook: "https://www.facebook.com/profile.php?id=100002324234934"

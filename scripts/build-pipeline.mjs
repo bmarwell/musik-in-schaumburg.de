@@ -65,6 +65,7 @@ const TYPE_LABELS = {
   'big-band': 'Big Band',
   'strings-ensemble': 'Streichensemble',
   'drum-corps': 'Drum Corps',
+  'spielmannszug': 'Spielmannszug',
   'band': 'Band',
   'other': 'Sonstiges',
 };

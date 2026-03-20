@@ -158,6 +158,7 @@ Bilder und Logos sollten **immer lokal** im Verzeichnis `ensembles/<slug>/` abge
 | `wind-ensemble`     | Bläserensemble
 | `strings-ensemble`  | Streichensemble
 | `drum-corps`        | Drum Corps
+| `spielmannszug`     | Spielmannszug
 | `band`              | Band
 | `other`             | Sonstiges
 |===

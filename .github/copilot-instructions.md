@@ -145,10 +145,10 @@ When creating or updating an ensemble entry:
 
 ### Supported `type` values
 
-| Value                | German label                        |
-|----------------------|-------------------------------------|
-| `blaskapelle`        | Blaskapelle                         |
-| `brass-band`         | Brass Band                          |
+| Value                | German label                     |
+|----------------------|----------------------------------|
+| `blaskapelle`        | Blaskapelle                      |
+| `brass-band`         | Brass Band                       |
 | `symphony`           | Sinfonisches Blasorchester       |
 | `symphony-orchestra` | Sinfonieorchester                |
 | `choir`              | Chor                             |
@@ -159,6 +159,7 @@ When creating or updating an ensemble entry:
 | `wind-ensemble`      | Bläserensemble                   |
 | `strings-ensemble`   | Streichensemble                  |
 | `drum-corps`         | Drum Corps                       |
+| `spielmannszug`      | Spielmannszug                    |
 | `band`               | Band                             |
 | `other`              | Sonstiges                        |
 
