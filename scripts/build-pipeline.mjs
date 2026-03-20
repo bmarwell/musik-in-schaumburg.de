@@ -46,6 +46,9 @@ const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
 
+/** Sources whose copyright is legally uncertain — omit from public Bildquellennachweis. */
+const RISKY_SOURCE_DOMAINS = ['sn-online.de', 'schaumburger-nachrichten.de'];
+
 const IMAGE_WIDTHS = [400, 800, 1200];
 const LOGO_SIZE = 128;
 
@@ -590,9 +593,44 @@ function buildEnsembleView(orch) {
   };
 }
 
-function renderImpressumPage(partials) {
+function isRiskySource(url) {
+  return url ? RISKY_SOURCE_DOMAINS.some(d => url.includes(d)) : false;
+}
+
+function buildBildquellenList(orchestras) {
+  const seen = new Set();
+  const entries = [];
+
+  for (const o of orchestras) {
+    for (const assetKey of ['image', 'logo']) {
+      const asset = o[assetKey];
+      if (!asset?.local || !asset?.source || isRiskySource(asset.source)) continue;
+
+      const key = `${o.slug}/${assetKey}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      entries.push({
+        ensemble: o.title,
+        ensembleUrl: `../ensemble/${o.slug}/index.html`,
+        assetType: assetKey === 'logo' ? 'Logo' : 'Ensemblefoto',
+        source: asset.source,
+        copyright: asset.copyright ?? o.title,
+      });
+    }
+  }
+
+  return entries.sort((a, b) => a.ensemble.localeCompare(b.ensemble, 'de'));
+}
+
+function renderImpressumPage(orchestras, partials) {
   const template = fs.readFileSync(path.join(SRC_HTML, 'impressum.html'), 'utf8');
-  const view = { year: CURRENT_YEAR };
+  const bildquellen = buildBildquellenList(orchestras);
+  const view = {
+    year: CURRENT_YEAR,
+    bildquellen,
+    hasBildquellen: bildquellen.length > 0,
+  };
   const html = Mustache.render(template, view, partials);
   const outPath = path.join(DIST, 'impressum', 'index.html');
   fse.ensureDirSync(path.dirname(outPath));
@@ -720,7 +758,7 @@ async function build() {
   renderMapPage(orchestras, partials);
 
   log('Rendering impressum page...');
-  renderImpressumPage(partials);
+  renderImpressumPage(orchestras, partials);
 
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);

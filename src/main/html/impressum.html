@@ -77,12 +77,26 @@
           </table>
 
           <h4>Ensemblefotos und -logos</h4>
-          <p>
-            Die Fotos und Logos der einzelnen Musikensembles stammen von den jeweiligen Ensembles
-            oder deren offiziellen Websites und werden mit freundlicher Genehmigung verwendet.
-            Sofern ein Foto aus einer anderen Quelle stammt, ist dies auf der jeweiligen Ensembleseite
-            vermerkt.
-          </p>
+          {{#hasBildquellen}}
+          <table class="bildquellen-table">
+            <thead>
+              <tr>
+                <th scope="col">Ensemble</th>
+                <th scope="col">Typ</th>
+                <th scope="col">Urheber / Quelle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#bildquellen}}
+              <tr>
+                <td><a href="{{ensembleUrl}}">{{ensemble}}</a></td>
+                <td>{{assetType}}</td>
+                <td><a href="{{source}}" target="_blank" rel="noopener noreferrer">{{copyright}}</a></td>
+              </tr>
+              {{/bildquellen}}
+            </tbody>
+          </table>
+          {{/hasBildquellen}}
 
           <h4>Kartenmaterial</h4>
           <p>
