@@ -593,6 +593,8 @@ function renderMapPage(orchestras, partials) {
     lat: o.geo.lat,
     lng: o.geo.lng,
     url: `../ensemble/${o.slug}/index.html`,
+    logoUrl: o.logo && o.logo.local ? `../ensemble/${o.slug}/${o.logo.local}` : null,
+    excerpt: truncate(o.description, 80),
   }));
   const view = {
     year: CURRENT_YEAR,

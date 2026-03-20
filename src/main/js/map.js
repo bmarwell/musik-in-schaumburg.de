@@ -29,6 +29,19 @@ function addTiles(map) {
   L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
 }
 
+function buildPopupHtml(ens) {
+  const logo = ens.logoUrl
+    ? `<img src="${ens.logoUrl}" alt="Logo ${ens.title}" style="max-width:64px;max-height:64px;object-fit:contain;float:right;margin:0 0 4px 8px;">`
+    : '';
+  const excerpt = ens.excerpt ? `<p style="margin:4px 0 6px;font-size:.85em;">${ens.excerpt}</p>` : '';
+  return (
+    `${logo}<strong><a href="${ens.url}">${ens.title}</a></strong>` +
+    `<br><small>${ens.typeLabel}</small>` +
+    excerpt +
+    `<br><a href="${ens.url}">Mehr erfahren →</a>`
+  );
+}
+
 function initOverviewMap() {
   const el = document.getElementById('map-overview');
   if (!el || !window.MAP_DATA || !window.MAP_DATA.length) return;
@@ -39,11 +52,7 @@ function initOverviewMap() {
   const icon = buildPinIcon();
   for (const ens of window.MAP_DATA) {
     L.marker([ens.lat, ens.lng], { icon, title: ens.title })
-      .bindPopup(
-        `<strong><a href="${ens.url}">${ens.title}</a></strong>` +
-        `<br><small>${ens.typeLabel}</small>` +
-        `<br><a href="${ens.url}">Mehr erfahren →</a>`
-      )
+      .bindPopup(buildPopupHtml(ens))
       .addTo(map);
   }
 }
