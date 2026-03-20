@@ -31,6 +31,7 @@
 
   <title>{{title}} – Musik in Schaumburg</title>
   <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/leaflet.min.css">
   <link rel="icon" href="../../favicon.ico" sizes="any">
   <script type="application/ld+json">
   {{{jsonld}}}
@@ -48,6 +49,7 @@
   <nav class="site-nav" aria-label="Hauptnavigation">
     <div class="container">
       <a href="../../index.html">Startseite</a>
+      <a href="../../map/index.html">🗺 Karte</a>
     </div>
   </nav>
 
@@ -199,6 +201,13 @@
       </div>
       {{/hasSocial}}
 
+      {{#hasGeo}}
+      <div class="map-section">
+        <h2 class="map-section-heading">Auf der Karte</h2>
+        <div id="map-ensemble" class="map-ensemble" aria-label="Karte mit Standort von {{title}}"></div>
+      </div>
+      {{/hasGeo}}
+
     </div>
   </main>
 
@@ -216,6 +225,11 @@
   </footer>
 
   <script src="../../js/lightbox.js"></script>
+  {{#hasGeo}}
+  <script>window.ENSEMBLE_GEO = {{{geoJson}}};</script>
+  <script src="../../js/leaflet.min.js"></script>
+  <script src="../../js/map.js"></script>
+  {{/hasGeo}}
 
   {{> matomo}}
 </body>

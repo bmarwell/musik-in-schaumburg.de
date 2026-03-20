@@ -450,6 +450,39 @@ main {
   text-decoration: none;
 }
 
+/* ── Maps (Leaflet) ─────────────────────────────────────────────── */
+.map-intro {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0 0 1rem;
+}
+
+.map-overview {
+  height: 520px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.map-section {
+  margin-top: 2rem;
+}
+
+.map-section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 0.75rem;
+}
+
+.map-ensemble {
+  height: 300px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
 /* ── Lightbox ───────────────────────────────────────────────────── */
 #lightbox-overlay {
   display: none;

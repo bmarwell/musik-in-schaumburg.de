@@ -31,6 +31,10 @@ address:
   city: "Bückeburg"
 
 location: "Bückeburg"
+geo:
+  lat: 52.2611
+  lng: 9.0489
+
 website: "https://www.maerchensaenger.de/konzertchor/"
 
 contact:

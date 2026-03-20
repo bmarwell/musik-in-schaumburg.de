@@ -22,4 +22,8 @@ description: >
   60-jährigen Bühnenjubiläumskonzert im April 2024.
 
 location: "Stadthagen"
+geo:
+  lat: 52.329
+  lng: 9.2053
+
 website: "https://www.the-loving-hearts.de"

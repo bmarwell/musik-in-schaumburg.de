@@ -553,6 +553,10 @@ function buildEnsembleView(orch) {
   const address = normalizeAddress(orch.address);
   const rehearsal = normalizeRehearsal(orch.rehearsal);
   const contact = normalizeContact(orch.contact);
+  const hasGeo = !!(orch.geo && orch.geo.lat && orch.geo.lng);
+  const geoJson = hasGeo
+    ? JSON.stringify({ lat: orch.geo.lat, lng: orch.geo.lng, title: orch.title })
+    : null;
 
   return {
     ...orch,
@@ -574,7 +578,32 @@ function buildEnsembleView(orch) {
     isInactive: orch.active === false,
     founded: orch.founded || null,
     member_count: orch.member_count || null,
+    hasGeo,
+    geoJson,
   };
+}
+
+function renderMapPage(orchestras, partials) {
+  const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'map.html'), 'utf8');
+  const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
+  const mapData = withGeo.map(o => ({
+    slug: o.slug,
+    title: o.title,
+    typeLabel: o.typeLabel,
+    lat: o.geo.lat,
+    lng: o.geo.lng,
+    url: `../ensemble/${o.slug}/index.html`,
+  }));
+  const view = {
+    year: CURRENT_YEAR,
+    mapDataJson: JSON.stringify(mapData),
+    ensembleCount: withGeo.length,
+  };
+  const html = Mustache.render(mapTemplate, view, partials);
+  const outPath = path.join(DIST, 'map', 'index.html');
+  fse.ensureDirSync(path.dirname(outPath));
+  fs.writeFileSync(outPath, html, 'utf8');
+  log('Written: map/index.html');
 }
 
 function renderEnsemblePages(orchestras, orchTemplate, partials) {
@@ -592,6 +621,7 @@ function generateSitemap(orchestras) {
   const today = new Date().toISOString().slice(0, 10);
   const sitemapUrls = [
     { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0', lastmod: today },
+    { loc: `${SITE_URL}/map/`, changefreq: 'monthly', priority: '0.7', lastmod: today },
     ...orchestras.map(o => ({
       loc: `${SITE_URL}/ensemble/${o.slug}/`,
       changefreq: 'monthly',
@@ -644,6 +674,9 @@ async function build() {
   log('Rendering orchestra pages...');
   const orchTemplate = fs.readFileSync(path.join(SRC_HTML, 'ensemble.html'), 'utf8');
   renderEnsemblePages(orchestras, orchTemplate, partials);
+
+  log('Rendering map page...');
+  renderMapPage(orchestras, partials);
 
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);

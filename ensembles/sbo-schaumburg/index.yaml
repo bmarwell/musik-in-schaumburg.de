@@ -29,6 +29,10 @@ address:
   maps: "https://maps.app.goo.gl/xG7K6SQqPZJfLyxj8"
 
 location: "Lauenhagen"
+geo:
+  lat: 52.3559
+  lng: 9.2071
+
 website: "https://www.sbo-schaumburg.de/"
 
 social:
