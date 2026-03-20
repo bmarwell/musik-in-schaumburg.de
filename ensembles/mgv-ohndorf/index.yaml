@@ -1,0 +1,25 @@
+title: 'Männergesangverein Ohndorf e.V.'
+type: choir
+slug: mgv-ohndorf
+
+founded: 1922
+active: false
+
+conductors:
+  - name: 'Julia Makarowa'
+    role: 'Chorleiterin'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  Der Männergesangverein Ohndorf e.V. wurde 1922 gegründet und war über Jahrzehnte
+  ein fester Bestandteil des kulturellen Lebens im Dorf Ohndorf. Als Mitglied des
+  Sängerbundes Deister-Süntel pflegte der Verein das klassische Männerchorlied und
+  trat bei Dorf- und Kirchenfesten sowie Gemeinschaftsveranstaltungen benachbarter
+  Chöre auf. Aufgrund stetig sinkender Mitgliederzahlen musste der Verein im Dezember
+  2023 aufgelöst werden.
+
+location: 'Ohndorf'
+
+website: 'https://ohndorf.de/index.php/mgv-ohndorf/'
