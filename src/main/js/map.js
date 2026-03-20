@@ -1,13 +1,13 @@
 'use strict';
 
-/* Initialises Leaflet maps. Called after leaflet.min.js is loaded.
+/* Initialises Leaflet maps. Called after leaflet.js is loaded.
  * Overview map: reads window.MAP_DATA (injected by the map page template).
  * Ensemble map: reads window.ENSEMBLE_GEO (injected by ensemble detail template).
  */
 
 const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_ATTRIBUTION =
-  '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>-Mitwirkende';
+  '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>-Mitwirkende';
 
 function buildPinIcon() {
   const svg =
@@ -25,32 +25,118 @@ function buildPinIcon() {
   });
 }
 
+function buildClusterIcon(count) {
+  const inner =
+    '<div style="background:#1a4f8a;color:#fff;border:2px solid #fff;border-radius:50%;' +
+    'width:32px;height:32px;display:flex;align-items:center;justify-content:center;' +
+    'font-weight:700;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.4);">' +
+    count + '</div>';
+  return L.divIcon({
+    html: inner,
+    className: '',
+    iconSize:    [32, 32],
+    iconAnchor:  [16, 32],
+    popupAnchor: [0, -34],
+  });
+}
+
 function addTiles(map) {
   L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
 }
 
-function buildPopupHtml(ens) {
-  const logo = ens.logoUrl
-    ? `<img src="${ens.logoUrl}" alt="Logo ${ens.title}" style="max-width:64px;max-height:64px;object-fit:contain;float:right;margin:0 0 4px 8px;">`
-    : '';
-  const excerpt = ens.excerpt ? `<p style="margin:4px 0 6px;font-size:.85em;">${ens.excerpt}</p>` : '';
-  return (
-    `${logo}<strong><a href="${ens.url}">${ens.title}</a></strong>` +
-    `<br><small>${ens.typeLabel}</small>` +
-    excerpt +
-    `<br><a href="${ens.url}">Mehr erfahren →</a>`
-  );
+function createLink(href, text) {
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  return a;
+}
+
+function buildPopupContent(ens) {
+  const div = document.createElement('div');
+
+  if (ens.logoUrl) {
+    const img = document.createElement('img');
+    img.src = ens.logoUrl;
+    img.alt = 'Logo ' + ens.title;
+    img.style.cssText = 'max-width:64px;max-height:64px;object-fit:contain;float:right;margin:0 0 4px 8px;';
+    div.appendChild(img);
+  }
+
+  const strong = document.createElement('strong');
+  strong.appendChild(createLink(ens.url, ens.title));
+  div.appendChild(strong);
+  div.appendChild(document.createElement('br'));
+
+  const small = document.createElement('small');
+  small.textContent = ens.typeLabel;
+  div.appendChild(small);
+
+  if (ens.excerpt) {
+    const p = document.createElement('p');
+    p.style.cssText = 'margin:4px 0 6px;font-size:.85em;';
+    p.textContent = ens.excerpt;
+    div.appendChild(p);
+  }
+
+  div.appendChild(document.createElement('br'));
+  div.appendChild(createLink(ens.url, 'Mehr erfahren \u2192'));
+  return div;
+}
+
+function buildClusterPopupContent(group) {
+  const div = document.createElement('div');
+
+  const heading = document.createElement('strong');
+  heading.textContent = group.length + ' Ensembles';
+  div.appendChild(heading);
+
+  const ul = document.createElement('ul');
+  ul.style.cssText = 'margin:6px 0 0;padding-left:1rem;';
+
+  for (const ens of group) {
+    const li = document.createElement('li');
+    li.appendChild(createLink(ens.url, ens.title));
+    const typeSpan = document.createElement('span');
+    typeSpan.style.cssText = 'color:#666;font-size:.85em;display:block;';
+    typeSpan.textContent = ens.typeLabel;
+    li.appendChild(typeSpan);
+    ul.appendChild(li);
+  }
+
+  div.appendChild(ul);
+  return div;
+}
+
+function groupByLocation(data) {
+  const groups = new Map();
+  for (const ens of data) {
+    const key = `${ens.lat},${ens.lng}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(ens);
+  }
+  return groups;
 }
 
 function buildListItem(ens) {
   const li = document.createElement('li');
   li.className = 'map-ensemble-item';
   li.dataset.slug = ens.slug;
-  li.innerHTML =
-    `<a href="${ens.url}" class="map-ensemble-item-link">` +
-    `<span class="map-ensemble-item-title">${ens.title}</span>` +
-    `<span class="map-ensemble-item-type">${ens.typeLabel}</span>` +
-    `</a>`;
+
+  const link = document.createElement('a');
+  link.className = 'map-ensemble-item-link';
+  link.href = ens.url;
+
+  const titleSpan = document.createElement('span');
+  titleSpan.className = 'map-ensemble-item-title';
+  titleSpan.textContent = ens.title;
+
+  const typeSpan = document.createElement('span');
+  typeSpan.className = 'map-ensemble-item-type';
+  typeSpan.textContent = ens.typeLabel;
+
+  link.appendChild(titleSpan);
+  link.appendChild(typeSpan);
+  li.appendChild(link);
   return li;
 }
 
@@ -76,11 +162,21 @@ function initOverviewMap() {
   const map = L.map('map-overview').setView([52.27, 9.15], 11);
   addTiles(map);
 
-  const icon = buildPinIcon();
-  for (const ens of window.MAP_DATA) {
-    L.marker([ens.lat, ens.lng], { icon, title: ens.title })
-      .bindPopup(buildPopupHtml(ens))
-      .addTo(map);
+  const singleIcon = buildPinIcon();
+  const groups = groupByLocation(window.MAP_DATA);
+
+  for (const group of groups.values()) {
+    const { lat, lng } = group[0];
+    if (group.length === 1) {
+      L.marker([lat, lng], { icon: singleIcon, title: group[0].title })
+        .bindPopup(buildPopupContent(group[0]))
+        .addTo(map);
+    } else {
+      const names = group.map(e => e.title).join(', ');
+      L.marker([lat, lng], { icon: buildClusterIcon(group.length), title: names })
+        .bindPopup(buildClusterPopupContent(group))
+        .addTo(map);
+    }
   }
 
   const refresh = () => updateVisibleList(map, window.MAP_DATA);
