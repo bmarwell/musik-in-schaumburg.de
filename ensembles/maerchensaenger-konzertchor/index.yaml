@@ -1,0 +1,43 @@
+title: "Schaumburger Märchensänger (Konzertchor)"
+type: choir
+slug: maerchensaenger-konzertchor
+
+founded: 1948
+active: true
+member_count: 40
+
+conductors:
+  - name: "Nemanja Lukic"
+    role: "Chorleitung"
+
+logo:
+  local: "logo.png"
+
+image:
+  local: "photo.jpg"
+
+description: >
+  Die Schaumburger Märchensänger wurden 1948 gegründet und erlangten weltweiten
+  Ruhm durch das Lied „Mein Vater war ein Wandersmann". Der Konzertchor richtet
+  sich an Jugendliche von 12 bis 24 Jahren und pflegt als vierstimmig gemischter
+  Chor ein breites Repertoire – von der Renaissance bis zur zeitgenössischen
+  Musik, ergänzt durch Volkslieder, Jazz und Pop. Neue Mitglieder sind stets
+  willkommen; eine Probeprobe ist nach telefonischer Absprache möglich.
+
+address:
+  name: "Musikschule Schaumburger Märchensänger e. V."
+  street: "Georgstraße 7"
+  postcode: "31675"
+  city: "Bückeburg"
+
+location: "Bückeburg"
+website: "https://www.maerchensaenger.de/konzertchor/"
+
+contact:
+  email: "info@maerchensaenger.de"
+  phone: "+49 5722 3548"
+
+social:
+  facebook: "https://www.facebook.com/www.maerchensaenger.de"
+  instagram: "https://www.instagram.com/musikschulebueckeburg/"
+  youtube: "https://www.youtube.com/channel/UCu8JSAPso5g4xXZSFMAGvDA"
