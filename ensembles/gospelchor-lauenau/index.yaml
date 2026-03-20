@@ -1,0 +1,34 @@
+title: 'Gospelchor Lauenau – The Happy People'
+type: choir
+slug: gospelchor-lauenau
+
+active: true
+
+logo:
+  local: 'logo.png'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  »The Happy People« ist der Gospelchor aus Lauenau, der von Gospel bis Pop alles singt.
+  Die Sängerinnen und Sänger treten neben eigenen Konzerten auch auf Hochzeiten und anderen
+  festlichen Anlässen auf. Neue Mitglieder sind ausdrücklich willkommen –
+  Notenkenntnisse sind keine Voraussetzung. Der Spaß am Singen ist ansteckend!
+
+address:
+  name: 'Gemeindehaus der ev. Kirche Lauenau'
+  city: 'Lauenau'
+  postcode: '31867'
+
+location: 'Lauenau'
+geo:
+  lat: 52.2836
+  lng: 9.4014
+
+website: 'https://happy-people-lauenau.de/'
+
+rehearsal:
+  day: 'Donnerstag'
+  time: '19:00–20:30'
+  location: 'Gemeindehaus der ev. Kirche Lauenau'
