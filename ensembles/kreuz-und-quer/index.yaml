@@ -1,0 +1,38 @@
+title: "kreuz & quer"
+type: choir
+slug: kreuz-und-quer
+
+founded: 1995
+active: true
+member_count: 40
+
+conductors:
+  - name: "Mathias Goedecke"
+    role: "Chorleiter"
+
+logo:
+  local: "logo.png"
+
+image:
+  local: "photo.jpg"
+
+description: >
+  „kreuz & quer" wurde 1995 vom damaligen Pastor Hartmut Spier und Mathias Goedecke
+  in Probsthagen ins Leben gerufen. Der Chor besteht aus rund 40 Sängerinnen und Sängern,
+  die kreuz und quer aus vielen Teilen Schaumburgs kommen. Im Mittelpunkt steht christliche
+  Botschaft durch Musik – der Schwerpunkt des Repertoires liegt auf Spirituals und Gospels,
+  ergänzt durch Pop, Musical, Taizé-Gesänge sowie afrikanische und moderne Kirchenlieder.
+  Begleitet wird der Chor regelmäßig von einer eigenen Band.
+
+address:
+  name: "Gemeindehaus Probsthagen"
+  city: "Heuerßen"
+  postcode: "31691"
+
+location: "Heuerßen"
+website: "https://www.kuq.de/"
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:00"
+  location: "Gemeindehaus Probsthagen"
