@@ -155,6 +155,11 @@ function updateVisibleList(map, data) {
   if (countEl) countEl.textContent = `(${visible.length})`;
 }
 
+function watchContainerResize(map, el) {
+  if (!('ResizeObserver' in window)) return;
+  new ResizeObserver(() => map.invalidateSize()).observe(el);
+}
+
 function initOverviewMap() {
   const el = document.getElementById('map-overview');
   if (!el || !window.MAP_DATA || !window.MAP_DATA.length) return;
@@ -183,6 +188,7 @@ function initOverviewMap() {
   map.on('moveend', refresh);
   map.on('zoomend', refresh);
   map.whenReady(refresh);
+  watchContainerResize(map, el);
 }
 
 function initEnsembleMap() {
@@ -197,7 +203,11 @@ function initEnsembleMap() {
     .bindPopup(`<strong>${title}</strong>`)
     .addTo(map)
     .openPopup();
+
+  watchContainerResize(map, el);
 }
 
-initOverviewMap();
-initEnsembleMap();
+window.addEventListener('load', function () {
+  initOverviewMap();
+  initEnsembleMap();
+});
