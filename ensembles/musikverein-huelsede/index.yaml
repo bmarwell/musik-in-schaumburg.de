@@ -4,6 +4,9 @@ slug: musikverein-huelsede
 
 active: true
 
+image:
+  local: photo.jpg
+
 description: >
   Der Musikverein Hülsede e.V. ist ein im Landkreis Schaumburg verwurzelter Musikverein.
   Über aktuelle Probenzeiten, Auftritte und Mitgliedschaft informiert der Verein
