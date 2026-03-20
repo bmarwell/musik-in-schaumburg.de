@@ -57,6 +57,7 @@ const TYPE_LABELS = {
   'posaunenchor': 'Posaunenchor',
   'big-band': 'Big Band',
   'strings-ensemble': 'Streichensemble',
+  'band': 'Band',
   'other': 'Sonstiges',
 };
 

@@ -23,6 +23,7 @@ assignees: []
   - chamber          → Kammerorchester / Kammerensemble
   - wind-ensemble    → Bläserensemble
   - strings-ensemble → Streichensemble
+  - band             → Band
   - other            → Sonstiges
 -->
 
