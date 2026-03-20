@@ -1,0 +1,50 @@
+title: 'HeartChor Schaumburg'
+type: choir
+slug: heart-chor-schaumburg
+
+active: true
+
+conductors:
+  - name: 'Julia Knubbe'
+    role: 'Chorleiterin'
+
+logo:
+  local: 'logo.svg'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  Der HeartChor Schaumburg singt Rock, Pop, Musical und Evergreens – und noch viel mehr!
+  Chorleiterin Julia Knubbe lädt alle Gesangsbegeisterten herzlich ein, auch ohne Vorkenntnisse
+  in die Proben reinzuschnuppern. Zwei kostenlose und unverbindliche Probestunden sind jederzeit
+  möglich. Der Chor tritt regelmäßig bei Konzerten in der Region auf.
+
+membership_fee: '45 €/Monat'
+
+address:
+  name: 'Backhaus Aktiv'
+  street: 'Deisterstraße 17'
+  postcode: '31552'
+  city: 'Rodenberg'
+
+
+location: 'Rodenberg'
+geo:
+  lat: 52.2936
+  lng: 9.3426
+
+website: 'https://julia-knubbe.de/chor'
+
+rehearsal:
+  day: 'Donnerstag'
+  time: '19:45'
+  location: 'Backhaus Aktiv, Rodenberg'
+
+contact:
+  email: 'mail@julia-knubbe.de'
+  phone: '+49 176 84 63 68 00'
+
+social:
+  facebook: 'https://www.facebook.com/profile.php?id=100057263207174'
+  instagram: 'https://www.instagram.com/_juliaknubbe_/'
