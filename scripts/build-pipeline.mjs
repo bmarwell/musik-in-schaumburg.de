@@ -40,6 +40,7 @@ const SRC_CSS = path.join(ROOT, 'src', 'main', 'css');
 const SRC_JS = path.join(ROOT, 'src', 'main', 'js');
 const ORCHESTRAS_DIR = path.join(ROOT, 'ensembles');
 const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
+const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
 const CURRENT_YEAR = new Date().getFullYear();
@@ -651,11 +652,18 @@ function generateSitemap(orchestras) {
   fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml, 'utf8');
 }
 
+function copyLeafletFromNodeModules() {
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.js'), path.join(DIST, 'js', 'leaflet.min.js'));
+  fse.copySync(path.join(LEAFLET_DIST, 'leaflet.css'), path.join(DIST, 'css', 'leaflet.min.css'));
+  fse.copySync(path.join(LEAFLET_DIST, 'images'), path.join(DIST, 'css', 'images'));
+}
+
 function copyStaticAssets() {
   fse.ensureDirSync(path.join(DIST, 'css'));
   fse.ensureDirSync(path.join(DIST, 'js'));
   fse.copySync(SRC_CSS, path.join(DIST, 'css'));
   fse.copySync(SRC_JS, path.join(DIST, 'js'));
+  copyLeafletFromNodeModules();
   fse.copySync(path.join(ROOT, 'LICENSE'), path.join(DIST, 'LICENSE'));
   fse.copySync(path.join(ROOT, 'src', 'main', 'robots.txt'), path.join(DIST, 'robots.txt'));
   fse.copySync(path.join(ROOT, 'src', 'main', '.htaccess'), path.join(DIST, '.htaccess'));
