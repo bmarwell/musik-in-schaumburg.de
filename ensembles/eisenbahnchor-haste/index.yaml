@@ -1,0 +1,44 @@
+title: 'Eisenbahnchor Haste e.V.'
+type: choir
+slug: eisenbahnchor-haste
+
+founded: 1905
+active: true
+member_count: 63
+
+conductors:
+  - name: 'Daniel Zebrowski'
+    role: 'Chorleiter'
+
+image:
+  local: 'photo.jpg'
+
+description: >
+  Der Eisenbahnchor Haste e.V. wurde 1905 gegründet und blickt auf eine über 120-jährige
+  Geschichte zurück. Mit rund 63 aktiven Mitgliedern ist er einer der traditionsreichsten
+  Chöre im Landkreis Schaumburg. Unter der Leitung von Chorleiter Daniel Zebrowski pflegt
+  der Chor ein vielfältiges Repertoire und tritt bei regionalen Veranstaltungen und
+  Festen auf.
+
+address:
+  city: 'Haste'
+  postcode: '31707'
+
+location: 'Haste'
+geo:
+  lat: 52.2619
+  lng: 9.2438
+
+website: 'https://www.eisenbahnchor-haste.de/'
+
+rehearsal:
+  day: 'Dienstag'
+  time: '20:00'
+  location: 'Bürgerhaus Haste'
+
+contact:
+  email: 'info@eisenbahnchor-haste.de'
+
+social:
+  facebook: 'https://www.facebook.com/eisenbahnchor.haste'
+  instagram: 'https://www.instagram.com/eisenbahnchor_haste/'
