@@ -1,0 +1,40 @@
+title: "Drum & Music Corps Blue Bandits Hagenburg"
+type: drum-corps
+slug: blue-bandits
+active: true
+
+image:
+  local: ensemble-blue-bandits-hagenburg-drum-corps.jpg
+  source: "https://www.blue-bandits.de/"
+  copyright: "Drum & Music Corps Blue Bandits Hagenburg"
+
+description: |
+  Das Drum & Music Corps Blue Bandits versteht sich als modernes Show-Ensemble, 
+  das den klassischen Spielmannszug-Sound durch druckvolle Arrangements 
+  aus Pop, Rock und Filmmusik ersetzt hat. Unter der musikalischen 
+  Leitung von Mario Niehoff präsentiert die Formation energetische Choreografien, 
+  die in den markanten blau-schwarzen Uniformen ein optisches und akustisches 
+  Highlight bei regionalen Events wie dem Schützenfest darstellen. 
+  Auf ihrer Webseite blue-bandits.de gibt der Verein Einblicke 
+  in sein aktives Vereinsleben und das Repertoire, das weit über die Grenzen 
+  der Samtgemeinde Sachsenhagen hinaus bekannt ist. 
+  Seit über 20 Jahren beweist das Corps eindrucksvoll, wie lebendig und zeitgemäß 
+  Marschmusik am Steinhuder Meer heute interpretiert werden kann.
+
+conductors:
+  - name: "Mario Niehoff"
+    role: "Dirigent"
+
+address:
+  postcode: 31558
+  city: Hagenburg
+  maps: "https://maps.app.goo.gl/DYLa2vkZSSytMvWN8"
+
+geo:
+  lat: 52.43149
+  lng: 9.31388
+
+website: "https://www.blue-bandits.de/"
+
+social:
+  facebook: "https://www.facebook.com/BlueBanditsHagenburg"
