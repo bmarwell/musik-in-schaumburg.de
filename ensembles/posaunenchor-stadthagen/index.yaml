@@ -1,0 +1,41 @@
+title: "Posaunenchor Stadthagen"
+type: posaunenchor
+slug: posaunenchor-stadthagen
+
+active: true
+member_count: 40
+
+conductors:
+  - name: "Michael Mensching"
+    role: "Leitung"
+
+image:
+  local: "posaunenchor-stadthagen.jpg"
+  source: "https://github.com/user-attachments/assets/b4d2dc20-6634-4ca3-833a-46c842975785"
+
+description: >
+  Der Posaunenchor Stadthagen gehört zur Kirchenmusik an St. Martini Stadthagen und begleitet
+  Gottesdienste sowie besondere Veranstaltungen in der Gemeinde. Unter der Leitung von Michael
+  Mensching probt das Ensemble mittwochs im Jakob-Dammann-Haus. Beim Projekt »Brass & Voices«
+  erklang der Chor zuletzt gemeinsam mit über 100 Bläserinnen und Bläsern in der Martinikirche.
+
+address:
+  name: "Jakob-Dammann-Haus"
+  street: "Marienburger Str. 10"
+  postcode: "31655"
+  city: "Stadthagen"
+  maps: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x47ba7f6af44917f5:0x188e6d9f1e075267?sa=X&ved=1t:8290&ictx=111"
+
+geo:
+  lat: 52.326442
+  lng: 9.189645
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:00"
+  location: "Jakob-Damman-Haus"
+
+website: "https://stmartini-stadthagen.de/kirchenmusik/"
+
+contact:
+  phone: "+495721923183"
