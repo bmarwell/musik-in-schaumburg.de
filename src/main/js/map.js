@@ -117,6 +117,16 @@ function groupByLocation(data) {
   return groups;
 }
 
+function fitOverviewMap(map, points) {
+  if (points.length === 0) return;
+  if (points.length === 1) {
+    map.setView(points[0], 10);
+    return;
+  }
+
+  map.fitBounds(L.latLngBounds(points), { padding: [32, 32], maxZoom: 10 });
+}
+
 function buildListItem(ens) {
   const li = document.createElement('li');
   li.className = 'map-ensemble-item';
@@ -164,14 +174,16 @@ function initOverviewMap() {
   const el = document.getElementById('map-overview');
   if (!el || !window.MAP_DATA || !window.MAP_DATA.length) return;
 
-  const map = L.map('map-overview').setView([52.27, 9.15], 11);
+  const map = L.map('map-overview');
   addTiles(map);
 
   const singleIcon = buildPinIcon();
   const groups = groupByLocation(window.MAP_DATA);
+  const points = [];
 
   for (const group of groups.values()) {
     const { lat, lng } = group[0];
+    points.push([lat, lng]);
     if (group.length === 1) {
       L.marker([lat, lng], { icon: singleIcon, title: group[0].title })
         .bindPopup(buildPopupContent(group[0]))
@@ -187,6 +199,7 @@ function initOverviewMap() {
   const refresh = () => updateVisibleList(map, window.MAP_DATA);
   map.on('moveend', refresh);
   map.on('zoomend', refresh);
+  fitOverviewMap(map, points);
   map.whenReady(refresh);
   watchContainerResize(map, el);
 }
