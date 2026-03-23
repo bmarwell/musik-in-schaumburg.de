@@ -28,6 +28,9 @@ description: >
   und Ausland auf.
 
 adress:
+  name: "St. Nicolai-Kirchengemeinde"
+  street: "Hauptstraße 89"
+  postcode: "31719"
   city: "Wiedensahl"
 
 location: "Wiedensahl"
