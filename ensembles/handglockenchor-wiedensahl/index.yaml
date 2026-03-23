@@ -1,0 +1,40 @@
+title: "Handglockenchor Wiedensahl"
+type: other
+slug: handglockenchor-wiedensahl
+
+founded: 1987
+active: true
+member_count: 22
+
+conductors:
+  - name: "Thomas Eickhoff"
+    role: "Leitung"
+
+logo:
+  local: "logo-handglockenchor-wiedensahl.jpg"
+  source: "https://github.com/user-attachments/assets/313c3eb8-f153-4e28-b0c2-220870b64764"
+  copyright: "Handglockenchor Wiedensahl"
+
+image:
+  local: "2025-handglockenchor-wiedensahl.jpg"
+  source: "https://www.handglockenchor-wiedensahl.de/wp-content/gallery/usa_1/usa-1315.jpg"
+  copyright: "Handglockenchor Wiedensahl"
+
+description: >
+  Der Handglockenchor Wiedensahl präsentiert seit 1987 Handglockenmusik aus der ev.-luth.
+  Kirchengemeinde Wiedensahl. Mit über 100 Handglocken und 61 Tonstäben gehört das Ensemble zu
+  den größten seiner Art in Europa und wurde viermal in Folge beim Deutschen Orchesterwettbewerb
+  ausgezeichnet. Die Glöcknerinnen und Glöckner treten bei Konzerten, Festivals und Reisen im In-
+  und Ausland auf.
+
+location: "Wiedensahl"
+
+website: "https://www.handglockenchor-wiedensahl.de/"
+
+contact:
+  email: "th.eickhoff@t-online.de"
+  phone: "+4957269210100"
+
+social:
+  facebook: "https://www.facebook.com/profile.php?id=100063523030294"
+  instagram: "https://www.instagram.com/handglockenchor.wiedensahl/"
