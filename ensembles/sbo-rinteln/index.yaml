@@ -1,0 +1,53 @@
+title: "Symphonisches Blasorchester Rinteln"
+type: symphony
+slug: sbo-rinteln
+
+founded: 1986
+active: true
+member_count: 30
+
+conductors:
+  - name: "Thomas Lück"
+    role: "Dirigent"
+
+logo:
+  local: "2019-logo-sbo-rinteln.png"
+  source: "https://www.sbo-rinteln.de/wp-content/uploads/2019/02/Logo_SBO_4c-200x170.png"
+  copyright: "SBO Rinteln"
+
+image:
+  local: "2023-sbo-rinteln.jpg"
+  source: "https://www.sbo-rinteln.de/wp-content/uploads/2023/10/SBO-Rinteln-Rinteln-Erleben-2023-0005-scaled.jpg"
+  copyright: "SBO Rinteln"
+
+description: >
+  Das Symphonische Blasorchester der Stadt Rinteln informiert auf seiner Website über das
+  Vereinsleben und seine Konzerte. Geleitet von Thomas Lück probt das Ensemble mittwochs
+  außerhalb der niedersächsischen Ferien ab 19:30 Uhr in der ehemaligen Hildburgschule
+  Rinteln. Mit rund 30 aktiven Musikerinnen und Musikern prägt das SBO seit 1986 die
+  sinfonische Blasmusik in der Region.
+
+address:
+  name: "ehemalige Hildburgschule Rinteln"
+  street: "Klosterstr. 18"
+  postcode: "31737"
+  city: "Rinteln"
+
+geo:
+  lat: 52.1853641
+  lng: 9.0756633
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:30"
+  location: "ehemalige Hildburgschule Rinteln"
+
+website: "https://www.sbo-rinteln.de/"
+
+contact:
+  email: "info@sbo-rinteln.de"
+  phone: "+4917687926379"
+
+social:
+  facebook: "https://www.facebook.com/sborinteln/"
+  instagram: "https://www.instagram.com/sbo_rinteln/"
