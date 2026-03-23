@@ -25,6 +25,15 @@ description: >
   Freundschaft. Seit 2004 ist das alljährliche Adventskonzert in der Kirche Hattendorf
   eine lieb gewordene Tradition.
 
+address:
+  name: "Schützenhaus"
+  street: "Kathrinhagener Str. 57A"
+  postcode: "31749"
+  city: "Kathrinhagen"
+
 location: 'Kathrinhagen'
+geo:
+  lat: 52.24419
+  lng: 9.20817
 
 website: 'http://www.sv-kathrinhagen-westerwald.de/'

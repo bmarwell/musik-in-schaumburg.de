@@ -17,6 +17,15 @@ description: >
   Der Chor blickt auf eine jahrzehntelange Geschichte in der Schaumburger Musiklandschaft
   zurück.
 
+address:
+  name: "Dorfgemeinschaftshaus"
+  street: "Karl-Böhning-Straße 1"
+  postcode: "31737"
+  city: "Schaumburg"
+
 location: "Schaumburg"
+geo:
+  lat: 52.2004
+  lng: 9.18992
 
 website: "https://www.maennerchor-schaumburg.de"

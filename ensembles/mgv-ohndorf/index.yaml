@@ -23,6 +23,15 @@ description: >
   Chöre auf. Aufgrund stetig sinkender Mitgliederzahlen musste der Verein im Dezember
   2023 aufgelöst werden.
 
+address:
+  name: "Alte Schule"
+  street: "Schulstraße 9"
+  postcode: "31559"
+  city: "Ohndorf"
+
 location: 'Ohndorf'
+geo:
+  lat: 52.35652
+  lng: 9.34772
 
 website: 'https://ohndorf.de/index.php/mgv-ohndorf/'
