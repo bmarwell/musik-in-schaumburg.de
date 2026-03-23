@@ -27,7 +27,13 @@ description: >
   ausgezeichnet. Die Glöcknerinnen und Glöckner treten bei Konzerten, Festivals und Reisen im In-
   und Ausland auf.
 
+adress:
+  city: "Wiedensahl"
+
 location: "Wiedensahl"
+geo:
+  lat: 52.3837
+  lng: 9.11927
 
 website: "https://www.handglockenchor-wiedensahl.de/"
 
