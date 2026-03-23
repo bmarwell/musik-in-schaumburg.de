@@ -451,6 +451,13 @@ function normalizeAddress(address) {
   return { ...address, hasMaps: Boolean(address.maps), hasStreet: Boolean(address.street) };
 }
 
+function normalizeGeo(geo) {
+  if (!geo) return null;
+  if (typeof geo.lat !== 'number' || typeof geo.lng !== 'number') return null;
+  if (!Number.isFinite(geo.lat) || !Number.isFinite(geo.lng)) return null;
+  return geo;
+}
+
 function normalizeRehearsal(rehearsal, address) {
   if (!rehearsal) return null;
   const location = rehearsal.location || address?.name || null;
@@ -597,9 +604,10 @@ function buildEnsembleView(orch) {
   const address = normalizeAddress(orch.address);
   const rehearsal = normalizeRehearsal(orch.rehearsal, orch.address);
   const contact = normalizeContact(orch.contact);
-  const hasGeo = !!(orch.geo && orch.geo.lat && orch.geo.lng);
+  const geo = normalizeGeo(orch.geo);
+  const hasGeo = Boolean(geo);
   const geoJson = hasGeo
-    ? JSON.stringify({ lat: orch.geo.lat, lng: orch.geo.lng, title: orch.title })
+    ? JSON.stringify({ lat: geo.lat, lng: geo.lng, title: orch.title })
     : null;
 
   return {
@@ -629,6 +637,10 @@ function buildEnsembleView(orch) {
     hasGeo,
     geoJson,
   };
+}
+
+function isMapGeocoded(orch) {
+  return Boolean(normalizeGeo(orch.geo));
 }
 
 function buildBildquellenList(orchestras) {
@@ -682,7 +694,7 @@ function renderImpressumPage(orchestras, partials) {
 
 function renderMapPage(orchestras, partials) {
   const mapTemplate = fs.readFileSync(path.join(SRC_HTML, 'karte.html'), 'utf8');
-  const withGeo = orchestras.filter(o => o.geo && o.geo.lat && o.geo.lng);
+  const withGeo = orchestras.filter(isMapGeocoded);
   const mapData = withGeo.map(o => ({
     slug: o.slug,
     title: o.title,
@@ -693,10 +705,20 @@ function renderMapPage(orchestras, partials) {
     logoUrl: o.logo && o.logo.local ? `../ensemble/${o.slug}/${o.logo.local}` : null,
     excerpt: truncate(o.description, 80),
   }));
+  const withoutGeo = orchestras
+    .filter(o => !isMapGeocoded(o) && (o.location || o.address))
+    .map(o => ({
+      title: o.title,
+      url: `../ensemble/${o.slug}/index.html`,
+      location: o.location || o.address?.name || o.address?.city || null,
+    }))
+    .toSorted((a, b) => a.title.localeCompare(b.title, 'de'));
   const view = {
     year: CURRENT_YEAR,
     mapDataJson: JSON.stringify(mapData),
     ensembleCount: withGeo.length,
+    mapFallback: withoutGeo,
+    hasMapFallback: withoutGeo.length > 0,
     headerImgRoot: '../',
   };
   const html = Mustache.render(mapTemplate, view, partials);

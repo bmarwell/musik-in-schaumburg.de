@@ -53,6 +53,20 @@
         <h3 id="map-list-heading" class="map-list-heading">Sichtbare Ensembles <span id="map-list-count" class="map-list-count"></span></h3>
         <ul id="map-ensemble-list" class="map-ensemble-list" aria-live="polite"></ul>
       </div>
+      {{#hasMapFallback}}
+      <section class="map-fallback">
+        <h3 class="map-fallback-heading">Ohne Kartenposition</h3>
+        <p class="map-fallback-text">Diese Ensembles haben eine Ortsangabe, aber noch keine Koordinaten für die Karte.</p>
+        <ul class="map-fallback-list">
+          {{#mapFallback}}
+          <li class="map-fallback-item">
+            <a href="{{url}}">{{title}}</a>
+            {{#location}}<span>{{location}}</span>{{/location}}
+          </li>
+          {{/mapFallback}}
+        </ul>
+      </section>
+      {{/hasMapFallback}}
     </div>
   </main>
 
