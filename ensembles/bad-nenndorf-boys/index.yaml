@@ -1,0 +1,47 @@
+title: "Bad Nenndorf Boys"
+type: band
+slug: bad-nenndorf-boys
+
+founded: 2000
+active: true
+member_count: 6
+
+conductors:
+  - name: "Georg Kovacs"
+    role: "Booking"
+
+logo:
+  local: "2020-logo-bad-nenndorf-boys.png"
+  source: "https://www.bnboys.de/static/gfx_sizes/1200/202008-Logo_Header.png"
+  copyright: "Bad Nenndorf Boys"
+
+image:
+  local: "2018-bad-nenndorf-boys.jpg"
+  source: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Bad_Nenndorf_Boys_Press_Foto.jpg"
+  copyright: "Bad Nenndorf Boys"
+
+description: >
+  Die Bad Nenndorf Boys sind eine Ska-Punk-Band aus Bad Nenndorf und Umgebung.
+  Auf ihrer Website beschreiben sie sich als Band mit klarer Ska-Punk-Ausrichtung,
+  die seit 2000 mit einer kleinen, eingespielten Besetzung auftritt. Proben sind
+  öffentlich nicht angekündigt; Kontakt und Buchung laufen über Georg Kovacs.
+
+address:
+  street: "Hauptstrasse 9"
+  postcode: "31555"
+  city: "Suthfeld"
+
+geo:
+  lat: 52.3628543
+  lng: 9.2228275
+
+website: "https://www.bnboys.de/"
+
+contact:
+  email: "georg@bnboys.de"
+  phone: "+4917670076724"
+
+social:
+  facebook: "https://www.facebook.com/BadNenndorfBoys"
+  instagram: "https://www.instagram.com/badnenndorfboys/"
+  youtube: "https://www.youtube.com/channel/UC_D-uqDRtpkdAihKHrCtB6w"
