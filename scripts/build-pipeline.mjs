@@ -607,8 +607,12 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
       ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
       : null,
     tags: o.tags || null,
+    // isInactive / isActive: Mustache section tags for conditional badge rendering
+    // ({{#isInactive}} shows the gray badge; {{#isActive}} shows the green badge).
     isInactive: o.active === false,
     isActive: o.active !== false,
+    // activeStatus: string 'true' / 'false' written into data-active="…" on each
+    // card element so filters.js can filter cards without touching the DOM text.
     activeStatus: o.active !== false ? 'true' : 'false',
     founded: o.founded || null,
     imageLoading: i === 0 ? 'eager' : 'lazy',
@@ -662,6 +666,8 @@ function buildEnsembleView(orch) {
     hasRehearsal: Boolean(rehearsal),
     contact,
     hasContact: Boolean(contact),
+    // isInactive / isActive: Mustache section tags for conditional badge rendering
+    // on the detail page ({{#isInactive}} → gray "Derzeit inaktiv"; {{#isActive}} → green "Aktiv").
     isInactive: orch.active === false,
     isActive: orch.active !== false,
     founded: orch.founded || null,
