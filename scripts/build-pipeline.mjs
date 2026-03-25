@@ -761,7 +761,7 @@ function buildBildquellenList(orchestras) {
 
       entries.push({
         ensemble: o.title,
-        ensembleUrl: `../ensemble/${o.slug}/index.html`,
+        ensembleUrl: `../ensemble/${o.slug}/`,
         assetType: assetKey === 'logo' ? 'Logo' : 'Ensemblefoto',
         source: asset.source,
         copyright: asset.copyright ?? o.title,
@@ -797,7 +797,7 @@ function renderMapPage(orchestras, partials) {
     typeLabel: o.typeLabel,
     lat: o.geo.lat,
     lng: o.geo.lng,
-    url: `../ensemble/${o.slug}/index.html`,
+    url: `../ensemble/${o.slug}/`,
     logoUrl: o.logo && o.logo.local ? `../ensemble/${o.slug}/${o.logo.local}` : null,
     excerpt: truncate(o.description, 80),
   }));
@@ -805,7 +805,7 @@ function renderMapPage(orchestras, partials) {
     .filter(o => !isMapGeocoded(o) && (o.location || o.address))
     .map(o => ({
       title: o.title,
-      url: `../ensemble/${o.slug}/index.html`,
+      url: `../ensemble/${o.slug}/`,
       location: o.location || o.address?.name || o.address?.city || null,
     }))
     .toSorted((a, b) => a.title.localeCompare(b.title, 'de'));
