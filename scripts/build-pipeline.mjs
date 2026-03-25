@@ -518,6 +518,16 @@ function buildIndexImagePaths(o) {
   };
 }
 
+function buildSearchTokens(o) {
+  const parts = [
+    ...(o.conductors || []).map(c => c.name),
+    o.address?.name,
+    o.address?.city,
+    o.location,
+  ];
+  return parts.filter(Boolean).join(' ');
+}
+
 // ── YAML Data Helpers ─────────────────────────────────────────────────────────
 
 function readAllowedKeywords() {
@@ -617,6 +627,9 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     founded: o.founded || null,
     imageLoading: i === 0 ? 'eager' : 'lazy',
     imageFetchPriorityHigh: i === 0,
+    // searchTokens: aggregated searchable metadata (conductors, address, location)
+    // baked into data-search="…" so search.js can match fields not visible on the card.
+    searchTokens: buildSearchTokens(o),
   }));
 
   const availableTypes = [...new Set(orchestras.map(o => o.type).filter(Boolean))]
