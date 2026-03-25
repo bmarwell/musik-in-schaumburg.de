@@ -53,6 +53,13 @@ const SITE_HEADER_OG_IMAGE_WIDTH = 1156;
 const SITE_HEADER_OG_IMAGE_HEIGHT = 737;
 const CURRENT_YEAR = new Date().getFullYear();
 
+const SITE_ORGANIZATION_JSONLD = Object.freeze({
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
+  'name': 'Musik in Schaumburg',
+  'url': SITE_URL,
+});
+
 const IMAGE_WIDTHS = [400, 640, 800, 1200];
 const LOGO_SIZE = 128;
 
@@ -376,36 +383,61 @@ function buildIndexJsonLd(orchestras) {
     },
   };
 
-  const itemList = {
+  const collectionPage = {
     '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    '@type': 'CollectionPage',
+    '@id': `${SITE_URL}/#collection`,
     'name': 'Musikensembles im Landkreis Schaumburg',
     'description': 'Musikensembles, Chöre und Blasorchester im Landkreis Schaumburg.',
-    'numberOfItems': orchestras.length,
-    'itemListElement': orchestras.map((o, i) => {
-      const locationObj = buildLocationObject(o);
-      return {
-        '@type': 'ListItem',
-        'position': i + 1,
-        'item': {
-          '@type': 'MusicGroup',
-          '@id': `${SITE_URL}/ensemble/${o.slug}/`,
-          'name': o.title,
-          'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
-          ...(locationObj ? { 'location': locationObj } : {}),
-          ...(o.description ? { 'description': o.description.trim() } : {}),
-        },
-      };
-    }),
+    'url': SITE_URL,
+    'inLanguage': 'de',
+    'isPartOf': { '@id': `${SITE_URL}/#website` },
+    'mainEntity': {
+      '@type': 'ItemList',
+      'numberOfItems': orchestras.length,
+      'itemListElement': orchestras.map((o, i) => {
+        const locationObj = buildLocationObject(o);
+        return {
+          '@type': 'ListItem',
+          'position': i + 1,
+          'item': {
+            '@type': 'MusicGroup',
+            '@id': `${SITE_URL}/ensemble/${o.slug}/`,
+            'name': o.title,
+            'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
+            ...(locationObj ? { 'location': locationObj } : {}),
+            ...(o.description ? { 'description': o.description.trim() } : {}),
+          },
+        };
+      }),
+    },
   };
 
-  return JSON.stringify([website, itemList], null, 2);
+  return JSON.stringify([website, collectionPage], null, 2);
+}
+
+function buildOrchestraImageArray(orchestra) {
+  const images = [];
+  if (orchestra.image && orchestra.image.fallback) {
+    images.push(`${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`);
+  }
+  if (orchestra.logo && orchestra.logo.local) {
+    images.push(`${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.logo.local}`);
+  }
+  return images;
+}
+
+function buildOrchestraSameAs(orchestra) {
+  const sameAs = buildSameAsLinks(orchestra.social);
+  if (orchestra.website) sameAs.push(orchestra.website);
+  return sameAs;
 }
 
 function buildOrchestraJsonLd(orchestra) {
-  const sameAs = buildSameAsLinks(orchestra.social);
+  const sameAs = buildOrchestraSameAs(orchestra);
   const conductorItems = buildJsonLdConductors(orchestra.conductors);
   const locationObj = buildLocationObject(orchestra);
+  const images = buildOrchestraImageArray(orchestra);
 
   const schema = {
     '@context': 'https://schema.org',
@@ -413,13 +445,11 @@ function buildOrchestraJsonLd(orchestra) {
     '@id': `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'name': orchestra.title,
     'description': orchestra.description ? orchestra.description.trim() : undefined,
-    'url': orchestra.website || `${SITE_URL}/ensemble/${orchestra.slug}/`,
+    'url': `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'inLanguage': 'de',
     ...(orchestra.founded ? { 'foundingDate': String(orchestra.founded) } : {}),
     ...(orchestra.member_count ? { 'numberOfEmployees': { '@type': 'QuantitativeValue', 'value': orchestra.member_count } } : {}),
-    ...(orchestra.image && orchestra.image.fallback ? {
-      'image': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.image.fallback}`,
-    } : {}),
+    ...(images.length > 0 ? { 'image': images } : {}),
     ...(orchestra.logo && orchestra.logo.local ? {
       'logo': `${SITE_URL}/ensemble/${orchestra.slug}/${orchestra.logo.local}`,
     } : {}),
@@ -427,6 +457,10 @@ function buildOrchestraJsonLd(orchestra) {
     ...(conductorItems.length > 0 ? { 'member': conductorItems } : {}),
     ...(sameAs.length > 0 ? { 'sameAs': sameAs } : {}),
     ...(orchestra.tags && orchestra.tags.length > 0 ? { 'keywords': orchestra.tags.join(', ') } : {}),
+    ...(orchestra.typeLabel ? { 'genre': [orchestra.typeLabel] } : {}),
+    ...(orchestra.contact?.email ? { 'email': orchestra.contact.email } : {}),
+    ...(orchestra.contact?.phone ? { 'telephone': orchestra.contact.phone } : {}),
+    'memberOf': SITE_ORGANIZATION_JSONLD,
   };
 
   return JSON.stringify(removeUndefinedValues(schema), null, 2);
