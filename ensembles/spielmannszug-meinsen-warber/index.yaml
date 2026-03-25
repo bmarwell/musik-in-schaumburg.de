@@ -5,14 +5,12 @@ founded: 1955
 active: true
 
 logo:
-  url: "https://www.bueckeburg.de/ceasy/resource/1598"
-  # local file could not be downloaded (host not reachable from CI)
+  local: "logo-spielmannszug-meinsen-warber.jpg"
   source: "https://www.bueckeburg.de/ceasy/resource/1598"
   copyright: "Spielmannszug Meinsen-Warber von 1955 e.V."
 
 image:
-  url: "http://www.wihome.de/m/sz.jpg"
-  # local file could not be downloaded (host not reachable from CI)
+  local: "2010-ensemble-photo-sz-meinsen-warber.jpg"
   source: "http://www.wihome.de/m/sz.jpg"
 
 description: |
