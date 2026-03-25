@@ -2,8 +2,9 @@ title: "St. Martini-Brass-Band Stadthagen"
 type: brass-band
 slug: brassband-stadthagen
 
-#logo:
-#  url: "https://www.brassband-stadthagen.de/wp-content/uploads/2020/01/logo_smbb.png"
+logo:
+  source: "https://www.brassband-stadthagen.de/wp-content/uploads/2020/01/logo_smbb.png"
+  local: "logo-st-martini-brass-band-stadthagen.png"
 
 image:
   local: "brassband-stadthagen.jpg"
@@ -33,14 +34,14 @@ address:
   street: "Kirchstraße 1"
   postcode: "31655"
   city: "Stadthagen"
-  maps: "https://maps.app.goo.gl/EDxsaA4UbBrN2jwQ8"
+  maps: "https://maps.app.goo.gl/CVMmNGxnqHycVV4A6"
 
 contact:
   email: "info@brassband-stadthagen.de"
 
 geo:
-  lat: 52.329
-  lng: 9.2053
+  lat: 52.323496
+  lng: 9.203806
 
 website: "https://www.brassband-stadthagen.de/"
 
