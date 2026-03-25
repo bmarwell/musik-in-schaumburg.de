@@ -75,11 +75,11 @@ conductors:                         # Optional. List of conductors/directors.
     role: "Dirigent"                # Optional role label (Dirigent, Jugenddirigent, etc.)
 
 logo:
-  local: "logo.png"                 # PREFERRED. Filename relative to ensembles/<slug>/.
+  local: "logo-<slug>.<ext>"       # PREFERRED. Name: logo-<slug>.png / logo-<slug>.jpg
   # url: "https://..."             # Fallback only if no local file available. Warn if missing.
 
 image:
-  local: "photo.jpg"               # PREFERRED. Filename relative to ensembles/<slug>/.
+  local: "<slug>.jpg"              # PREFERRED. Name: <slug>.jpg (or .png / .webp).
   # url: "https://..."             # Fallback only if no local file available. Warn if missing.
 
 description: >                     # Required. German text. Plain prose, no HTML.
@@ -136,12 +136,14 @@ tags:
 **Always prefer `image.local` and `logo.local` over `image.url`/`logo.url`.**
 
 When creating or updating an ensemble entry:
-1. **Download** any image or logo from the provided URL into `ensembles/<slug>/` (e.g. `photo.jpg`, `logo.png`) and **commit the file** alongside the YAML.
-2. Set `image.local: "photo.jpg"` (or the actual filename) in the YAML — **not** `image.url`.
+1. **Download** any image or logo from the provided URL into `ensembles/<slug>/` and **commit the file** alongside the YAML.
+   - Main photo: name it **`<slug>.jpg`** (or `.png` / `.webp` to match the actual format).
+   - Logo: name it **`logo-<slug>.png`** (or `.jpg` to match the actual format).
+2. Set `image.local: "<slug>.jpg"` and `logo.local: "logo-<slug>.png"` in the YAML — **not** `image.url`.
 3. Only use `image.url` / `logo.url` if downloading is impossible (e.g. blocked by firewall). In that case add a comment explaining why.
 4. `logo` and `image` are both **optional** — omit the key entirely if no asset is available.
 5. Warn in the PR description if a remote asset URL could not be fetched.
-6. **Strip EXIF metadata** from all images before committing them. Use a tool such as `exiftool -all= photo.jpg` or `convert -strip photo.jpg photo.jpg` (ImageMagick) to remove all metadata (GPS location, device model, capture date, etc.) from the file. The build pipeline intentionally does not copy original files to `dist/` — all published variants are re-encoded by sharp and therefore EXIF-free — but the source file in the repository should also be clean.
+6. **Strip EXIF metadata** from all images before committing them. Use a tool such as `exiftool -all= <slug>.jpg` or `convert -strip <slug>.jpg <slug>.jpg` (ImageMagick) to remove all metadata (GPS location, device model, capture date, etc.) from the file. The build pipeline intentionally does not copy original files to `dist/` — all published variants are re-encoded by sharp and therefore EXIF-free — but the source file in the repository should also be clean.
 
 ### Supported `type` values
 
@@ -234,7 +236,7 @@ Use `data-lightbox-src` to specify the full-resolution URL.
 ## Adding a New Ensemble
 
 1. Create the directory `ensembles/<slug>/`.
-2. **Download** any image or logo into `ensembles/<slug>/` (e.g. `photo.jpg`, `logo.png`) and commit the files.
+2. **Download** any image or logo into `ensembles/<slug>/` and commit the files — main photo as `<slug>.jpg`, logo as `logo-<slug>.png` (adjust extension to match actual format).
 3. Create `ensembles/<slug>/index.yaml` using the schema above, with `image.local` / `logo.local` pointing to the committed files.
 4. Run `bun run build`.
 5. The ensemble card appears on the homepage and its detail page is generated automatically.
@@ -288,13 +290,14 @@ Check every committed image file:
   a higher-resolution asset.
 - **Too large** (above maximum): should be flagged; the build pipeline resizes images, but
   committing very large originals bloats the repository unnecessarily.
-- Verify the file is actually the correct format (`file photo.jpg` must report a valid JPEG/PNG/WebP).
+- Verify the file is actually the correct format (`file <slug>.jpg` must report a valid JPEG/PNG/WebP).
+  If the file extension does not match the actual format, rename the file to the correct extension before committing.
 - Logo and photo must clearly depict the named ensemble, not a generic image or stock photo.
 - Prefer files with a meaningful aspect ratio: logos should be roughly square or
   landscape; photos ideally 4:3 or 16:9.
-- **Check for sensitive EXIF metadata**: run `exiftool photo.jpg` and verify that sensitive
+- **Check for sensitive EXIF metadata**: run `exiftool <slug>.jpg` and verify that sensitive
   tags (GPS location, device model, serial number, capture date/time, author) are absent.
-  If present, request that the contributor strips them (`exiftool -all= photo.jpg`) before merging.
+  If present, request that the contributor strips them (`exiftool -all= <slug>.jpg`) before merging.
   Note: all published image variants are re-encoded by sharp and thus EXIF-free in `dist/`,
   but the source files committed to the repository must also be clean.
 
