@@ -14,12 +14,10 @@ conductors:
     role: 'Leitung'
 
 logo:
-  # Download from cdn3.wir-e.de blocked in sandbox/CI environment; local file cannot be committed
-  url: 'https://cdn3.wir-e.de/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6IjJlMDc4Mjg2LWU2YTYtNDI1My05ZDhjLTRjNjM2ZGI2M2I5NCIsInB1ciI6ImJsb2JfaWQifX0=--528cdb59b67a202f6da8669116627166d79a39f6/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJjcm9wIjpbMCwwLDkwMCw5MDBdLCJyZXNpemVfdG9fZml0IjpbMjU0LG51bGxdfSwicHVyIjoidmFyaWF0aW9uIn19--6556c2d814ddff3ee4317708def0816e28d0b761/space_profile_image.-tmp-mini_magick20190517-113-2z7e6b.jpg%20JPEG%20900x900%20900x900+0+0%208-bit%20sRGB%20124KB%200.000u%200-00.000'
+  local: 'logo-jacobinis-kinderchor-rodenberg.jpg'
 
 image:
-  # Download from cdn3.wir-e.de blocked in sandbox/CI environment; local file cannot be committed
-  url: 'https://cdn3.wir-e.de/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6IjJkYjQ2ZGRhLWMyMzktNGMwZS1hODMzLTkwOGJiZThhZTYzOCIsInB1ciI6ImJsb2JfaWQifX0=--9ddd2da08f90f38f2bc597b792512b10cd232d16/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJjcm9wIjpbMTM3LDI2Miw1NjA1LDcyNV0sInJlc2l6ZV90b19maXQiOlsxOTIwLG51bGxdfSwicHVyIjoidmFyaWF0aW9uIn19--d23e2f8fa79d0997b911c617d9def7a782c482c6/L1050130a.jpg'
+  local: 'ensemble-die-jacobinis-rodenberg-kinderchor.jpg'
 
 description: >
   Die Jacobinis sind ein Kinderchor der Sankt-Jacobi Kirchengemeinde in Rodenberg.
