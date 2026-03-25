@@ -1,0 +1,40 @@
+title: "Die AkkordArbeiter"
+type: choir
+slug: die-akkordarbeiter
+
+active: true
+founded: 1985
+member_count: 5
+
+conductors:
+  - name: "Klaus Heinisch"
+    role: "Leitung"
+
+image:
+  local: "die-akkordarbeiter.jpg"
+  # (c) die AkkordArbeiter
+  # Quelle: https://www.akkordarbeiter.de/media/.gallery/image20.jpg
+  # Konvertiert von PNG nach JPEG und auf 1200 px Breite skaliert.
+
+description: >
+  Die AkkordArbeiter sind ein A-cappella-Quintett aus Stadthagen, das seit 1985 gemeinsam
+  musiziert. Das Ensemble besteht aus vier Sängern und einer Mezzosopranistin, die zugleich
+  als Pianistin auftritt; gesungen wird fünfstimmig a cappella oder als Männerquartett mit
+  Klavierbegleitung. Das vielseitige Repertoire reicht von Barbershop-Songs, Spirituals und
+  irischen Folksongs über Popsongs und Schlager bis hin zu Werken aus Renaissance, Romantik
+  und Moderne.
+
+location: "Stadthagen"
+
+geo:
+  lat: 52.3236
+  lng: 9.2042
+
+website: "https://www.akkordarbeiter.de/"
+
+contact:
+  email: "info@akkordarbeiter.de"
+
+tags:
+  - Gemischt
+  - Unterhaltung
