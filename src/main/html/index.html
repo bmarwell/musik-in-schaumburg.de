@@ -67,9 +67,10 @@
               <source type="image/webp" srcset="{{{image.srcsetWebp}}}"
                       sizes="(max-width: 600px) calc(100vw - 2rem), (max-width: 900px) 50vw, 420px">
               <img src="{{{image.fallback}}}"
-                   alt="{{title}}"
+                   alt="Foto des Ensembles {{title}}"
                    width="400" height="225"
                    loading="{{imageLoading}}"
+                   decoding="async"
                    {{#imageFetchPriorityHigh}}fetchpriority="high"{{/imageFetchPriorityHigh}}
                    sizes="(max-width: 600px) calc(100vw - 2rem), (max-width: 900px) 50vw, 420px"
                    itemprop="image">
@@ -78,9 +79,10 @@
             {{^image.srcsetWebp}}
             <picture>
               <img src="{{{image.fallback}}}"
-                   alt="{{title}}"
+                   alt="Foto des Ensembles {{title}}"
                    width="400" height="225"
                    loading="{{imageLoading}}"
+                   decoding="async"
                    {{#imageFetchPriorityHigh}}fetchpriority="high"{{/imageFetchPriorityHigh}}
                    itemprop="image">
             </picture>
@@ -122,9 +124,10 @@
               {{#logo.local}}
               <img class="card-logo"
                    src="{{{logo.local}}}"
-                   alt="Logo {{title}}"
+                   alt="Logo des Ensembles {{title}}"
                    width="64" height="64"
-                   loading="lazy">
+                   loading="lazy"
+                   decoding="async">
               {{/logo.local}}
               {{/logo}}
             </div>
