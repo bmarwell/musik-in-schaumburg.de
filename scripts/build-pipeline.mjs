@@ -14,6 +14,7 @@
  *  9. Pre-compress text assets (.br, .gz, .zst)
  */
 
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -80,6 +81,23 @@ const TYPE_LABELS = {
   'band': 'Band',
   'other': 'Sonstiges',
 };
+
+// ── Cache busting ─────────────────────────────────────────────────────────────
+
+function computeAssetHash() {
+  const cssFiles = fs.readdirSync(SRC_CSS).filter(f => f.endsWith('.css')).toSorted();
+  const jsFiles = fs.readdirSync(SRC_JS).filter(f => f.endsWith('.js')).toSorted();
+  const hash = crypto.createHash('sha256');
+  for (const f of cssFiles) {
+    hash.update(fs.readFileSync(path.join(SRC_CSS, f)));
+  }
+  for (const f of jsFiles) {
+    hash.update(fs.readFileSync(path.join(SRC_JS, f)));
+  }
+  return hash.digest('hex').slice(0, 8);
+}
+
+const ASSET_HASH = computeAssetHash();
 
 // ── Utilities ────────────────────────────────────────────────────────────────
 
@@ -682,6 +700,7 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     availableTypes,
     headerImgRoot: '',
     isHomepage: true,
+    cacheBuster: ASSET_HASH,
   };
 
   const indexHtml = Mustache.render(indexTemplate, indexView, partials);
@@ -732,6 +751,7 @@ function buildEnsembleView(orch) {
     membership_fee: orch.membership_fee || null,
     hasGeo,
     geoJson,
+    cacheBuster: ASSET_HASH,
   };
 }
 
@@ -780,6 +800,7 @@ function renderImpressumPage(orchestras, partials) {
     bildquellen,
     hasBildquellen: bildquellen.length > 0,
     headerImgRoot: '../',
+    cacheBuster: ASSET_HASH,
   };
   const html = Mustache.render(template, view, partials);
   const outPath = path.join(DIST, 'impressum', 'index.html');
@@ -816,6 +837,7 @@ function renderMapPage(orchestras, partials) {
     mapFallback: withoutGeo,
     hasMapFallback: withoutGeo.length > 0,
     headerImgRoot: '../',
+    cacheBuster: ASSET_HASH,
   };
   const html = Mustache.render(mapTemplate, view, partials);
   const outPath = path.join(DIST, 'karte', 'index.html');
