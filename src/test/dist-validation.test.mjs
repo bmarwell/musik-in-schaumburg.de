@@ -121,7 +121,32 @@ describe("Open Graph ensemble image", () => {
   }
 });
 
-// ── JSON-LD sidecar files ─────────────────────────────────────────────────────
+// ── all-ensembles.json ────────────────────────────────────────────────────────
+
+describe("all-ensembles.json", () => {
+  const jsonPath = path.join(DIST, "all-ensembles.json");
+
+  test("file exists", () => {
+    expect(fs.existsSync(jsonPath)).toBe(true);
+  });
+
+  test("parses as valid JSON array", () => {
+    const content = fs.readFileSync(jsonPath, "utf-8");
+    expect(() => JSON.parse(content)).not.toThrow();
+    const parsed = JSON.parse(content);
+    expect(Array.isArray(parsed)).toBe(true);
+    expect(parsed.length).toBeGreaterThan(0);
+  });
+
+  test("each entry has required fields", () => {
+    const parsed = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
+    for (const entry of parsed) {
+      expect(typeof entry.title).toBe("string");
+      expect(typeof entry.slug).toBe("string");
+      expect(typeof entry.active).toBe("boolean");
+    }
+  });
+});
 
 const JSONLD_SCRIPT_PATTERN = /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i;
 

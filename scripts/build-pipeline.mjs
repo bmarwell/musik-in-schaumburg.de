@@ -770,6 +770,30 @@ function renderEnsemblePages(orchestras, orchTemplate, partials) {
   }
 }
 
+function buildAllEnsemblesEntry(o) {
+  const geo = normalizeGeo(o.geo);
+  return {
+    title: o.title,
+    slug: o.slug,
+    type: o.type,
+    typeLabel: o.typeLabel,
+    active: o.active !== false,
+    location: o.location || o.address?.city || null,
+    geo: geo ? { lat: geo.lat, lng: geo.lng } : null,
+    image: o.image?.fallback ? `ensemble/${o.slug}/${o.image.fallback}` : null,
+    logo: o.logo?.local ? `ensemble/${o.slug}/${o.logo.local}` : null,
+    website: o.website || null,
+    tags: o.tags && o.tags.length > 0 ? o.tags : null,
+    description: o.description ? truncate(o.description, 300) : null,
+  };
+}
+
+function writeAllEnsemblesJson(orchestras) {
+  const entries = orchestras.map(buildAllEnsemblesEntry);
+  const json = JSON.stringify(entries);
+  fs.writeFileSync(path.join(DIST, 'all-ensembles.json'), json, 'utf8');
+}
+
 function generateSitemap(orchestras) {
   const today = new Date().toISOString().slice(0, 10);
   const sitemapUrls = [
@@ -864,6 +888,9 @@ async function build() {
 
   log('Generating sitemap.xml...');
   generateSitemap(orchestras);
+
+  log('Writing all-ensembles.json...');
+  writeAllEnsemblesJson(orchestras);
 
   log('Copying static assets...');
   copyStaticAssets();
