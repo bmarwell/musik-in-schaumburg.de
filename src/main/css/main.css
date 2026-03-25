@@ -211,6 +211,42 @@ main {
   display: inline-block;
 }
 
+/* ── Filter Bar ─────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 1rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 2rem;
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.filter-btn:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.filter-btn--selected {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.filter-empty-state {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  padding: 1.5rem 0;
+}
+
 /* ── Orchestra Cards ────────────────────────────────────────────── */
 .cards {
   display: grid;
@@ -415,18 +451,26 @@ main {
   margin-bottom: 0.4rem;
 }
 
-.ensemble-inactive-badge {
+.ensemble-inactive-badge,
+.ensemble-active-badge {
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: #5c5c5c;
   color: #fff;
   padding: 0.18rem 0.6rem;
   border-radius: 2rem;
   margin-bottom: 0.4rem;
   margin-left: 0.4rem;
+}
+
+.ensemble-inactive-badge {
+  background: #5c5c5c;
+}
+
+.ensemble-active-badge {
+  background: #2a7d4f;
 }
 
 .orchestra-description {

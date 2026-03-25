@@ -56,9 +56,16 @@
 
       <h2 class="section-heading">Alle Ensembles</h2>
 
+      <div class="filter-bar" role="group" aria-label="Nach Status filtern">
+        <button class="filter-btn filter-btn--selected" data-filter="all" aria-pressed="true">Alle</button>
+        <button class="filter-btn" data-filter="active" aria-pressed="false">Aktiv</button>
+        <button class="filter-btn" data-filter="inactive" aria-pressed="false">Inaktiv</button>
+      </div>
+
       <div class="cards">
         {{#orchestras}}
         <article class="card"
+                 data-active="{{activeStatus}}"
                  itemscope itemtype="https://schema.org/MusicGroup">
           {{#image}}
           <div class="card-image-wrap">
@@ -92,6 +99,7 @@
 
           <div class="card-body">
             <span class="card-type">{{typeLabel}}</span>
+            {{#isActive}}<span class="ensemble-active-badge">Aktiv</span>{{/isActive}}
             {{#isInactive}}<span class="ensemble-inactive-badge">Inaktiv</span>{{/isInactive}}
             <h3 class="card-title" itemprop="name">
               <a href="ensemble/{{slug}}/index.html">{{title}}</a>
@@ -178,6 +186,7 @@
   </footer>
 
   <script src="js/lightbox.js"></script>
+  <script src="js/filters.js"></script>
   {{> matomo}}
 </body>
 </html>
