@@ -17,18 +17,16 @@
   {{#ogImageUrl}}
   <meta property="og:image" content="{{{ogImageUrl}}}">
   <meta property="og:image:alt" content="{{title}}">
-  <meta property="og:image:width" content="800">
+  {{#ogImageWidth}}<meta property="og:image:width" content="{{ogImageWidth}}">{{/ogImageWidth}}
   {{#ogImageHeight}}<meta property="og:image:height" content="{{ogImageHeight}}">{{/ogImageHeight}}
   {{/ogImageUrl}}
 
   <!-- Twitter / X Card -->
-  <meta name="twitter:card" content="{{#ogImageUrl}}summary_large_image{{/ogImageUrl}}{{^ogImageUrl}}summary{{/ogImageUrl}}">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{title}} – Musik in Schaumburg">
   <meta name="twitter:description" content="{{descriptionShort}}">
-  {{#ogImageUrl}}
   <meta name="twitter:image" content="{{{ogImageUrl}}}">
   <meta name="twitter:image:alt" content="{{title}}">
-  {{/ogImageUrl}}
 
   <title>{{title}} – Musik in Schaumburg</title>
   <link rel="stylesheet" href="../../css/main.css">
