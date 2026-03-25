@@ -361,9 +361,27 @@ function removeUndefinedValues(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
+function buildListItemMusicGroup(o, position) {
+  const locationObj = buildLocationObject(o);
+  const image = o.image?.fallback ? [`${SITE_URL}/ensemble/${o.slug}/${o.image.fallback}`] : [];
+  return {
+    '@type': 'ListItem',
+    'position': position,
+    'item': {
+      '@type': 'MusicGroup',
+      '@id': `${SITE_URL}/ensemble/${o.slug}/`,
+      'name': o.title,
+      'url': `${SITE_URL}/ensemble/${o.slug}/`,
+      ...(image.length > 0 ? { 'image': image } : {}),
+      ...(o.typeLabel ? { 'genre': [o.typeLabel] } : {}),
+      ...(locationObj ? { 'location': locationObj } : {}),
+      ...(o.description ? { 'description': o.description.trim() } : {}),
+    },
+  };
+}
+
 function buildIndexJsonLd(orchestras) {
   const website = {
-    '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     'name': 'Musik in Schaumburg',
@@ -384,7 +402,6 @@ function buildIndexJsonLd(orchestras) {
   };
 
   const collectionPage = {
-    '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': `${SITE_URL}/#collection`,
     'name': 'Musikensembles im Landkreis Schaumburg',
@@ -395,25 +412,11 @@ function buildIndexJsonLd(orchestras) {
     'mainEntity': {
       '@type': 'ItemList',
       'numberOfItems': orchestras.length,
-      'itemListElement': orchestras.map((o, i) => {
-        const locationObj = buildLocationObject(o);
-        return {
-          '@type': 'ListItem',
-          'position': i + 1,
-          'item': {
-            '@type': 'MusicGroup',
-            '@id': `${SITE_URL}/ensemble/${o.slug}/`,
-            'name': o.title,
-            'url': o.website || `${SITE_URL}/ensemble/${o.slug}/`,
-            ...(locationObj ? { 'location': locationObj } : {}),
-            ...(o.description ? { 'description': o.description.trim() } : {}),
-          },
-        };
-      }),
+      'itemListElement': orchestras.map((o, i) => buildListItemMusicGroup(o, i + 1)),
     },
   };
 
-  return JSON.stringify([website, collectionPage], null, 2);
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [website, collectionPage] }, null, 2);
 }
 
 function buildOrchestraImageArray(orchestra) {
@@ -448,6 +451,7 @@ function buildOrchestraJsonLd(orchestra) {
     'url': `${SITE_URL}/ensemble/${orchestra.slug}/`,
     'inLanguage': 'de',
     ...(orchestra.founded ? { 'foundingDate': String(orchestra.founded) } : {}),
+    ...(orchestra.dissolution_date ? { 'dissolutionDate': String(orchestra.dissolution_date) } : {}),
     ...(orchestra.member_count ? { 'numberOfEmployees': { '@type': 'QuantitativeValue', 'value': orchestra.member_count } } : {}),
     ...(images.length > 0 ? { 'image': images } : {}),
     ...(orchestra.logo && orchestra.logo.local ? {
@@ -723,6 +727,7 @@ function buildEnsembleView(orch) {
     isInactive: orch.active === false,
     isActive: orch.active !== false,
     founded: orch.founded || null,
+    dissolution_date: orch.dissolution_date || null,
     member_count: orch.member_count || null,
     membership_fee: orch.membership_fee || null,
     hasGeo,

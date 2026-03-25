@@ -68,6 +68,8 @@ slug: mein-ensemble                 # Required. URL-safe identifier (used as pat
 
 founded: 1975                       # Optional. Founding year (integer).
 active: true                        # Optional. Set to false for inactive/dissolved ensembles.
+dissolution_date: 2018              # Optional. Year the ensemble was dissolved (integer). Only meaningful when active: false.
+                                    # Shown on detail page as "📅 Aufgelöst" and maps to dissolutionDate in JSON-LD.
 member_count: 40                    # Optional. Approximate number of active members.
 
 conductors:                         # Optional. List of conductors/directors.
