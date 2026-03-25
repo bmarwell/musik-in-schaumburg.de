@@ -26,10 +26,11 @@ address:
   name: 'Gemeindehaus der ev. Kirche Lauenau'
   city: 'Lauenau'
   postcode: '31867'
+  maps: "https://maps.app.goo.gl/amZfAfWeV7kaXFC47"
 
 geo:
-  lat: 52.2836
-  lng: 9.4014
+  lat: 52.272913
+  lng: 9.368170
 
 website: 'http://happy-people-lauenau.de/'
 
