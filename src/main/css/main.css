@@ -212,33 +212,183 @@ main {
 }
 
 /* ── Filter Bar ─────────────────────────────────────────────────── */
-.filter-bar {
+.filter-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  align-items: flex-end;
+  gap: 0.75rem 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.filter-btn {
-  font-size: 0.85rem;
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-label {
+  font-size: 0.78rem;
   font-weight: 600;
-  padding: 0.35rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+/* ── Combobox widgets (status single-select + type multiselect) ── */
+.ms-widget {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-width: 10rem;
   border: 2px solid var(--color-primary);
-  border-radius: 2rem;
-  background: transparent;
-  color: var(--color-primary);
+  border-radius: 0.4rem;
+  background: var(--color-surface);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  user-select: none;
 }
 
-.filter-btn:hover {
+.ms-widget:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.ms-field {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.5rem;
+  min-height: 2.2rem;
+  min-width: 0;
+}
+
+.ms-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.ms-value.is-placeholder {
+  color: var(--color-text-muted);
+}
+
+.ms-placeholder {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.ms-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
   background: var(--color-primary);
+  color: #fff;
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.3rem 0.1rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.ms-tag-remove {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  border-radius: 0.15rem;
+}
+
+.ms-tag-remove:hover {
   color: #fff;
 }
 
-.filter-btn--selected {
-  background: var(--color-primary);
-  color: #fff;
+.ms-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0 0.4rem;
+  border-left: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.ms-clear-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.2rem;
+  line-height: 1;
+  border-radius: 0.2rem;
+}
+
+.ms-clear-btn:hover {
+  color: var(--color-text);
+}
+
+.ms-caret {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.ms-caret::after {
+  content: '\25BE';
+}
+
+.ms-widget[aria-expanded="true"] .ms-caret::after {
+  content: '\25B4';
+}
+
+.ms-listbox {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: 0.4rem;
+  box-shadow: var(--shadow-hover);
+  padding: 0.25rem 0;
+  margin: 0;
+  list-style: none;
+  max-height: 18rem;
+  overflow-y: auto;
+  white-space: nowrap;
+  min-width: 100%;
+}
+
+.ms-option {
+  padding: 0.4rem 0.75rem 0.4rem 2rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.ms-option:hover,
+.ms-option:focus-visible {
+  background: var(--color-bg);
+  outline: none;
+}
+
+.ms-option[aria-selected="true"] {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.ms-option[aria-selected="true"]::before {
+  content: '\2713';
+  position: absolute;
+  left: 0.65rem;
+  color: var(--color-primary);
 }
 
 .filter-empty-state {
@@ -248,6 +398,10 @@ main {
 }
 
 /* ── Orchestra Cards ────────────────────────────────────────────── */
+.card[hidden] {
+  display: none;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

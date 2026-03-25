@@ -56,16 +56,61 @@
 
       <h2 class="section-heading">Alle Ensembles</h2>
 
-      <div class="filter-bar" role="group" aria-label="Nach Status filtern">
-        <button type="button" class="filter-btn filter-btn--selected" data-filter="all" aria-pressed="true">Alle</button>
-        <button type="button" class="filter-btn" data-filter="active" aria-pressed="false">Aktiv</button>
-        <button type="button" class="filter-btn" data-filter="inactive" aria-pressed="false">Inaktiv</button>
+      <div class="filter-section">
+        <div class="filter-group">
+          <span class="filter-label" id="filter-status-label">Status</span>
+          <div class="ms-widget" id="filter-status-widget"
+               role="combobox" aria-haspopup="listbox" aria-expanded="false"
+               aria-labelledby="filter-status-label">
+            <div class="ms-field" id="filter-status-field" tabindex="0">
+              <span class="ms-value is-placeholder" id="filter-status-value">Alle</span>
+            </div>
+            <div class="ms-controls">
+              <span class="ms-caret" aria-hidden="true"></span>
+            </div>
+            <ul class="ms-listbox" id="filter-status-listbox"
+                role="listbox" aria-multiselectable="false"
+                aria-labelledby="filter-status-label" hidden>
+              <li class="ms-option" role="option" data-value="all"
+                  aria-selected="true" tabindex="-1">Alle</li>
+              <li class="ms-option" role="option" data-value="active"
+                  aria-selected="false" tabindex="-1">Aktiv</li>
+              <li class="ms-option" role="option" data-value="inactive"
+                  aria-selected="false" tabindex="-1">Inaktiv</li>
+            </ul>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label" id="filter-type-label">Typ</span>
+          <div class="ms-widget" id="filter-type-widget"
+               role="combobox" aria-haspopup="listbox" aria-expanded="false"
+               aria-labelledby="filter-type-label">
+            <div class="ms-field" id="filter-type-field" tabindex="0">
+              <span class="ms-placeholder" id="filter-type-placeholder">Alle Typen</span>
+            </div>
+            <div class="ms-controls">
+              <button type="button" class="ms-clear-btn" id="filter-type-clear"
+                      aria-label="Auswahl aufheben" hidden>&#x2715;</button>
+              <span class="ms-caret" aria-hidden="true"></span>
+            </div>
+            <ul class="ms-listbox" id="filter-type-listbox"
+                role="listbox" aria-multiselectable="true"
+                aria-labelledby="filter-type-label" hidden>
+              {{#availableTypes}}
+              <li class="ms-option" role="option"
+                  data-type="{{type}}" data-label="{{typeLabel}}"
+                  aria-selected="false" tabindex="-1">{{typeLabel}}</li>
+              {{/availableTypes}}
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div class="cards">
         {{#orchestras}}
         <article class="card"
                  data-active="{{activeStatus}}"
+                 data-type="{{type}}"
                  itemscope itemtype="https://schema.org/MusicGroup">
           {{#image}}
           <div class="card-image-wrap">

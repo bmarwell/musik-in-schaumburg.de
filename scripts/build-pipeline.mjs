@@ -619,11 +619,16 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     imageFetchPriorityHigh: i === 0,
   }));
 
+  const availableTypes = [...new Set(orchestras.map(o => o.type).filter(Boolean))]
+    .toSorted((a, b) => (TYPE_LABELS[a] || a).localeCompare(TYPE_LABELS[b] || b, 'de'))
+    .map(type => ({ type, typeLabel: TYPE_LABELS[type] || type }));
+
   const indexView = {
     orchestras: orchestrasForIndex,
     year: CURRENT_YEAR,
     jsonld: buildIndexJsonLd(orchestras),
     availableKeywords: allowedKeywords,
+    availableTypes,
     headerImgRoot: '',
     isHomepage: true,
   };
