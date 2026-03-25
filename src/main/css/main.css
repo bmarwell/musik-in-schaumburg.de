@@ -15,6 +15,7 @@
   --color-text:       #1e1e1e;
   --color-text-muted: #5a5a5a;
   --color-border:     #dde0e4;
+  --color-search-highlight: rgba(200, 146, 42, 0.25);
   --shadow-card:      0 2px 8px rgba(0, 0, 0, 0.10);
   --shadow-hover:     0 6px 20px rgba(26, 79, 138, 0.18);
   --radius:           0.5rem;
@@ -395,6 +396,76 @@ main {
   font-size: 1rem;
   color: var(--color-text-muted);
   padding: 1.5rem 0;
+}
+
+/* ── Search bar ─────────────────────────────────────────────────── */
+.search-filter-group {
+  flex: 1;
+  min-width: 12rem;
+  max-width: 26rem;
+}
+
+.search-widget {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--color-primary);
+  border-radius: 0.4rem;
+  background: var(--color-surface);
+  min-height: 2.2rem;
+}
+
+.search-widget:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  outline: none;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration {
+  display: none;
+}
+
+.search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-clear-btn {
+  background: none;
+  border: none;
+  border-left: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  border-radius: 0 0.3rem 0.3rem 0;
+}
+
+.search-clear-btn:hover {
+  color: var(--color-text);
+}
+
+/* ── Search highlight ────────────────────────────────────────────── */
+mark.search-highlight {
+  background: var(--color-search-highlight);
+  color: inherit;
+  border-radius: 0.15rem;
+  padding: 0 0.1rem;
 }
 
 /* ── Orchestra Cards ────────────────────────────────────────────── */

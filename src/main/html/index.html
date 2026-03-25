@@ -104,6 +104,18 @@
             </ul>
           </div>
         </div>
+        <div class="filter-group search-filter-group">
+          <label class="filter-label" for="search-input">Suche</label>
+          <div class="search-widget">
+            <input type="search"
+                   id="search-input"
+                   class="search-input"
+                   placeholder="Ensemble suchen …"
+                   autocomplete="off">
+            <button type="button" class="search-clear-btn" id="search-clear"
+                    aria-label="Suche löschen" hidden>&#x2715;</button>
+          </div>
+        </div>
       </div>
 
       <div class="cards">
@@ -232,6 +244,7 @@
 
   <script src="js/lightbox.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/search.js"></script>
   {{> matomo}}
 </body>
 </html>
