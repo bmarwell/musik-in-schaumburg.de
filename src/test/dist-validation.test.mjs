@@ -93,6 +93,34 @@ describe("Matomo tracking", () => {
   }
 });
 
+// ── Open Graph meta tags ──────────────────────────────────────────────────────
+
+const ensembleHtmlFiles = htmlFiles.filter(f => f.includes(`${path.sep}ensemble${path.sep}`));
+const ogTagHtmlFiles = htmlFiles.filter(f => !f.includes(`${path.sep}impressum${path.sep}`));
+
+describe("Open Graph meta tags", () => {
+  for (const file of ogTagHtmlFiles) {
+    test(path.relative(DIST, file), () => {
+      const content = fs.readFileSync(file, "utf-8");
+      expect(content).toContain('property="og:title"');
+      expect(content).toContain('property="og:description"');
+      expect(content).toContain('property="og:url"');
+      expect(content).toContain('property="og:image"');
+      expect(content).toContain('name="twitter:card"');
+      expect(content).toContain('name="twitter:image"');
+    });
+  }
+});
+
+describe("Open Graph ensemble image", () => {
+  for (const file of ensembleHtmlFiles) {
+    test(path.relative(DIST, file), () => {
+      const content = fs.readFileSync(file, "utf-8");
+      expect(content).toMatch(/property="og:image" content="https:\/\/musik-in-schaumburg\.de\//);
+    });
+  }
+});
+
 // ── JSON-LD sidecar files ─────────────────────────────────────────────────────
 
 const JSONLD_SCRIPT_PATTERN = /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i;

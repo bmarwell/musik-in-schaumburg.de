@@ -48,6 +48,9 @@ const KEYWORDS_FILE = path.join(ROOT, 'src', 'main', 'keywords.yml');
 const LEAFLET_DIST = path.join(ROOT, 'node_modules', 'leaflet', 'dist');
 
 const SITE_URL = 'https://musik-in-schaumburg.de';
+const SITE_HEADER_OG_IMAGE_URL = `${SITE_URL}/img/header-schaumburg.jpg`;
+const SITE_HEADER_OG_IMAGE_WIDTH = 1156;
+const SITE_HEADER_OG_IMAGE_HEIGHT = 737;
 const CURRENT_YEAR = new Date().getFullYear();
 
 const IMAGE_WIDTHS = [400, 640, 800, 1200];
@@ -644,8 +647,9 @@ function buildEnsembleView(orch) {
     canonicalUrl: `${SITE_URL}/ensemble/${orch.slug}/`,
     ogImageUrl: orch.image && orch.image.fallback
       ? `${SITE_URL}/ensemble/${orch.slug}/${orch.image.fallback}`
-      : null,
-    ogImageHeight: orch.image && orch.image.height ? orch.image.height : null,
+      : SITE_HEADER_OG_IMAGE_URL,
+    ogImageWidth: orch.image && orch.image.width ? orch.image.width : SITE_HEADER_OG_IMAGE_WIDTH,
+    ogImageHeight: orch.image && orch.image.height ? orch.image.height : SITE_HEADER_OG_IMAGE_HEIGHT,
     descriptionShort: truncate(orch.description, 155),
     jsonld: buildOrchestraJsonLd(orch),
     conductors,
