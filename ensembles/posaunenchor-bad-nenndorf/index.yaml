@@ -1,0 +1,54 @@
+title: "Posaunenchor Bad Nenndorf"
+type: posaunenchor
+slug: posaunenchor-bad-nenndorf
+
+active: true
+founded: 1913
+
+conductors:
+  - name: "Alessa Holzapfel"
+    role: "Leitung"
+
+logo:
+  local: "logo-posaunenchor-bad-nenndorf.jpg"
+  # (c) ev. Kirche St. Godehardi Bad Nenndorf
+  # Quelle: https://assets-raphael.max-e.info/damfiles/default/kg_bad_nenndorf/PDFs/Tuer_217.pdf-3b5a0471830eebf3950780a6dd86c80b.pdf
+
+image:
+  local: "posaunenchor-bad-nenndorf.jpg"
+  # (c) Posaunenchor Bad Nenndorf / ev. Kirche St. Godehardi
+  # Quelle: https://www.kirche-bad-nenndorf.de/damfiles/gallery_img_lightbox/kg_bad_nenndorf/Bilder/Gemeindeleben/Posaunenchor/100_Jahre_2013_2.jpg-55fd3461261b32a0405bf09f99eed778.jpg
+  # Bild bearbeitet (zugeschnitten).
+
+description: >
+  Der Posaunenchor Bad Nenndorf wurde am 21. Januar 1913 unter dem Namen »Posaunenchor Kreuzriehe«
+  in Kreuzriehe – heute ein Ortsteil im Umfeld von Bad Nenndorf – gegründet. Er gehört zur
+  evangelischen St.-Godehardi-Gemeinde Bad Nenndorf und begleitet seit über 110 Jahren Gottesdienste,
+  Kirchenfeste und besondere Veranstaltungen musikalisch. Im Laufe seiner Geschichte trug das
+  Ensemble verschiedene Namen; seit der Eingliederung in die Kirchengemeinde firmiert es als
+  Posaunenchor der Gemeinde Bad Nenndorf. Heute probt das Ensemble jeden Dienstag im
+  Haus der Begegnung und freut sich über Nachwuchs.
+
+address:
+  name: "Haus der Begegnung"
+  street: "Hauptstraße 36"
+  postcode: "31542"
+  city: "Bad Nenndorf"
+  maps: "https://maps.app.goo.gl/tEWsSBwopzyRkVLVA"
+
+geo:
+  lat: 52.3374
+  lng: 9.3814
+
+website: "https://www.kirche-bad-nenndorf.de/Gemeindeleben/Posaunenchor"
+
+rehearsal:
+  day: "Dienstag"
+  time: "19:00"
+
+contact:
+  email: "alessaholzapfel@gmx.de"
+  phone: "+491751636629"
+
+tags:
+  - Kirche
