@@ -10,12 +10,12 @@ conductors:
     role: "Leitung"
 
 logo:
-  local: "logo.jpg"
+  local: "logo-posaunenchor-bad-nenndorf.jpg"
   # (c) ev. Kirche St. Godehardi Bad Nenndorf
   # Quelle: https://assets-raphael.max-e.info/damfiles/default/kg_bad_nenndorf/PDFs/Tuer_217.pdf-3b5a0471830eebf3950780a6dd86c80b.pdf
 
 image:
-  local: "photo.jpg"
+  local: "posaunenchor-bad-nenndorf.jpg"
   # (c) Posaunenchor Bad Nenndorf / ev. Kirche St. Godehardi
   # Quelle: https://www.kirche-bad-nenndorf.de/damfiles/gallery_img_lightbox/kg_bad_nenndorf/Bilder/Gemeindeleben/Posaunenchor/100_Jahre_2013_2.jpg-55fd3461261b32a0405bf09f99eed778.jpg
   # Bild bearbeitet (zugeschnitten).
