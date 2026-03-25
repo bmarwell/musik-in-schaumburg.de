@@ -429,6 +429,30 @@ function buildOrchestraJsonLd(orchestra) {
   return JSON.stringify(removeUndefinedValues(schema), null, 2);
 }
 
+// ── JSON-LD Sidecar Extraction ────────────────────────────────────────────────
+
+const JSONLD_SCRIPT_PATTERN = /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i;
+
+function extractJsonLd(html) {
+  const match = JSONLD_SCRIPT_PATTERN.exec(html);
+  if (!match) return null;
+  const rawJson = match[1].trim();
+  try {
+    // Parse and re-stringify to validate the JSON and normalise formatting.
+    const parsed = JSON.parse(rawJson);
+    return JSON.stringify(parsed, null, 2);
+  } catch (parseError) {
+    console.warn(`[build] WARN: Failed to parse JSON-LD: ${parseError.message}`);
+    return null;
+  }
+}
+
+function writeJsonLdSidecar(htmlPath, jsonLd) {
+  if (!jsonLd) return;
+  const jsonPath = htmlPath.replace(/\.html$/, '.json');
+  fs.writeFileSync(jsonPath, jsonLd, 'utf8');
+}
+
 // ── View Normalizers ──────────────────────────────────────────────────────────
 
 function truncate(str, maxLen = 155) {
@@ -596,7 +620,9 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
   };
 
   const indexHtml = Mustache.render(indexTemplate, indexView, partials);
-  fs.writeFileSync(path.join(DIST, 'index.html'), indexHtml, 'utf8');
+  const indexHtmlPath = path.join(DIST, 'index.html');
+  fs.writeFileSync(indexHtmlPath, indexHtml, 'utf8');
+  writeJsonLdSidecar(indexHtmlPath, extractJsonLd(indexHtml));
 }
 
 function buildEnsembleView(orch) {
@@ -735,6 +761,7 @@ function renderEnsemblePages(orchestras, orchTemplate, partials) {
     const outPath = path.join(DIST, 'ensemble', orch.slug, 'index.html');
     fse.ensureDirSync(path.dirname(outPath));
     fs.writeFileSync(outPath, orchHtml, 'utf8');
+    writeJsonLdSidecar(outPath, extractJsonLd(orchHtml));
     log(`  Written: ensemble/${orch.slug}/index.html`);
   }
 }
@@ -928,7 +955,7 @@ build()
 
 // ── Compression ───────────────────────────────────────────────────────────────
 
-const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg', '.webmanifest'];
+const COMPRESSIBLE_EXTS = ['.html', '.css', '.js', '.xml', '.txt', '.svg', '.webmanifest', '.json'];
 
 function walkCompressibleFiles(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });

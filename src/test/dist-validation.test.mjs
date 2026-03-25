@@ -7,6 +7,7 @@
  *  - All source JS files parse without syntax errors (acorn)
  *  - All source CSS files parse without syntax errors (css-tree)
  *  - Every HTML page includes Matomo tracking
+ *  - Every HTML page with a JSON-LD script has a matching .json sidecar
  *
  * Requires a prior `bun run build`.
  */
@@ -88,6 +89,29 @@ describe("Matomo tracking", () => {
     test(path.relative(DIST, file), () => {
       const content = fs.readFileSync(file, "utf-8");
       expect(content).toContain("matomo.php");
+    });
+  }
+});
+
+// ── JSON-LD sidecar files ─────────────────────────────────────────────────────
+
+const JSONLD_SCRIPT_PATTERN = /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i;
+
+const htmlFilesWithJsonLd = htmlFiles.filter((file) => {
+  const content = fs.readFileSync(file, "utf-8");
+  return JSONLD_SCRIPT_PATTERN.test(content);
+});
+
+describe("JSON-LD sidecar", () => {
+  for (const file of htmlFilesWithJsonLd) {
+    test(path.relative(DIST, file), () => {
+      const jsonPath = file.replace(/\.html$/, ".json");
+      expect(fs.existsSync(jsonPath)).toBe(true);
+      const jsonContent = fs.readFileSync(jsonPath, "utf-8");
+      expect(() => JSON.parse(jsonContent)).not.toThrow();
+      const parsed = JSON.parse(jsonContent);
+      const first = Array.isArray(parsed) ? parsed[0] : parsed;
+      expect(first).toHaveProperty("@context", "https://schema.org");
     });
   }
 });
