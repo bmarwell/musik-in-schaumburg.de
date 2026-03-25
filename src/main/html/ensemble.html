@@ -105,6 +105,7 @@
 
         <div class="orchestra-title-group">
           <span class="orchestra-type-badge">{{typeLabel}}</span>
+          {{#isActive}}<span class="ensemble-active-badge">Aktiv</span>{{/isActive}}
           {{#isInactive}}<span class="ensemble-inactive-badge">Derzeit inaktiv</span>{{/isInactive}}
           <h1 itemprop="name">{{title}}</h1>
         </div>
