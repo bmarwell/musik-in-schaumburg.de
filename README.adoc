@@ -71,6 +71,7 @@ description: >
 # ── Allgemeine Angaben ────────────────────────────────────────────────────────
 founded: 1975               # optional: Gründungsjahr (ganze Zahl)
 active: true                # optional: false = aufgelöst / inaktiv (Standard: true)
+dissolution_date: 2018      # optional: Auflösungsjahr (ganze Zahl); nur sinnvoll wenn active: false
 member_count: 40            # optional: Ungefähre Mitgliederzahl
 
 conductors:                 # optional: Dirigent(en) / Leitung
