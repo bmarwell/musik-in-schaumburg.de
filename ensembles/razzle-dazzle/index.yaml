@@ -24,10 +24,15 @@ description: >
   Karriere gemeinsam mit Größen wie Peter Kraus, den Lords und der Spider Murphy Gang auf der Bühne.
   Über Jahrzehnte waren sie Stammgäste beim Pflastertrubel vor dem Ratskeller Stadthagen.
 
+address:
+  street: "Emil-Biegel-Str. 2"
+  postcode: "31655"
+  city: "Stadthagen"
+
 location: 'Stadthagen'
 geo:
-  lat: 52.329
-  lng: 9.2053
+  lat: 52.31795
+  lng: 9.20909
 
 
 rehearsal:
