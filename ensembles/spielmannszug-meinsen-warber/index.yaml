@@ -1,0 +1,49 @@
+title: "Spielmannszug Meinsen-Warber von 1955 e.V."
+type: "spielmannszug"
+slug: "spielmannszug-meinsen-warber"
+founded: 1955
+active: true
+
+logo:
+  local: "logo-spielmannszug-meinsen-warber.jpg"
+  source: "https://www.bueckeburg.de/ceasy/resource/1598"
+  copyright: "Spielmannszug Meinsen-Warber von 1955 e.V."
+
+image:
+  local: "2010-ensemble-photo-sz-meinsen-warber.jpg"
+  source: "http://www.wihome.de/m/sz.jpg"
+
+description: |
+  Der Spielmannszug Meinsen-Warber von 1955 e.V. wurde im Jahr 1955 von 23 jungen Männern
+  in den Ortschaften Meinsen und Warber bei Bückeburg gegründet. Bereits ein halbes Jahr
+  nach der Gründung trat der Zug erstmals öffentlich im Altkreis Schaumburg-Lippe auf –
+  zunächst in enger Verbindung mit der örtlichen Feuerwehr und der Kyffhäuserkameradschaft.
+  Im Jahr 1961 trennte sich der Spielmannszug von diesen Vereinen und agiert seitdem
+  eigenständig.
+
+  1969 wurde ein Jugendzug ins Leben gerufen, der 1970 mit 18 Jungen und 3 Mädchen beim
+  hiesigen Schützenfest seinen ersten Auftritt hatte und bis heute fester Bestandteil des
+  Vereins ist. Die Eintragung ins Vereinsregister erfolgte 1982. Vorsitzende und
+  Stabführerin des Ensembles ist Claudia Wacker.
+
+conductors:
+  - name: "Claudia Wacker"
+    role: "Vorsitzende und Stabführerin"
+
+address:
+  street: "Schulweg 3"
+  postcode: "31675"
+  city: "Bückeburg"
+
+location: "Meinsen-Warber / Bückeburg"
+
+geo:
+  lat: 52.312689
+  lng: 9.063829
+
+contact:
+  email: "Claudia.Wacker1@gmx.de"
+  phone: "+4957229547440"
+
+social:
+  facebook: "https://www.facebook.com/SpielmannszugMeinsenWarber/"
