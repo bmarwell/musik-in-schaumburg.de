@@ -59,25 +59,27 @@
         <img src="{{{image.fallback}}}"
              srcset="{{{image.srcset}}}"
              sizes="(max-width: 960px) 100vw, 960px"
-             alt="{{title}}"
+             alt="Foto des Ensembles {{title}}"
              width="{{image.width}}" height="{{image.height}}"
              loading="eager"
+             decoding="async"
              fetchpriority="high"
              data-lightbox
              data-lightbox-src="{{{image.fallback}}}"
-             data-lightbox-alt="{{title}}">
+             data-lightbox-alt="Foto des Ensembles {{title}}">
       </picture>
       {{/image.srcsetWebp}}
       {{^image.srcsetWebp}}
       <picture>
         <img src="{{{image.fallback}}}"
-             alt="{{title}}"
+             alt="Foto des Ensembles {{title}}"
              width="{{image.width}}" height="{{image.height}}"
              loading="eager"
+             decoding="async"
              fetchpriority="high"
              data-lightbox
              data-lightbox-src="{{{image.fallback}}}"
-             data-lightbox-alt="{{title}}">
+             data-lightbox-alt="Foto des Ensembles {{title}}">
       </picture>
       {{/image.srcsetWebp}}
     </div>
@@ -94,9 +96,10 @@
         {{#logo.local}}
         <img class="orchestra-logo"
              src="{{{logo.local}}}"
-             alt="Logo {{title}}"
+             alt="Logo des Ensembles {{title}}"
              width="90" height="90"
-             loading="lazy">
+             loading="lazy"
+             decoding="async">
         {{/logo.local}}
         {{/logo}}
 
@@ -117,20 +120,22 @@
           <img src="{{{image.fallback}}}"
                srcset="{{{image.srcset}}}"
                sizes="(max-width: 760px) 100vw, 760px"
-               alt="{{title}}"
+               alt="Foto des Ensembles {{title}}"
                loading="lazy"
+               decoding="async"
                data-lightbox
                data-lightbox-src="{{{image.fallback}}}"
-               data-lightbox-alt="{{title}}">
+               data-lightbox-alt="Foto des Ensembles {{title}}">
         </picture>
         {{/image.srcsetWebp}}
         {{^image.srcsetWebp}}
         <img src="{{{image.fallback}}}"
-             alt="{{title}}"
+             alt="Foto des Ensembles {{title}}"
              loading="lazy"
+             decoding="async"
              data-lightbox
              data-lightbox-src="{{{image.fallback}}}"
-             data-lightbox-alt="{{title}}">
+             data-lightbox-alt="Foto des Ensembles {{title}}">
         {{/image.srcsetWebp}}
         <figcaption>Foto: {{title}}</figcaption>
       </figure>
