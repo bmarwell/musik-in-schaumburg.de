@@ -60,10 +60,7 @@
       frag.appendChild(document.createTextNode(original.slice(lastIndex)));
     }
 
-    while (descEl.firstChild) {
-      descEl.removeChild(descEl.firstChild);
-    }
-    descEl.appendChild(frag);
+    descEl.replaceChildren(frag);
   }
 
   function updateAllHighlights(query) {
@@ -81,7 +78,10 @@
       const descEl = card.querySelector('.card-description');
       const titleText = titleEl ? getCachedText(titleEl) : '';
       const descText = descEl ? getCachedText(descEl) : '';
-      return titleText.toLowerCase().includes(lq) || descText.toLowerCase().includes(lq);
+      const metaText = card.dataset.search || '';
+      return titleText.toLowerCase().includes(lq)
+        || descText.toLowerCase().includes(lq)
+        || metaText.toLowerCase().includes(lq);
     };
   }
 
