@@ -35,15 +35,15 @@ address:
   street: "Wilhelmstraße 44"
   postcode: "31675"
   city: "Bückeburg"
-  maps: "https://maps.app.goo.gl/fYqB7cXrKhTnWkDo8"
+  maps: "https://maps.app.goo.gl/wbBXbCsjRTktw4b1A"
 
 rehearsal:
   day: "Donnerstag"
   time: "19:30"
 
 geo:
-  lat: 52.2611
-  lng: 9.0489
+  lat: 52.260118
+  lng: 9.054793
 
 website: "https://www.bueckeburger-jaeger.de/"
 

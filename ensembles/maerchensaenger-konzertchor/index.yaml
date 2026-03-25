@@ -35,10 +35,11 @@ address:
   street: "Georgstraße 7"
   postcode: "31675"
   city: "Bückeburg"
+  maps: "https://maps.app.goo.gl/2MaubsacYzq3idCZ7"
 
 geo:
-  lat: 52.2611
-  lng: 9.0489
+  lat: 52.254659
+  lng: 9.044699
 
 website: "https://www.maerchensaenger.de/konzertchor/"
 
