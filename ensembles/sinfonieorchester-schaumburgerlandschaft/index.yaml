@@ -31,9 +31,15 @@ description: >
   hinaus gastiert das Ensemble in historischen Spielstätten der gesamten Region
   Schaumburg.
 
-location: "Stadthagen"
+address:
+  street: "Schloßplatz 5"
+  postcode: "31675"
+  city: "Bückeburg"
+  maps: "https://maps.app.goo.gl/GpTEGy1vUe43G6Yf8"
+
+location: "Bückeburg"
 geo:
-  lat: 52.329
-  lng: 9.2053
+  lat: 52.260446
+  lng: 9.040594
 
 website: "https://www.sinfonieorchester-schaumburgerlandschaft.de"
