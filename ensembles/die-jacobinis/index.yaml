@@ -1,0 +1,56 @@
+title: 'Die Jacobinis'
+type: choir
+slug: die-jacobinis
+
+founded: 2013
+active: true
+
+conductors:
+  - name: 'Judith Schlupp'
+    role: 'Leitung'
+  - name: 'Petra Janßen'
+    role: 'Leitung'
+  - name: 'Susanne Reese'
+    role: 'Leitung'
+
+logo:
+  # url: Download from cdn3.wir-e.de blocked in CI environment
+  url: 'https://cdn3.wir-e.de/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6IjJlMDc4Mjg2LWU2YTYtNDI1My05ZDhjLTRjNjM2ZGI2M2I5NCIsInB1ciI6ImJsb2JfaWQifX0=--528cdb59b67a202f6da8669116627166d79a39f6/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJjcm9wIjpbMCwwLDkwMCw5MDBdLCJyZXNpemVfdG9fZml0IjpbMjU0LG51bGxdfSwicHVyIjoidmFyaWF0aW9uIn19--6556c2d814ddff3ee4317708def0816e28d0b761/space_profile_image.-tmp-mini_magick20190517-113-2z7e6b.jpg%20JPEG%20900x900%20900x900+0+0%208-bit%20sRGB%20124KB%200.000u%200-00.000'
+
+image:
+  # url: Download from cdn3.wir-e.de blocked in CI environment
+  url: 'https://cdn3.wir-e.de/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6IjJkYjQ2ZGRhLWMyMzktNGMwZS1hODMzLTkwOGJiZThhZTYzOCIsInB1ciI6ImJsb2JfaWQifX0=--9ddd2da08f90f38f2bc597b792512b10cd232d16/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJjcm9wIjpbMTM3LDI2Miw1NjA1LDcyNV0sInJlc2l6ZV90b19maXQiOlsxOTIwLG51bGxdfSwicHVyIjoidmFyaWF0aW9uIn19--d23e2f8fa79d0997b911c617d9def7a782c482c6/L1050130a.jpg'
+
+description: >
+  Die Jacobinis sind ein Kinderchor der Sankt-Jacobi Kirchengemeinde in Rodenberg.
+  Gegründet wurde das Ensemble 2013 von sechs musikbegeisterten Frauen, die für ihre Kinder
+  ein Angebot zum gemeinsamen Singen schaffen wollten. Ohne formale musikpädagogische
+  Ausbildung, dafür mit viel Engagement und Kreativität, bauten sie den Chor von Grund auf auf.
+  Heute leitet Judith Schlupp die Proben mit großem musikalischem Geschick; sie schloss 2019
+  eine Ausbildung zur Atem-, Sprech- und Stimmlehrerin an der Schlaffhorst-Andersen-Schule
+  in Bad Nenndorf ab. Petra Janßen sorgt für Bewegung und Organisation der Auftritte und
+  begleitet die Kinder an Heimorgel und Cajón. Susanne Reese ergänzt das Team am Klavier
+  und hilft den Kindern, Rhythmus und Melodie zu halten.
+
+address:
+  name: 'Gemeindehaus der Sankt-Jacobi Kirchengemeinde'
+  street: 'Grover Str. 32'
+  postcode: '31552'
+  city: 'Rodenberg'
+
+geo:
+  lat: 52.312583
+  lng: 9.355877
+
+website: 'https://jacobinis.wir-e.de/aktuelles'
+
+rehearsal:
+  day: 'Freitag'
+  time: '15:00'
+
+contact:
+  email: 'kontakt@caminandova.de'
+
+tags:
+  - Jugend
+  - Kirche
