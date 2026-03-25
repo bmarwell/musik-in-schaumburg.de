@@ -1,0 +1,60 @@
+title: "Posaunenchor Frille"
+type: posaunenchor
+slug: posaunenchor-frille
+
+founded: 1907
+active: true
+member_count: 12
+
+conductors:
+  - name: "Claes Barthold"
+    role: "Posaunenchorleiter"
+
+logo:
+  source: "https://www.evangelischinfrille.de/fileadmin/gemeinden/frille/Gemeinde/Kopfgrafiken/logo_frille_kirche_web_orte_background_rgb_klein.png"
+  local: "logo-kirche-frille.png"
+  copyright: "Kirchengemeinde Frille"
+
+image:
+  local: "ensemble-posaunenchor-frille.jpg"
+  source: "https://www.evangelischinfrille.de/fileadmin/_processed_/3/8/csm_posaunenchor_klein_b6bd3f1b2d.jpg"
+  copyright: "Kirchengemeinde Frille"
+
+description: >
+  Der Posaunenchor Frille gehört zur Evangelisch-Lutherischen Kirchengemeinde Frille,
+  die zwar verwaltungstechnisch zur Stadt Minden (NRW) zählt, kirchlich aber zur
+  Landeskirche Schaumburg-Lippe gehört – ebenso wie die benachbarte Gemeinde Cammer
+  im Landkreis Schaumburg.
+  Seit seiner Gründung im Jahr 1907 begleitet der Chor Gottesdienste in und außerhalb
+  der Kirche sowie Gemeindeveranstaltungen wie das Friller Erntefest, den Laternenumzug
+  der Grundschule und Gedenkfeiern am Volkstrauertag.
+  Das Repertoire reicht von Kirchen- und Volksmusik über klassische Instrumentalstücke
+  bis hin zu zeitgenössischen Stücken mit Einflüssen aus Swing und Filmmusik.
+  Ein besonderes Highlight in der Vereinsgeschichte war das Jahr 2007: Anlässlich des
+  100-jährigen Bestehens richtete der Chor das Schaumburg-Lippische Landesposaunenfest aus,
+  an dem 120 Bläserinnen und Bläser aus 14 Chören teilnahmen.
+  Seit 2021 leitet Claes Barthold den Chor mit derzeit rund 12 aktiven Bläserinnen
+  und Bläsern. Alle zwei Jahre werden neue Jungbläser ausgebildet; mitmachen können
+  Kinder ab der 3. Klasse sowie Jugendliche und Erwachsene – Vorkenntnisse sind nicht
+  erforderlich, die Ausbildung ist kostenlos. Auch erfahrene Bläserinnen und Bläser
+  sind herzlich willkommen.
+
+address:
+  name: "Gemeindehaus Frille"
+  street: "Mitteldorf 3"
+  postcode: "32469"
+  city: "Frille"
+
+geo:
+  lat: 52.3393125
+  lng: 8.992672
+
+rehearsal:
+  day: "Donnerstag"
+  time: "19:30"
+
+website: "https://www.evangelischinfrille.de/angebote-fuer/kirchenmusik/posaunenchor"
+
+contact:
+  email: "claesbarthold@web.de"
+  phone: "+4917633458087"
