@@ -29,8 +29,8 @@
   <meta name="twitter:image:alt" content="{{title}}">
 
   <title>{{title}} – Musik in Schaumburg</title>
-  <link rel="stylesheet" href="../../css/main.css">
-  {{#hasGeo}}<link rel="stylesheet" href="../../css/leaflet.css">{{/hasGeo}}
+  <link rel="stylesheet" href="../../css/main.css?v={{cacheBuster}}">
+  {{#hasGeo}}<link rel="stylesheet" href="../../css/leaflet.css?v={{cacheBuster}}">{{/hasGeo}}
   {{#hasGeo}}<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>{{/hasGeo}}
   {{> head-icons}}
   <script type="application/ld+json">
@@ -271,9 +271,9 @@
       </span>
     </div>
   </footer>
-  <script src="../../js/lightbox.js"></script>
+  <script src="../../js/lightbox.js?v={{cacheBuster}}"></script>
   {{#hasGeo}}
-  <script src="../../js/leaflet.js"></script>
+  <script src="../../js/leaflet.js?v={{cacheBuster}}"></script>
   <script type="application/json" id="ensemble-geo-data">
   {{{geoJson}}}
   </script>
@@ -285,7 +285,7 @@
     catch (e) { console.error('Fehler beim Parsen der Ensemble-Geodaten', e); }
   }());
   </script>
-  <script src="../../js/map.js"></script>
+  <script src="../../js/map.js?v={{cacheBuster}}"></script>
   {{/hasGeo}}
 
   {{> matomo}}

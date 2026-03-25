@@ -28,8 +28,8 @@
 
   <title>Karte – Musik in Schaumburg</title>
   <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
-  <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/leaflet.css">
+  <link rel="stylesheet" href="../css/main.css?v={{cacheBuster}}">
+  <link rel="stylesheet" href="../css/leaflet.css?v={{cacheBuster}}">
   {{> head-icons}}
 </head>
 <body>
@@ -96,8 +96,8 @@
     catch (e) { window.MAP_DATA = []; }
   }());
   </script>
-  <script src="../js/leaflet.js"></script>
-  <script src="../js/map.js"></script>
+  <script src="../js/leaflet.js?v={{cacheBuster}}"></script>
+  <script src="../js/map.js?v={{cacheBuster}}"></script>
 
   {{> matomo}}
 </body>
