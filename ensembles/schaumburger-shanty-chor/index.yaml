@@ -5,7 +5,8 @@ active: false
 
 logo:
   local: "2024-logo-schaumburger-shanty-chor.jpg"
-  source: "https://www.schaumburger-shanty-chor.de/"
+  #source: "https://www.schaumburger-shanty-chor.de/"
+  source: "https://web2.cylex.de/firma-home/schaumburger-shanty-chor-e--v--10133490.html"
 
 image:
   local: 2024-08-11_shanty_chor_schaumburg_Herr_Jehle.jpg
