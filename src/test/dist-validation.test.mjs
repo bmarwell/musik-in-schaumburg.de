@@ -17,7 +17,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 import { glob } from "glob";
-import { HtmlValidate } from "html-validate";
+import { HtmlValidate, FileSystemConfigLoader } from "html-validate";
 import * as acorn from "acorn";
 import * as csstree from "css-tree";
 
@@ -32,7 +32,7 @@ const htmlFiles = (await glob("**/*.html", { cwd: DIST, absolute: true })).sort(
 const srcJsFiles = (await glob("src/main/js/*.js", { cwd: ROOT, absolute: true })).sort();
 const srcCssFiles = (await glob("src/main/css/*.css", { cwd: ROOT, absolute: true })).sort();
 
-const htmlvalidate = new HtmlValidate();
+const htmlvalidate = new HtmlValidate(new FileSystemConfigLoader());
 
 // ── HTML validity ─────────────────────────────────────────────────────────────
 
