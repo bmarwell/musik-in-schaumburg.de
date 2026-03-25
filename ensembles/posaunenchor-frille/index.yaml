@@ -11,15 +11,13 @@ conductors:
     role: "Posaunenchorleiter"
 
 logo:
-  # URL-Fallback: www.evangelischinfrille.de war in der Build-Umgebung nicht erreichbar (ECONNREFUSED/DNS-Fehler).
-  # Bitte logo.png lokal einchecken und auf logo.local umstellen, sobald der Download möglich ist.
-  url: "https://www.evangelischinfrille.de/fileadmin/gemeinden/frille/Gemeinde/Kopfgrafiken/logo_frille_kirche_web_orte_background_rgb_klein.png"
+  source: "https://www.evangelischinfrille.de/fileadmin/gemeinden/frille/Gemeinde/Kopfgrafiken/logo_frille_kirche_web_orte_background_rgb_klein.png"
+  local: "logo-kirche-frille.png"
   copyright: "Kirchengemeinde Frille"
 
 image:
-  # URL-Fallback: www.evangelischinfrille.de war in der Build-Umgebung nicht erreichbar (ECONNREFUSED/DNS-Fehler).
-  # Bitte photo.jpg lokal einchecken und auf image.local umstellen, sobald der Download möglich ist.
-  url: "https://www.evangelischinfrille.de/fileadmin/_processed_/3/8/csm_posaunenchor_klein_b6bd3f1b2d.jpg"
+  local: "ensemble-posaunenchor-frille.jpg"
+  source: "https://www.evangelischinfrille.de/fileadmin/_processed_/3/8/csm_posaunenchor_klein_b6bd3f1b2d.jpg"
   copyright: "Kirchengemeinde Frille"
 
 description: >
