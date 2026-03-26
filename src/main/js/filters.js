@@ -48,13 +48,14 @@
 
   function readHashFilter() {
     const hash = window.location.hash.replace('#', '');
-    if (hash === 'active' || hash === 'inactive') return hash;
+    if (hash === 'active' || hash === 'inactive' || hash === 'dissolved') return hash;
     return 'all';
   }
 
   function buildStatusPredicate(filter) {
-    if (filter === 'active') return function (card) { return card.dataset.active === 'true'; };
-    if (filter === 'inactive') return function (card) { return card.dataset.active === 'false'; };
+    if (filter === 'active') return function (card) { return card.dataset.active === 'active'; };
+    if (filter === 'inactive') return function (card) { return card.dataset.active === 'inactive'; };
+    if (filter === 'dissolved') return function (card) { return card.dataset.active === 'dissolved'; };
     return function () { return true; };
   }
 

@@ -22,7 +22,7 @@ description: >
   gemeinsame Konzertabende mit befreundeten Orchestern der Region, darunter Bläserensembles des
   Wilhelm-Busch-Gymnasiums.
 
-active: false
+status: inactive
 
 conductors:
   - name: "Stephan Winkelhake"

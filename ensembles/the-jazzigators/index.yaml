@@ -3,7 +3,7 @@ type: big-band
 slug: the-jazzigators
 
 founded: 1990
-active: false
+status: inactive
 
 conductors:
   - name: "Stephan Winkelhake"

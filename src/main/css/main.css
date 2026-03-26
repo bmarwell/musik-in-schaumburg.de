@@ -681,6 +681,7 @@ mark.search-highlight {
 }
 
 .ensemble-inactive-badge,
+.ensemble-dissolved-badge,
 .ensemble-active-badge {
   display: inline-block;
   font-size: 0.72rem;
@@ -696,6 +697,10 @@ mark.search-highlight {
 
 .ensemble-inactive-badge {
   background: #5c5c5c;
+}
+
+.ensemble-dissolved-badge {
+  background: #8b2020;
 }
 
 .ensemble-active-badge {
