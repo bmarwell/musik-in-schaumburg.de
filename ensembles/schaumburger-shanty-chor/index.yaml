@@ -1,7 +1,7 @@
 title: "Schaumburger Shanty-Chor Sachsenhagen e.V."
 type: choir
 slug: schaumburger-shanty-chor
-active: false
+status: inactive
 
 logo:
   local: "2024-logo-schaumburger-shanty-chor.jpg"

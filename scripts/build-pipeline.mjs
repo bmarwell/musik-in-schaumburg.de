@@ -375,13 +375,14 @@ function buildLocationObject(orchestra) {
   return undefined;
 }
 
+const VALID_STATUSES = Object.freeze(['active', 'inactive', 'dissolved']);
+
 /**
  * Derives the ensemble status string from YAML fields.
  * Priority: explicit `status` field → dissolution_date+inactive → active boolean → default active.
  * @returns {'active'|'inactive'|'dissolved'}
  */
 function deriveStatus(o) {
-  const VALID_STATUSES = Object.freeze(['active', 'inactive', 'dissolved']);
   if (o.status && VALID_STATUSES.includes(o.status)) return o.status;
   if (o.active === false) {
     if (o.dissolution_date) return 'dissolved';
@@ -680,29 +681,32 @@ async function processEnsembleAssets(orchestras) {
 function renderIndexPage(orchestras, allowedKeywords, partials) {
   const indexTemplate = fs.readFileSync(path.join(SRC_HTML, 'index.html'), 'utf8');
 
-  const orchestrasForIndex = orchestras.map((o, i) => ({
-    ...o,
-    location: o.location || o.address?.city || null,
-    image: buildIndexImagePaths(o),
-    logo: o.logo
-      ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
-      : null,
-    tags: o.tags || null,
-    // isInactive / isActive / isDissolvedStatus: Mustache section tags for conditional badge rendering
-    // ({{#isDissolvedStatus}} shows the red badge; {{#isInactive}} shows the gray badge; {{#isActive}} shows the green badge).
-    isDissolvedStatus: deriveStatus(o) === 'dissolved',
-    isInactive: deriveStatus(o) === 'inactive',
-    isActive: deriveStatus(o) === 'active',
-    // activeStatus: string 'active' / 'inactive' / 'dissolved' written into data-active="…" on each
-    // card element so filters.js can filter cards without touching the DOM text.
-    activeStatus: deriveStatus(o),
-    founded: o.founded || null,
-    imageLoading: i === 0 ? 'eager' : 'lazy',
-    imageFetchPriorityHigh: i === 0,
-    // searchTokens: aggregated searchable metadata (conductors, address, location)
-    // baked into data-search="…" so search.js can match fields not visible on the card.
-    searchTokens: buildSearchTokens(o),
-  }));
+  const orchestrasForIndex = orchestras.map((o, i) => {
+    const status = deriveStatus(o);
+    return {
+      ...o,
+      location: o.location || o.address?.city || null,
+      image: buildIndexImagePaths(o),
+      logo: o.logo
+        ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
+        : null,
+      tags: o.tags || null,
+      // isInactive / isActive / isDissolvedStatus: Mustache section tags for conditional badge rendering
+      // ({{#isDissolvedStatus}} shows the red badge; {{#isInactive}} shows the gray badge; {{#isActive}} shows the green badge).
+      isDissolvedStatus: status === 'dissolved',
+      isInactive: status === 'inactive',
+      isActive: status === 'active',
+      // activeStatus: string 'active' / 'inactive' / 'dissolved' written into data-active="…" on each
+      // card element so filters.js can filter cards without touching the DOM text.
+      activeStatus: status,
+      founded: o.founded || null,
+      imageLoading: i === 0 ? 'eager' : 'lazy',
+      imageFetchPriorityHigh: i === 0,
+      // searchTokens: aggregated searchable metadata (conductors, address, location)
+      // baked into data-search="…" so search.js can match fields not visible on the card.
+      searchTokens: buildSearchTokens(o),
+    };
+  });
 
   const availableTypes = [...new Set(orchestras.map(o => o.type).filter(Boolean))]
     .toSorted((a, b) => (TYPE_LABELS[a] || a).localeCompare(TYPE_LABELS[b] || b, 'de'))
@@ -735,6 +739,7 @@ function buildEnsembleView(orch) {
   const geoJson = hasGeo
     ? JSON.stringify({ lat: geo.lat, lng: geo.lng, title: orch.title })
     : null;
+  const status = deriveStatus(orch);
 
   return {
     ...orch,
@@ -759,9 +764,9 @@ function buildEnsembleView(orch) {
     hasContact: Boolean(contact),
     // isInactive / isActive / isDissolvedStatus: Mustache section tags for conditional badge rendering
     // on the detail page ({{#isDissolvedStatus}} → red "Aufgelöst"; {{#isInactive}} → gray "Derzeit inaktiv"; {{#isActive}} → green "Aktiv").
-    isDissolvedStatus: deriveStatus(orch) === 'dissolved',
-    isInactive: deriveStatus(orch) === 'inactive',
-    isActive: deriveStatus(orch) === 'active',
+    isDissolvedStatus: status === 'dissolved',
+    isInactive: status === 'inactive',
+    isActive: status === 'active',
     founded: orch.founded || null,
     dissolution_date: orch.dissolution_date || null,
     member_count: orch.member_count || null,
