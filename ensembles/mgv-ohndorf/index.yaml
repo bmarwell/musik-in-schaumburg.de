@@ -3,7 +3,8 @@ type: choir
 slug: mgv-ohndorf
 
 founded: 1922
-status: inactive
+status: dissolved
+dissolution_date: 2023
 
 conductors:
   - name: 'Julia Makarowa'
