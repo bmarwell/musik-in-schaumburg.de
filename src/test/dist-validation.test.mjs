@@ -143,7 +143,7 @@ describe("all-ensembles.json", () => {
     for (const entry of parsed) {
       expect(typeof entry.title).toBe("string");
       expect(typeof entry.slug).toBe("string");
-      expect(typeof entry.active).toBe("boolean");
+      expect(["active", "inactive", "dissolved"]).toContain(entry.status);
     }
   });
 });

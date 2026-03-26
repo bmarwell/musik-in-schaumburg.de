@@ -375,6 +375,21 @@ function buildLocationObject(orchestra) {
   return undefined;
 }
 
+/**
+ * Derives the ensemble status string from YAML fields.
+ * Priority: explicit `status` field → dissolution_date+inactive → active boolean → default active.
+ * @returns {'active'|'inactive'|'dissolved'}
+ */
+function deriveStatus(o) {
+  const VALID_STATUSES = Object.freeze(['active', 'inactive', 'dissolved']);
+  if (o.status && VALID_STATUSES.includes(o.status)) return o.status;
+  if (o.active === false) {
+    if (o.dissolution_date) return 'dissolved';
+    return 'inactive';
+  }
+  return 'active';
+}
+
 function removeUndefinedValues(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -673,13 +688,14 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
       ? { ...o.logo, local: o.logo.local ? `ensemble/${o.slug}/${o.logo.local}` : null }
       : null,
     tags: o.tags || null,
-    // isInactive / isActive: Mustache section tags for conditional badge rendering
-    // ({{#isInactive}} shows the gray badge; {{#isActive}} shows the green badge).
-    isInactive: o.active === false,
-    isActive: o.active !== false,
-    // activeStatus: string 'true' / 'false' written into data-active="…" on each
+    // isInactive / isActive / isDissolvedStatus: Mustache section tags for conditional badge rendering
+    // ({{#isDissolvedStatus}} shows the red badge; {{#isInactive}} shows the gray badge; {{#isActive}} shows the green badge).
+    isDissolvedStatus: deriveStatus(o) === 'dissolved',
+    isInactive: deriveStatus(o) === 'inactive',
+    isActive: deriveStatus(o) === 'active',
+    // activeStatus: string 'active' / 'inactive' / 'dissolved' written into data-active="…" on each
     // card element so filters.js can filter cards without touching the DOM text.
-    activeStatus: o.active !== false ? 'true' : 'false',
+    activeStatus: deriveStatus(o),
     founded: o.founded || null,
     imageLoading: i === 0 ? 'eager' : 'lazy',
     imageFetchPriorityHigh: i === 0,
@@ -741,10 +757,11 @@ function buildEnsembleView(orch) {
     hasRehearsal: Boolean(rehearsal),
     contact,
     hasContact: Boolean(contact),
-    // isInactive / isActive: Mustache section tags for conditional badge rendering
-    // on the detail page ({{#isInactive}} → gray "Derzeit inaktiv"; {{#isActive}} → green "Aktiv").
-    isInactive: orch.active === false,
-    isActive: orch.active !== false,
+    // isInactive / isActive / isDissolvedStatus: Mustache section tags for conditional badge rendering
+    // on the detail page ({{#isDissolvedStatus}} → red "Aufgelöst"; {{#isInactive}} → gray "Derzeit inaktiv"; {{#isActive}} → green "Aktiv").
+    isDissolvedStatus: deriveStatus(orch) === 'dissolved',
+    isInactive: deriveStatus(orch) === 'inactive',
+    isActive: deriveStatus(orch) === 'active',
     founded: orch.founded || null,
     dissolution_date: orch.dissolution_date || null,
     member_count: orch.member_count || null,
@@ -865,7 +882,7 @@ function buildAllEnsemblesEntry(o) {
     slug: o.slug,
     type: o.type,
     typeLabel: o.typeLabel,
-    active: o.active !== false,
+    status: deriveStatus(o),
     location: o.location || o.address?.city || null,
     geo: geo ? { lat: geo.lat, lng: geo.lng } : null,
     image: o.image?.fallback ? `ensemble/${o.slug}/${o.image.fallback}` : null,

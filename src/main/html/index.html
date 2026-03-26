@@ -77,6 +77,8 @@
                   aria-selected="false" tabindex="-1">Aktiv</li>
               <li class="ms-option" role="option" data-value="inactive"
                   aria-selected="false" tabindex="-1">Inaktiv</li>
+              <li class="ms-option" role="option" data-value="dissolved"
+                  aria-selected="false" tabindex="-1">Aufgelöst</li>
             </ul>
           </div>
         </div>
@@ -159,6 +161,7 @@
             <span class="card-type">{{typeLabel}}</span>
             {{#isActive}}<span class="ensemble-active-badge">Aktiv</span>{{/isActive}}
             {{#isInactive}}<span class="ensemble-inactive-badge">Inaktiv</span>{{/isInactive}}
+            {{#isDissolvedStatus}}<span class="ensemble-dissolved-badge">Aufgelöst</span>{{/isDissolvedStatus}}
             <h3 class="card-title" itemprop="name">
               <a href="ensemble/{{slug}}/">{{title}}</a>
             </h3>
