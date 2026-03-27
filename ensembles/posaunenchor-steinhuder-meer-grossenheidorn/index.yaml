@@ -1,0 +1,55 @@
+title: "Posaunenchor Steinhuder Meer – Großenheidorn 1869"
+type: posaunenchor
+slug: posaunenchor-steinhuder-meer-grossenheidorn
+founded: 1869
+active: true
+
+image:
+  local: "ensemble-posaunenchor-grossenheidorn-steinhuder-meer.jpg"
+  source: "https://www.posaunenchor-steinhuder-meer.de/fotogalerie"
+  copyright: "Posaunenchor Steinhuder Meer, Großenheidorn"
+
+logo:
+  local: "logo-posaunenchor-grossenheidorn.png"
+  source: "https://www.posaunenchor-steinhuder-meer.de/impressum"
+  copyright: "Posaunenchor Steinhuder Meer, Großenheidorn"
+
+conductors:
+  - name: "Jörg Nickel"
+    role: "Chorleiter"
+
+description: |
+  Der 1869 gegründete Posaunenchor Steinhuder Meer – Großenheidorn ist der älteste Posaunenchor 
+  der Schaumburg-Lippischen Landeskirche und eines der 
+  traditionsreichsten Blechbläserensembles der Region.
+  Obwohl Großenheidorn und Steinhude geografisch zur Region Hannover gehören, 
+  ist der Chor seit seiner Gründung eng mit den Kirchengemeinden 
+  der Landeskirche Schaumburg-Lippe verbunden und bereichert das kirchliche 
+  und kulturelle Leben im weiteren Schaumburger Raum.
+  Seine besondere Stärke liegt in der generationenübergreifenden Gemeinschaft 
+  von Bläserinnen und Bläsern zwischen 10 und über 80 Jahren, 
+  der eigenen Jungbläserausbildung sowie regelmäßigen Workshops und 
+  Kooperationen mit renommierten Ensembles wie Harmonic Brass.
+
+location: "Großenheidorn"
+
+address:
+  name: "Thomashaus"
+  street: "Klosterstraße 22"
+  postcode: "31515"
+  city: "Großenheidorn"
+  maps: "https://maps.app.goo.gl/aNDXodvmv68ycrTe9"
+
+geo:
+  lat: 52.457664
+  lng: 9.381606
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:00"
+  location: "Thomashaus Großenheidorn"
+
+contact:
+  phone: "+491631683854"
+
+website: "https://www.posaunenchor-steinhuder-meer.de/"
