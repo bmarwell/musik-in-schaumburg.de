@@ -1,0 +1,45 @@
+title: "Posaunenchor Lindhorst"
+type: posaunenchor
+slug: posaunenchor-lindhorst
+status: active
+
+description: |
+  Der Posaunenchor der Ev.-Luth. Kirchengemeinde Lindhorst probt wöchentlich donnerstags im Gemeindehaus.
+  Für Anfängerinnen und Anfänger gibt es ab 17:00 Uhr einen eigenen Kurs, 
+  die Jungbläsergruppe probt ab 19:00 Uhr, der Hauptchor ab 20:00 Uhr. 
+  Neue Anfängerkurse starten regelmäßig, Kurse und Instrumente werden kostenlos bereitgestellt.
+
+logo:
+  local: "logo-kirche-st-dionysius-lindhorst.png"
+  source: "https://www.kirche-lindhorst.de/"
+  copyright: "Kirchengemeinde Lindhorst"
+
+image:
+  local: "2020-ensemble-posaunenchor-lindhorst.jpg"
+  source: "https://www.kirche-heuerssen.de/fileadmin/gemeinden/heuerssen/Gemeindebriefe/Gemeindebrief-Heuer%C3%9Fen-Lindhorst-2020-02-Homepage.pdf"
+  copyright: "Kirchengemeinde Lindhorst"
+
+address:
+  name: "Gemeindehaus Lindhorst"
+  street: "Pfarrweg 3"
+  postcode: "31698"
+  city: "Lindhorst"
+  maps: "https://maps.app.goo.gl/1vZpxTyLnRCrhdEt6"
+
+conductors:
+  - name: "Michael Stüber"
+    role: "Chorleiter"
+  - name: "Lothar Stüber"
+    role: "Chorleiter"
+
+geo:
+  lat: 52.36126
+  lng: 9.28121
+
+rehearsal:
+  day: "Donnerstag"
+  time: "20:00"
+  location: "Gemeindehaus Lindhorst"
+
+
+website: "https://www.kirche-lindhorst.de/mitmachen-dabei-sein/posaunenchor"
