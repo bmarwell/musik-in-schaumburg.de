@@ -3,6 +3,12 @@
   "rules": {
     "no-trailing-whitespace": "off",
     "require-sri": "off",
-    "prefer-native-element": "off"
+    "prefer-native-element": "off",
+    "long-title": [
+      "warning",
+      {
+         "maxlength": 80
+      }
+    ]
   }
 }
