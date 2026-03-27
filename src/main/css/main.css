@@ -240,7 +240,7 @@ main {
   position: relative;
   display: flex;
   align-items: stretch;
-  min-width: 10rem;
+  min-width: 15rem;
   border: 2px solid var(--color-primary);
   border-radius: 0.4rem;
   background: var(--color-surface);
