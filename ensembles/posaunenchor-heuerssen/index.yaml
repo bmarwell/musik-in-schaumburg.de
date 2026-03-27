@@ -1,0 +1,49 @@
+title: "Posaunenchor Heuerßen"
+type: posaunenchor
+slug: posaunenchor-heuerssen
+founded: 1953
+status: active
+
+logo:
+  local: "logo-kirche-heuerssen-st-juergen.png"
+  source: "https://www.kirche-heuerssen.de/"
+  copyright: "Ev.- Luth. Kirchengemeinde Heuerßen"
+
+image:
+  local: "2023-ensemble-posaunenchor-heuerssen.jpg"
+  source: "https://www.kirche-lindhorst.de/fileadmin/gemeinden/lindhorst/2023/Gemeindebrief-Heuer%C3%9Fen-Lindhorst-2023-03-Homepage.pdf"
+  copyright: "Ev.- Luth. Kirchengemeinde Heuerßen"
+
+description: |
+  Der Posaunenchor Heuerßen blickt auf eine beeindruckende 70-jährige Geschichte zurück.
+  Gegründet 1953 unter der Leitung von Heinrich Heinemann,
+  ist er seitdem ein fester und klangvoller Bestandteil des kirchlichen und kulturellen Lebens 
+  in der St. Jürgen-Gemeinde. Mit Trompeten, Hörnern, Posaunen und Tuben gestaltet
+  der Chor Gottesdienste, Festlichkeiten und Konzerte – von besinnlich bis festlich.
+  Was den Chor besonders ausmacht, ist die enge Gemeinschaft: 
+  Musizieren mit Freunden, gemeinsame Ausflüge, Freude, Lachen und das Teilen 
+  von Lebensmomenten – alles eingebettet in die Musik, die zum Lobe Gottes und den 
+  Menschen zur Freude erklingt.
+
+
+conductors:
+  - name: "Astrid Hautau-Pahlow"
+    role: "Chorleiterin"
+
+address:
+  name: "Gemeindehaus Heuerßen Altes Pfarrhaus"
+  street: "Kirchweg 4B"
+  postcode: "31700"
+  city: "Heuerßen"
+  maps: "https://maps.app.goo.gl/cXdFRVGo2CaiHmxMA"
+
+geo:
+  lat: 52.329631
+  lng: 9.279050
+
+rehearsal:
+  day: "Freitag"
+  time: "19:45"
+  location: "Gemeindehaus Lindhorst"
+
+website: "https://www.kirche-heuerssen.de/gemeindeleben-gruppen"
