@@ -5,7 +5,7 @@
     "require-sri": "off",
     "prefer-native-element": "off",
     "long-title": [
-      "warning",
+      "warn",
       {
          "maxlength": 80
       }
