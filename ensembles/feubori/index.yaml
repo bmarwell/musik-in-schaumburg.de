@@ -1,0 +1,47 @@
+title: "Blasorchester Feuerwehr Rinteln"
+type: blaskapelle
+slug: blasorchester-feuerwehr-rinteln
+founded: 2003
+status: dissolved
+dissolution_date: 2016
+member_count: 25
+
+logo:
+  local: "2004-logo-feubori-400px.png"
+  source: "Archiv (privat)"
+
+image:
+  local: "2008-ensemble-feubori-rinteln-cd-cover.jpg"
+  source: "https://musicbrainz.org/release-group/40fbdf4f-22f8-314d-8cb0-ee0b642541e7"
+
+conductors:
+  - name: "Markus Plachta"
+    role: "Dirigent (2016)"
+  - name: "Klaus Diebietz"
+    role: "Dirigent (2003-2013)"
+
+description: |
+  Das Blasorchester Feuerwehr Rinteln (auch bekannt als »Feubori«) war ein
+  Blasorchester der Freiwilligen Feuerwehr Rinteln. Das Ensemble spielte bis
+  zuletzt unter dem Dirigenten Markus Plachta, das letzte dokumentierte Konzert
+  fand im Mai 2016 statt.
+  Ein Jugendensemble des Vereins, die »Feubori Kids«, wurde von Angela Voges geleitet.
+  2008 nahm das Ensemble die CD »Wasser… marsch!« auf,
+  welche zum Kassenschlager bei lokalen Auftritten wurde.  
+
+address:
+  name: "Lebenshilfe Rinteln e.V."
+  street: "Waldkaterallee 13"
+  city: "Rinteln"
+  postcode: "31737"
+  maps: "https://maps.app.goo.gl/DYH1b9Vs1Mm64NS49"
+
+geo:
+  lat: 52.20244
+  lng: 9.08458
+
+rehearsal:
+  day: "Dienstag"
+  time: "20:00"
+
+website: "https://web.archive.org/web/20170706102556/https://www.feubori.de/"
