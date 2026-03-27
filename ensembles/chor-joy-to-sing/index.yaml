@@ -22,8 +22,8 @@ address:
 
 location: 'Steinbergen / Rinteln'
 geo:
-  lat: 52.1951
-  lng: 9.1303
+  lat: 52.20696
+  lng: 9.1082
 
 website: 'https://julia-knubbe.de/chor'
 
@@ -31,6 +31,7 @@ rehearsal:
   day: 'Mittwoch'
   time: '20:00'
   location: 'Jugendhaus der Kirche Steinbergen'
+  maps: "https://maps.app.goo.gl/nG8K5Juc3jFHip8GA"
 
 contact:
   email: 'mail@julia-knubbe.de'
