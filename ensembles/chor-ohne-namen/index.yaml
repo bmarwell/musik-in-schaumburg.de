@@ -1,0 +1,37 @@
+title: "Kirchenchor »Chor ohne Namen«"
+type: choir
+slug: chor-ohne-namen
+
+description: |
+  Der »Chor ohne Namen« ist ein lebendiger, vierstimmiger gemischter Kirchenchor
+  aus den Gemeinden Meerbeck und Pollhagen.
+  Seit Februar 2023 probt die neu formierte Gruppe unter der Leitung von 
+  Hubertus Böer wieder regelmäßig und vereint erfahrene Chorsängerinnen und -sänger
+  mit neuen Stimmen. Das Repertoire entsteht aus Vorschlägen des Chorleiters
+  und den Wünschen der Sängerinnen und Sänger – immer mit dem Ziel, 
+  dass das Singen allen echte Freude bereitet.
+  Wer noch eine nette Gruppe zum gemeinsamen Singen sucht,
+  ist beim »Chor ohne Namen« herzlich willkommen.
+
+founded: 2023
+status: active
+
+conductors:
+  - name: "Hubertus Böer"
+    role: "Chorleiter"
+
+address:
+    name: "Kirche Pollhagen"
+    street: "Kirchstraße 1"
+    postcode: "31628"
+    city: "Pollhagen"
+    maps: "https://maps.app.goo.gl/SFyBqef1XxcM6Gv99"
+
+contact:
+  email: "info@h-boeer.de"
+
+geo:
+  lat: 52.371769
+  lng: 9.182903
+
+website: "https://kirche-pollhagen.de/"
