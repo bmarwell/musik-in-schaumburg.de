@@ -1,0 +1,52 @@
+title: "Posaunenchor Beckedorf - St. Godehardi"
+type: posaunenchor
+slug: posaunenchor-beckedorf
+founded: 1894
+active: true
+
+image:
+  local: "2019-ensemble-posaunenchor-beckedorf.webp"
+  source: "https://www.schaumburger-wochenblatt.de/2019-06-15-seit-vielen-jahren-eine-grosse-bereicherung-fuer-die-gemeinde-posaunenchor-beckedorf-feiert-125-jaehriges-jubilaeum/"
+  copyright: "Schaumburger Wochenblatt, bt"
+
+logo:
+  local: "logo-beckedorf-godehardi.png"
+  source: "https://www.kirchengemeinde-beckedorf.de/"
+  copyright: "Kirchengemeinde Beckedorf"
+
+description: |
+  Der Posaunenchor Beckedorf ist eines der traditionsreichsten Ensembles in Schaumburg 
+  und feierte 2019 bereits sein 125-jähriges Jubiläum. 
+  Gegründet im Kontext der Missionsfestbewegung, gestaltet der Chor seit Generationen Gottesdienste 
+  und kirchliche Feiern der Kirchengemeinde musikalisch mit – von festlich bis besinnlich. 
+  Mit Trompeten, Hörnern, Posaunen und Tuben bereichert er das kirchliche Leben und ist eine feste, 
+  klangvolle Säule der Gemeinde.
+  Unter der Leitung von Olaf Dziemba und Matthias Natzel probt der Chor mittwochs von 19:30 bis 21:30 Uhr 
+  in der Pfarrscheune und freut sich über neue Bläserinnen und Bläser jeden Alters, 
+  die Lust auf gemeinsames Musizieren haben.
+  Der Posaunenchor Beckedorf ist eine lebendige Gemeinschaft, 
+  die Gottesdienste feierlicher macht und den Menschen zur Freude erklingt.
+
+conductors:
+  - name: "Olaf Dziemba"
+    role: "Dirigent"
+  - name: "Matthias Natzel"
+    role: "Dirigent"
+
+address:
+  name: "Pfarrscheune Beckedorf"
+  street: "Kirchstraße 7"
+  postcode: "31699"
+  city: "Beckedorf"
+  maps: "https://maps.app.goo.gl/LEiAuFr1EsdU23CB8"
+
+geo:
+  lat: 52.34121
+  lng: 9.31803
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:30"
+  location: "Pfarrscheune Beckedorf"
+
+website: "https://www.kirchengemeinde-beckedorf.de/mitmachen/posaunenchor"
