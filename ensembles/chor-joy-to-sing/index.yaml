@@ -22,8 +22,8 @@ address:
 
 location: 'Steinbergen / Rinteln'
 geo:
-  lat: 52.206963
-  lng: 9.108271
+  lat: 52.2030666,
+  lng: 9.1212219
 
 website: 'https://julia-knubbe.de/chor'
 
