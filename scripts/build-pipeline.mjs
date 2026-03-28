@@ -718,6 +718,7 @@ function renderIndexPage(orchestras, allowedKeywords, partials) {
     jsonld: buildIndexJsonLd(orchestras),
     availableKeywords: allowedKeywords,
     availableTypes,
+    basePath: './',
     headerImgRoot: '',
     isHomepage: true,
     cacheBuster: ASSET_HASH,
@@ -745,6 +746,7 @@ function buildEnsembleView(orch) {
     ...orch,
     location: orch.location || orch.address?.city || null,
     year: CURRENT_YEAR,
+    basePath: '../../',
     headerImgRoot: '../../',
     canonicalUrl: `${SITE_URL}/ensemble/${orch.slug}/`,
     ogImageUrl: orch.image && orch.image.fallback
@@ -821,6 +823,7 @@ function renderImpressumPage(orchestras, partials) {
     year: CURRENT_YEAR,
     bildquellen,
     hasBildquellen: bildquellen.length > 0,
+    basePath: '../',
     headerImgRoot: '../',
     cacheBuster: ASSET_HASH,
   };
@@ -858,6 +861,7 @@ function renderMapPage(orchestras, partials) {
     ensembleCount: withGeo.length,
     mapFallback: withoutGeo,
     hasMapFallback: withoutGeo.length > 0,
+    basePath: '../',
     headerImgRoot: '../',
     cacheBuster: ASSET_HASH,
   };
@@ -981,8 +985,16 @@ async function build() {
   log('Rendering index.html...');
   const partials = {
     matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
+    'matomo-optout': fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo-optout.html'), 'utf8'),
     'site-header': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-header.html'), 'utf8'),
+    'site-footer': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-footer.html'), 'utf8'),
     'head-icons': fs.readFileSync(path.join(SRC_HTML, 'partials', 'head-icons.html'), 'utf8'),
+    'impressum-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-content.html'), 'utf8'),
+    'impressum-angaben': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-angaben.html'), 'utf8'),
+    'impressum-bildquellen': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-bildquellen.html'), 'utf8'),
+    'impressum-kartenmaterial': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-kartenmaterial.html'), 'utf8'),
+    'impressum-haftung': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-haftung.html'), 'utf8'),
+    'datenschutz-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'datenschutz-content.html'), 'utf8'),
   };
   renderIndexPage(orchestras, allowedKeywords, partials);
 
