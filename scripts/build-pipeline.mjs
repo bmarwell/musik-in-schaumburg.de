@@ -990,6 +990,11 @@ async function build() {
     'site-footer': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-footer.html'), 'utf8'),
     'head-icons': fs.readFileSync(path.join(SRC_HTML, 'partials', 'head-icons.html'), 'utf8'),
     'impressum-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-content.html'), 'utf8'),
+    'impressum-angaben': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-angaben.html'), 'utf8'),
+    'impressum-bildquellen': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-bildquellen.html'), 'utf8'),
+    'impressum-kartenmaterial': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-kartenmaterial.html'), 'utf8'),
+    'impressum-haftung': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-haftung.html'), 'utf8'),
+    'datenschutz-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'datenschutz-content.html'), 'utf8'),
   };
   renderIndexPage(orchestras, allowedKeywords, partials);
 
