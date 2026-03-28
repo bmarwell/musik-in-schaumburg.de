@@ -1,0 +1,93 @@
+<article class="impressum-content">
+
+  <h2>Impressum</h2>
+
+  <section aria-labelledby="section-angaben">
+    <h3 id="section-angaben">Angaben gemäß § 5 TMG</h3>
+    <address>
+      Benjamin Marwell<br>
+      <a href="https://bmarwell.de" target="_blank" rel="noopener noreferrer">bmarwell.de</a>
+    </address>
+  </section>
+
+  <section aria-labelledby="section-bildquellen">
+    <h3 id="section-bildquellen">Bildquellennachweise</h3>
+
+    <h4>Headerbild</h4>
+    <table class="bildquellen-table">
+      <thead>
+        <tr>
+          <th scope="col">Motiv</th>
+          <th scope="col">Urheber</th>
+          <th scope="col">Lizenz</th>
+          <th scope="col">Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Paschenburg und Schaumburg von unten</td>
+          <td>Norbert Schnitzler</td>
+          <td><a href="https://creativecommons.org/licenses/by-sa/3.0/de/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0 DE</a></td>
+          <td><a href="https://commons.wikimedia.org/wiki/File:Paschenburg_und_Schaumburg_von_unten.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Ensemblefotos und -logos</h4>
+    {{#hasBildquellen}}
+    <table class="bildquellen-table">
+      <thead>
+        <tr>
+          <th scope="col">Ensemble</th>
+          <th scope="col">Typ</th>
+          <th scope="col">Urheber / Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#bildquellen}}
+        <tr>
+          <td><a href="{{ensembleUrl}}">{{ensemble}}</a></td>
+          <td>{{assetType}}</td>
+          <td><a href="{{source}}" target="_blank" rel="noopener noreferrer">{{copyright}}</a></td>
+        </tr>
+        {{/bildquellen}}
+      </tbody>
+    </table>
+    {{/hasBildquellen}}
+
+    <h4>Kartenmaterial</h4>
+    <p>
+      Die interaktive Karte verwendet Kartenkacheln von
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
+      (© OpenStreetMap-Mitwirkende, lizenziert unter
+      <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener noreferrer">ODbL</a>).
+      Die Kartendarstellung erfolgt mit
+      <a href="https://leafletjs.com" target="_blank" rel="noopener noreferrer">Leaflet</a>
+      (BSD-2-Clause-Lizenz).
+    </p>
+  </section>
+
+  <section aria-labelledby="section-haftung">
+    <h3 id="section-haftung">Haftungsausschluss</h3>
+    <p>
+      Die Inhalte dieser Website werden mit größtmöglicher Sorgfalt erstellt. Für die
+      Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird keine Gewähr übernommen.
+      Für die Inhalte verlinkter externer Seiten sind ausschließlich deren Betreiber
+      verantwortlich.
+    </p>
+  </section>
+
+  <section aria-labelledby="section-quellcode">
+    <h3 id="section-quellcode">Quellcode &amp; Lizenz</h3>
+    <p>
+      Der Quellcode dieser Website steht unter der
+      <a href="{{basePath}}LICENSE" target="_blank" rel="noopener noreferrer">EUPL v. 1.2</a>
+      auf
+      <a href="https://github.com/bmarwell/musik-in-schaumburg.de" target="_blank" rel="noopener noreferrer">GitHub</a>
+      zur Verfügung.
+    </p>
+  </section>
+
+  {{> matomo-optout}}
+
+</article>
