@@ -1,0 +1,47 @@
+title: BigBand Route 65
+type: big-band
+slug: bigband-route-65
+status: active
+founded: 2007
+member_count: 21
+
+logo:
+  local: 'logo-route-65-bigband-stadthagen.png'
+  source: "https://www.bigbandroute65.com/"
+  copyright: "BigBand Route 65"
+
+image:
+  local: "ensemble-bigband-route-65-something-stupid.jpg"
+  source: "https://www.bigbandroute65.com/file-share?pgid=k6zgvfx7-71e6c1a5-31b9-4048-906d-f09e2665b152"
+  copyright: "BigBand Route 65"
+
+description: |
+  Die Big Band Route 65 ist seit 2007 die feste Adresse 
+  für mitreißende Big-Band-Musik in Schaumburg. 
+  Unter der Leitung von Udo Schatz spielt das Ensemble swingende Klassiker von Count Basie, 
+  Glenn Miller und Duke Ellington ebenso wie Evergreens, Oldies 
+  und fröhliche „Happy Music“ im Stil von James Last.
+  Der Name „Route 65“ ist eine charmante Anspielung auf die legendäre Route 66 
+  und die Bundesstraße B65, die durch die Region führt.
+  
+  Mit einem breiten Repertoire von Swing und Latin über Pop 
+  bis hin zu James-Last-Medleys sorgt die Big Band für beste Stimmung auf Konzerten, 
+  Festen und Veranstaltungen aller Art. Die Band lebt von der Leidenschaft 
+  und dem großen Engagement ihrer Musikerinnen und Musiker sowie treuer Förderer.
+
+conductors:
+  - name: "Udo Schatz"
+    role: "Dirigent"
+  - name: "Wilhelm Söhlke"
+    role: "1. Vorsitzender"
+
+address:
+  city: "Stadthagen"
+
+rehearsal:
+  location: 'Stadthagen'
+
+website: "https://www.bigbandroute65.com/"
+
+social:
+  facebook: "https://www.facebook.com/Bigband-Route-65-100223226990508/"
