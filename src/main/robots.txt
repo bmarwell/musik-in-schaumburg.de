@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+Disallow: /ensemble/die-jacobinis/images/photo-1200w.webp
+Disallow: /ensemble/die-jacobinis/images/photo-800w.jpg
+Disallow: /ensemble/die-jacobinis/images/photo-800w.webp
+Disallow: /ensemble/die-jacobinis/images/photo-640w.webp
+Disallow: /ensemble/die-jacobinis/images/photo-400w.webp
+
 Sitemap: https://musik-in-schaumburg.de/sitemap.xml
