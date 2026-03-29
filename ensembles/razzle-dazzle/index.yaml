@@ -3,7 +3,7 @@ type: band
 slug: razzle-dazzle
 
 founded: 1991
-active: true
+status: inactive
 member_count: 6
 
 logo:
