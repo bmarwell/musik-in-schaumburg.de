@@ -41,6 +41,10 @@ address:
 rehearsal:
   location: 'Stadthagen'
 
+geo:
+  lat: 52.323862
+  lng: 9.204719
+
 website: "https://www.bigbandroute65.com/"
 
 social:
