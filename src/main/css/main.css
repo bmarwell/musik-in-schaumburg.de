@@ -1009,6 +1009,45 @@ mark.search-highlight {
   opacity: 0.8;
 }
 
+.sponsor-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.github-sponsor-button {
+  border: 0;
+  border-radius: 6px;
+  display: block;
+}
+
+.bmc-button-small {
+  height: 32px;
+  width: auto;
+  display: inline-block;
+}
+
+.github-sponsor-card {
+  border: 0;
+  display: block;
+  max-width: 100%;
+}
+
+.bmc-button-large {
+  height: 60px;
+  width: auto;
+  display: block;
+}
+
+.sponsor-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .cards {
