@@ -1,0 +1,55 @@
+title: "Schlingborner Musikanten Hohenrode e.V."
+type: blaskapelle
+slug: schlingborner-musikanten-hohenrode
+
+founded: 1957
+status: active
+
+
+conductors:
+  - name: "Carsten Tegtmeier"
+    role: "Dirigent"
+
+image:
+  local: "ensemble-schlingborner-musikanten-hohenrode.jpg"
+  source: "https://www.schlingborner.de/"
+
+logo:
+  local: "logo-schlingborner-musikanten-hohenrode.png"
+  source: "https://www.schlingborner.de/"
+
+description: |
+  Die Schlingborner Musikanten Hohenrode e.V. sind eine traditionsreiche Blaskapelle 
+  aus dem Rintelner Ortsteil Hohenrode. 
+  Gegründet 1957 als Feuerwehrkapelle Hohenrode, 
+  erhielten sie 1977 ihren heutigen Namen – inspiriert von der Schlingborn-Quelle,
+  die das Dorf mit Trinkwasser versorgt. 
+  Seither sorgen die Musiker mit einem bunten Mix aus traditioneller Blasmusik, 
+  Polkas, Walzern und modernen Medleys für Stimmung bei Festen, 
+  Frühschoppen und Dorffesten.
+  
+  Unter der Leitung von Carsten Tegtmeier pflegen die Schlingborner Musikanten 
+  die Freude an der Blasmusik und sind ein fester Bestandteil 
+  des kulturellen Lebens in Hohenrode und Umgebung. 
+  Ihre Erkennungsmelodie „Die Musik kommt“ begleitet sie bei zahlreichen Auftritten 
+  und verkörpert die lebendige Gemeinschaft der Kapelle.
+
+address:
+  name: "Dorfgemeinschaftshaus Hohenrode"
+  street: "Kirchweg"
+  city: "Hohenrode"
+  postcode: "31737"
+
+geo:
+  lat: 52.172588
+  lng: 9.153304
+
+rehearsal:
+  day: "Mittwoch"
+  time: "19:30"
+
+contact:
+  email: "vorstand@schlingborner.de"
+  phone: "+4957519216465"
+
+website: "https://www.schlingborner.de/"
