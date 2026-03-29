@@ -995,6 +995,8 @@ async function build() {
     'impressum-kartenmaterial': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-kartenmaterial.html'), 'utf8'),
     'impressum-haftung': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-haftung.html'), 'utf8'),
     'datenschutz-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'datenschutz-content.html'), 'utf8'),
+    'sponsor-buttons-small': fs.readFileSync(path.join(SRC_HTML, 'partials', 'sponsor-buttons-small.html'), 'utf8'),
+    'sponsor-cards': fs.readFileSync(path.join(SRC_HTML, 'partials', 'sponsor-cards.html'), 'utf8'),
   };
   renderIndexPage(orchestras, allowedKeywords, partials);
 
