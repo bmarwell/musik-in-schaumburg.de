@@ -983,21 +983,12 @@ async function build() {
   const orchestras = await processEnsembleAssets(loadedEnsembles);
 
   log('Rendering index.html...');
-  const partials = {
-    matomo: fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo.html'), 'utf8'),
-    'matomo-optout': fs.readFileSync(path.join(SRC_HTML, 'partials', 'matomo-optout.html'), 'utf8'),
-    'site-header': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-header.html'), 'utf8'),
-    'site-footer': fs.readFileSync(path.join(SRC_HTML, 'partials', 'site-footer.html'), 'utf8'),
-    'head-icons': fs.readFileSync(path.join(SRC_HTML, 'partials', 'head-icons.html'), 'utf8'),
-    'impressum-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-content.html'), 'utf8'),
-    'impressum-angaben': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-angaben.html'), 'utf8'),
-    'impressum-bildquellen': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-bildquellen.html'), 'utf8'),
-    'impressum-kartenmaterial': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-kartenmaterial.html'), 'utf8'),
-    'impressum-haftung': fs.readFileSync(path.join(SRC_HTML, 'partials', 'impressum-haftung.html'), 'utf8'),
-    'datenschutz-content': fs.readFileSync(path.join(SRC_HTML, 'partials', 'datenschutz-content.html'), 'utf8'),
-    'sponsor-buttons-small': fs.readFileSync(path.join(SRC_HTML, 'partials', 'sponsor-buttons-small.html'), 'utf8'),
-    'sponsor-cards': fs.readFileSync(path.join(SRC_HTML, 'partials', 'sponsor-cards.html'), 'utf8'),
-  };
+  const partialsDir = path.join(SRC_HTML, 'partials');
+  const partials = Object.fromEntries(
+    fs.readdirSync(partialsDir)
+      .filter(f => f.endsWith('.html'))
+      .map(f => [f.slice(0, -'.html'.length), fs.readFileSync(path.join(partialsDir, f), 'utf8')])
+  );
   renderIndexPage(orchestras, allowedKeywords, partials);
 
   log('Rendering orchestra pages...');
