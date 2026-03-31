@@ -1,0 +1,61 @@
+# ── Pflichtfelder ─────────────────────────────────────────────────────────────
+title: "BBC Schaumburg Philharmonics Orchestra"
+type: orchestra
+slug: bbc-schaumburg-philharmonics-orchestra
+
+description: |
+  Das BBC Schaumburg Philharmonics Orchestra ist das erste Ensemble des im Jahreswechsel 2024/25 gegründeten
+  Kultur- und Musikvereins Big Bands Company Schaumburg e.V.
+  Mit rund 40 Musikerinnen und Musikern – darunter viele studierte Profis,
+  Musiklehrer und Studenten der Hochschule Hannover – widmet sich das Orchester
+  vor allem der romantischen Klassik in eigenen Arrangements.
+  
+  Unter der Leitung des spanischen Dirigenten José Pascual García Llopis hat das junge Ensemble
+  in kurzer Zeit bereits mehrere erfolgreiche Konzerte gegeben und bereichert das kulturelle Leben in der Region.
+
+# ── Allgemeine Angaben ────────────────────────────────────────────────────────
+founded: 2024
+status: active
+member_count: 31
+
+conductors:
+  - name: "José Pascual García Llopis"
+    role: "Dirigent"
+  - name: "Lutz Müller"
+    role: "1. Vorsitzender"
+
+# ── Bilder ─────────────────────────────────────────────────────────────────
+logo:
+  local: "2025-logo-bbc-schaumburg-ev-palette.png"
+  source: "Lutz Müller"
+
+image:
+  local: "ensemble-bbc-philharmonic-orchestra.jpeg"
+  source: "Lutz Müller"
+
+# ── Standort ──────────────────────────────────────────────────────────────────
+location: "Bückeburg"
+
+address:
+  name: "Big Bands Company Schaumburg e.V."
+  city: "Bückeburg"
+
+geo:
+  lat: 52.2608
+  lng: 9.0494
+
+# ── Kontakt & Web ─────────────────────────────────────────────────────────────
+website: "https://bbc-schaumburg.de/"
+
+# Social Media – aktuell noch keine öffentlichen Links auf der Website sichtbar
+social:
+  facebook: https://www.facebook.com/profile.php?id=61570754253974
+  instagram: https://www.instagram.com/bbc.schaumburg
+
+# ── Stichwörter ───────────────────────────────────────────────────────────────
+tags:
+  - Orchester
+  - Klassik
+  - Romantik
+  - Philharmonisch
+  - Profimusiker
