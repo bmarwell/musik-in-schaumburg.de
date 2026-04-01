@@ -16,7 +16,7 @@ description: |
 # ── Allgemeine Angaben ────────────────────────────────────────────────────────
 founded: 2024
 status: active
-member_count: 31
+member_count: 40
 
 conductors:
   - name: "José Pascual García Llopis"
@@ -34,15 +34,20 @@ image:
   source: "Lutz Müller"
 
 # ── Standort ──────────────────────────────────────────────────────────────────
-location: "Bückeburg"
+location: "Stadthagen"
 
 address:
-  name: "Big Bands Company Schaumburg e.V."
-  city: "Bückeburg"
+  name: "Musik Mensching (Proben)"
+  street: "Bahnhofstraße 77A"
+  postcode: "31655"
+  city: "Stadthagen"
 
 geo:
-  lat: 52.2608
-  lng: 9.0494
+  lat: 52.331019
+  lng: 9.189830
+
+rehearsal:
+  location: "Musik Mensching"
 
 # ── Kontakt & Web ─────────────────────────────────────────────────────────────
 website: "https://bbc-schaumburg.de/"
