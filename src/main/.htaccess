@@ -24,10 +24,21 @@ RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
 # ── Canonical redirect: /index.html → / ──────────────────────────────────────
-# Apache's mod_dir may externally redirect / to /index.html; this rule
-# ensures any explicit /index.html request is canonicalised back to /.
-RewriteCond %{THE_REQUEST} \ /index\.html[\ ?] [NC]
-RewriteRule ^index\.html$ / [R=301,L]
+# Trailing-slash URLs are the canonical form (e.g. /ensemble/slug/ not
+# /ensemble/slug/index.html).  Apache's mod_dir may externally redirect a
+# bare directory request to its index.html file; these rules ensure that any
+# explicit /index.html request — at the root or in any subdirectory — is
+# permanently redirected back to the canonical trailing-slash URL.
+#
+# Why trailing-slash (not /index.html)?
+#   • All internal links, the sitemap, and <link rel="canonical"> already use
+#     the trailing-slash form, so this redirect simply enforces what the site
+#     already declares as canonical.
+#   • Trailing-slash URLs are cleaner and more robust: they do not expose the
+#     server's file layout and remain valid if the implementation ever changes
+#     from index.html to another default document.
+RewriteCond %{THE_REQUEST} /index\.html[\ ?] [NC]
+RewriteRule ^(.+/)?index\.html$ /$1 [R=301,L]
 
 # ── Pre-compressed asset serving ──────────────────────────────────────────────
 # Priority: zstd > brotli > gzip.
