@@ -121,6 +121,22 @@ describe("Open Graph ensemble image", () => {
   }
 });
 
+// ── Canonical URLs ────────────────────────────────────────────────────────────
+// The canonical form is the trailing-slash URL (e.g. /ensemble/slug/).
+// Neither <link rel="canonical"> nor og:url must end with /index.html.
+
+const canonicalTagHtmlFiles = htmlFiles.filter(f => !f.includes(`${path.sep}impressum${path.sep}`));
+
+describe("Canonical URL does not contain /index.html", () => {
+  for (const file of canonicalTagHtmlFiles) {
+    test(path.relative(DIST, file), () => {
+      const content = fs.readFileSync(file, "utf-8");
+      expect(content).not.toMatch(/rel="canonical"[^>]*href="[^"]*\/index\.html"/);
+      expect(content).not.toMatch(/property="og:url"[^>]*content="[^"]*\/index\.html"/);
+    });
+  }
+});
+
 // ── all-ensembles.json ────────────────────────────────────────────────────────
 
 describe("all-ensembles.json", () => {

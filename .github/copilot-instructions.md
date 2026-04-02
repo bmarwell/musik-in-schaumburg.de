@@ -443,8 +443,32 @@ Extract deeply nested blocks into separate, named functions.
 
 The `dist/` directory is the deployable artifact. Deploy it to an Apache server.
 The included `.htaccess` handles HTTPS redirects, www → non-www canonicalisation,
+canonical URL redirects (`/index.html` → trailing slash),
 pre-compressed asset serving (zstd > brotli > gzip with on-the-fly fallback),
 caching headers, and security headers.
+
+## Canonical URL Strategy
+
+**All URLs use the trailing-slash form** (e.g. `/ensemble/slug/`, `/karte/`, `/`).
+The `index.html` suffix is never part of a canonical URL.
+
+This is enforced at three layers:
+
+1. **Build pipeline** – `canonicalUrl` in `scripts/build-pipeline.mjs` is always
+   `${SITE_URL}/path/to/slug/` (trailing slash, no `index.html`).
+2. **Templates** – `<link rel="canonical">` and `<meta property="og:url">` use
+   `{{{canonicalUrl}}}`, which always resolves to the trailing-slash form.
+3. **`.htaccess`** – A `301 Permanent Redirect` rule rewrites any request for
+   `*/index.html` to the canonical trailing-slash URL.  This covers every depth
+   (root, `/ensemble/`, `/karte/`, etc.).
+
+When adding new pages or templates, **always use trailing-slash URLs** in:
+- `<link rel="canonical">`
+- `<meta property="og:url">`
+- `<a href="…">` internal links
+- `sitemap.xml` `<loc>` entries
+
+Never hard-code `/index.html` in any URL that is exposed to users or search engines.
 
 ## Pre-compression
 
