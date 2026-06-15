@@ -16,7 +16,7 @@
     "js-yaml": "^4.1.1",
     "leaflet": "^1.9.4",
     "mustache": "^4.2.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.1"
   },
   "devDependencies": {
     "acorn": "^8.16.0",
